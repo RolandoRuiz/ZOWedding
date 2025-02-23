@@ -1,0 +1,34 @@
+/*Reset values*/
+
+:root{
+    --deep-red: #510414;
+    --bright-red: #990E0E;
+    --shadow-red: #35010c;
+    --soft-gold: #D5B88F;
+    --soft-grey: #F0F0F0;
+    --pure-white: #FFFFFF;
+    --medium-black: #111111;
+}
+
+*, *::before, *::after{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+html{
+    background-color: var(--medium-black);
+}
+
+/*Invitation starting sequence*/
+
+#openingSection{
+    width: 100lvw;
+    height: 100svh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    overflow: hidden;/*Reset values*/
+}
