@@ -55,38 +55,29 @@ html{
 
 #bgc1{
     height: 100%;
-    width: 47%;
+    width: 60%;
     background: linear-gradient(#ffffff00 75%, #ffffff50 105%, #ffffff9a 110%);
-    filter: blur(1px);
+    filter: blur(8px);
 }
 
 #bgc2{
+    height: 100%;
+    width: 47%;
+    background: linear-gradient(#ffffff00 75%, #ffffff50 105%, #ffffff9a 110%);
+    filter: blur(4px);
+}
+
+#bgc3{
     height: 30%;
     width: 35%;
     background: linear-gradient(#ffffff00 5%, #ffffff29 55%, #ffffff8f 105%);
     filter: blur(3px);
 }
 
-#bgc3{
+#bgc4{
     height: 30%;
     width: 26%;
     background: radial-gradient(circle at bottom, #ffffff 0%, #ffffff3b 60%, #ffffff00 85%);
     filter: blur(3px);
 }
 
-#bgc{
-    height: 40%;
-    width: 8%;
-    right: 35%;
-    bottom: -5%;
-    rotate: 12deg;
-    background: radial-gradient(circle at bottom, #ffffffe0 -80%, #ffffff3b 40%, #ffffff00 80%);
-    filter: blur(1px);
-}
-
-#bgc{
-    height: 30%;
-    width: 26%;
-    background: radial-gradient(circle at bottom, #ffffff 0%, #ffffff3b 60%, #ffffff00 85%);
-    filter: blur(3px);
-}
