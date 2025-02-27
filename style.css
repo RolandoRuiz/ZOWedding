@@ -121,6 +121,8 @@ html{
     width: 0.9%;
     height: 25%;
     position: absolute;
+    display: flex;
+    justify-content: center;
     background: linear-gradient(#ffffff00 0%, #ffffff08 12%, #ffffff20 20%, 28%, #ffffff 34%, #ffffff9d 42%, #ffffff34 55%, #ffffff08 80%, #ffffff00 100%);
     filter: blur(0.6px);
 }
@@ -135,4 +137,14 @@ left: 40%;
 
 #bsc3{
     left: 60%;
+}
+
+.glintStar{
+    width: calc(100% + 12px);
+    height: auto;
+    position: absolute;
+    top: 30%;
+    aspect-ratio: 1 / 1;
+    background-color: #ffffff;
+    clip-path: polygon(50% 0, 62% 35%, 100% 50%, 62% 65%, 50% 100%, 38% 65%, 0 50%, 38% 35%);
 }
