@@ -8,6 +8,7 @@
     --soft-grey: #F0F0F0;
     --pure-white: #FFFFFF;
     --medium-black: #111111;
+    --gradient: linear-gradient(#f6b73c, #4d9f0c) 30;
 }
 
 *, *::before, *::after{
@@ -29,6 +30,63 @@ html{
     position: relative;
     display: flex;
     justify-content: center;
-    align-content: center;
+    align-items: center;
     overflow: hidden;/*Reset values*/
+    border: 1px solid rgb(255, 255, 255);
+}
+
+#bottomGlow-Wrapper{
+    width: 100lvw;
+    height: 25svh;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    bottom: 0%;
+    /*border: 1px solid rgb(255, 0, 0);*/
+}
+
+.bottomGlow-Container{
+    position: absolute;
+    transform-origin: bottom;
+    transform: perspective(0.5svw) rotateX(-1deg);
+    
+}
+
+#bgc1{
+    height: 100%;
+    width: 47%;
+    background: linear-gradient(#ffffff00 75%, #ffffff50 105%, #ffffff9a 110%);
+    filter: blur(1px);
+}
+
+#bgc2{
+    height: 30%;
+    width: 35%;
+    background: linear-gradient(#ffffff00 5%, #ffffff29 55%, #ffffff8f 105%);
+    filter: blur(3px);
+}
+
+#bgc3{
+    height: 30%;
+    width: 26%;
+    background: radial-gradient(circle at bottom, #ffffff 0%, #ffffff3b 60%, #ffffff00 85%);
+    filter: blur(3px);
+}
+
+#bgc{
+    height: 40%;
+    width: 8%;
+    right: 35%;
+    bottom: -5%;
+    rotate: 12deg;
+    background: radial-gradient(circle at bottom, #ffffffe0 -80%, #ffffff3b 40%, #ffffff00 80%);
+    filter: blur(1px);
+}
+
+#bgc{
+    height: 30%;
+    width: 26%;
+    background: radial-gradient(circle at bottom, #ffffff 0%, #ffffff3b 60%, #ffffff00 85%);
+    filter: blur(3px);
 }
