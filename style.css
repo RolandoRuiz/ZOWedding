@@ -49,35 +49,56 @@ html{
 .bottomGlow-Container{
     position: absolute;
     transform-origin: bottom;
-    transform: perspective(0.5svw) rotateX(-1deg);
+    transform: perspective(0.5svw) rotateX(-1deg) scaleY(0);
+    bottom: -10%;
+    animation: showBottomGlow 1.5s forwards cubic-bezier(.29,.53,.42,1.13), idleBottomGlow 2s alternate infinite ease-out;
     
 }
 
 #bgc1{
     height: 100%;
-    width: 60%;
-    background: linear-gradient(#ffffff00 75%, #ffffff50 105%, #ffffff9a 110%);
-    filter: blur(8px);
+    width: 80%;
+    background: radial-gradient(circle at bottom, #ffffff6b 0%, #ffffff3b 20%, #ffffff00 35%);
+    filter: blur(10px);
+    animation-delay: 2s, 3.5s;
 }
 
 #bgc2{
     height: 100%;
     width: 47%;
     background: linear-gradient(#ffffff00 75%, #ffffff50 105%, #ffffff9a 110%);
-    filter: blur(4px);
+    filter: blur(3px);
+    animation-delay: 2.5s, 4s;
 }
 
 #bgc3{
     height: 30%;
     width: 35%;
-    background: linear-gradient(#ffffff00 5%, #ffffff29 55%, #ffffff8f 105%);
-    filter: blur(3px);
+    background: linear-gradient(#ffffff00 5%, #ffffff29 55%, #ffffff47 105%);
+    filter: blur(2px);
+    animation-delay: 2.3s, 3.8s;
 }
 
 #bgc4{
     height: 30%;
     width: 26%;
-    background: radial-gradient(circle at bottom, #ffffff 0%, #ffffff3b 60%, #ffffff00 85%);
-    filter: blur(3px);
+    background: radial-gradient(circle at bottom, #ffffffd1 0%, #ffffff3b 60%, #ffffff00 85%);
+    filter: blur(2px);
+    animation-delay: 2.7s, 4.5s;
 }
 
+@keyframes showBottomGlow {
+    from{
+        transform:  perspective(0.5svw) rotateX(-1deg) scaleY(0);
+    }to{
+        transform:   perspective(0.5svw) rotateX(-1deg) scale(1);
+    }
+}
+
+@keyframes idleBottomGlow {
+    from{
+        transform:  perspective(0.5svw) rotateX(-1deg) scaleY(1);
+    }to{
+        transform:   perspective(0.5svw) rotateX(-1deg) scale(0.9);
+    }
+}
