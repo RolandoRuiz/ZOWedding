@@ -7,7 +7,7 @@
     --soft-gold: #D5B88F;
     --soft-grey: #F0F0F0;
     --pure-white: #FFFFFF;
-    --medium-black: #111111;
+    --medium-black: #090909;
     --gradient: linear-gradient(#f6b73c, #4d9f0c) 30;
 }
 
@@ -22,6 +22,18 @@ html{
     background-color: var(--medium-black);
 }
 
+#backgroundImg{
+    width: 100svw;
+    height: 100svh;
+    position: absolute;
+    background-image: url(backgroundTexture.svg);
+    background-repeat: repeat;
+    background-size: 50svw;
+    filter: grayscale(0);
+    opacity: 0.7;
+    mix-blend-mode: multiply;
+}
+
 /*Invitation starting sequence*/
 
 #openingSection{
@@ -32,7 +44,6 @@ html{
     justify-content: center;
     align-items: center;
     overflow: hidden;/*Reset values*/
-    border: 1px solid rgb(255, 255, 255);
 }
 
 #bottomGlow-Wrapper{
@@ -114,60 +125,122 @@ html{
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    border: 1px dotted rgb(255, 0, 0);
+    bottom: 0%;
 }
 
 .bottomSpark-Container{
-    width: 0.9%;
+    width: 0.7%;
     /*height: 25%;*/
     position: absolute;
     display: flex;
     justify-content: center;
     background: linear-gradient(#ffffff00 0%, #ffffff08 12%, #ffffff20 20%, 28%, #ffffff 34%, #ffffff9d 42%, #ffffff34 55%, #ffffff08 80%, #ffffff00 100%);
-    filter: blur(0.6px);
+    filter: blur(0.5px);
+    scale: 0;
+
+    animation: glintMovement 4s infinite;
 }
 
 #bsc1{
     height: 30%;
-    left: 20%;
+    left: 30%;
     transform-origin: bottom center;
-    transform: rotateZ(-10deg);
+    transform: rotateZ(-30deg);
+    animation-delay: 3s;
 }
 
 #bsc2{
-left: 40%;
+    height: 20%;
+    left: 40%;
+    bottom: 2%;
+    transform-origin: bottom center;
+    transform: rotateZ(-20deg);
+    animation-delay: 2.5s;
 }
 
 #bsc3{
-    left: 60%;
+    height: 40%;
+    left: 50%;
+    bottom: 5%;
+    transform-origin: bottom center;
+    transform: rotateZ(-1deg);
+    animation-delay: 2s;
 }
 
 #bsc4{
+    height: 30%;
     left: 60%;
+    transform-origin: bottom center;
+    transform: rotateZ(16deg);
+    animation-delay: 3.5s;
 }
 
 #bsc5{
-    left: 60%;
+    height: 30%;
+    left: 70%;
+    transform-origin: bottom center;
+    transform: rotateZ(30deg);
+    animation-delay: 5.5s;
 }
 
 #bsc6{
-    left: 60%;
+    height: 40%;
+    left: 65%;
+    transform-origin: bottom center;
+    transform: rotateZ(22deg);
+    animation-delay: 5s;
+    opacity: 0.5;
 }
 
 #bsc7{
-    left: 60%;
+    height: 38%;
+    left: 55%;
+    transform-origin: bottom center;
+    transform: rotateZ(10deg);
+    animation-delay: 3s;
+    opacity: 0.5;
+}
+
+#bsc8{
+    height: 30%;
+    left: 47%;
+    transform-origin: bottom center;
+    transform: rotateZ(-11deg);
+    animation-delay: 4s;
+    opacity: 0.5;
 }
 
 #bsc9{
-    left: 60%;
+    height: 35%;
+    left: 35%;
+    transform-origin: bottom center;
+    transform: rotateZ(-25deg);
+    animation-delay: 5s;
+    opacity: 0.5;
 }
 
 .glintStar{
-    width: calc(100% + 12px);
+    width: calc(100% + 10px);
     height: auto;
     position: absolute;
     top: 25%;
     aspect-ratio: 1 / 1;
     background-color: #ffffff;
     clip-path: polygon(50% 0, 62% 35%, 100% 50%, 62% 65%, 50% 100%, 38% 65%, 0 50%, 38% 35%);
+}
+
+@keyframes glintMovement {
+    0%{
+        scale: 0;
+        opacity: 0;
+        animation-timing-function: cubic-bezier(0.62, 0.04, 0.43, 0.76);
+    }80%{
+        scale: 1;
+        opacity: 1;
+        
+    }100%{
+        scale: 1.1;
+        opacity: 0;
+        animation-timing-function: linear;
+    }
 }
