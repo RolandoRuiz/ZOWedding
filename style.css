@@ -7,7 +7,7 @@
     --soft-gold: #D5B88F;
     --soft-grey: #F0F0F0;
     --pure-white: #FFFFFF;
-    --medium-black: #040404;
+    --medium-black: #070707;
     --gradient: linear-gradient(#f6b73c, #4d9f0c) 30;
 }
 
@@ -57,7 +57,7 @@ html{
 #bgc1{
     width: 80%;
     height: 100%;
-    background: radial-gradient(circle at bottom, #ffffff5b 0%, #ffffff29 20%, #ffffff00 40%);
+    background: radial-gradient(circle at bottom, #ffffff67 0%, #ffffff3f 20%, #ffffff00 40%);
     filter: blur(5px);
     animation-delay: 2s, 3.5s;
 }
@@ -241,17 +241,6 @@ html{
     }
 }
 
-#backgroundImg{
-    width: 100svw;
-    height: 100svh;
-    position: absolute;
-    background-image: url(backgroundTexture.svg);
-    background-repeat: repeat;
-    background-size: 50svw;
-    backdrop-filter: opacity(1);
-    mix-blend-mode: multiply;
-}
-
 .random{
     width: 80svw;
     height: 80svw;
@@ -260,4 +249,24 @@ html{
     background-image: url(flowerexample.png);
     background-size: contain;
     
+}
+
+#backgroundImg{
+    width: 100svw;
+    height: 100svh;
+    position: absolute;
+    mix-blend-mode: multiply;
+}
+
+#backgroundImg::before{
+    content: "";
+    position: absolute;
+    background-image: url(backgroundTexture.svg);
+    background-repeat: repeat;
+    background-size: 50svw;
+    opacity: 0.7;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
 }
