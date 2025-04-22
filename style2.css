@@ -24,9 +24,9 @@ html{
 #openingSection{
     width: 100svw;
     height: 115svh;
-    background-color: var(--pure-white); /*Don't remove, overlay won't work if deleted*/
     position: relative;
     display: flex;
+    background-color: var(--pure-white); /*Don't remove, overlay won't work if deleted*/
     justify-content: center;
     align-items: center;
 }
@@ -39,23 +39,44 @@ html{
 #openingBgr{
     content: "";
     position: absolute;
-    background-image: url(backgroundTexture.svg);
+    background-image: url(/assets/svg/backgroundTexture.svg);
     background-position: 18%;
     background-repeat: repeat;
     background-size: 50svw;
     opacity: 0.7;
-    mask-image: radial-gradient(100% 60% at 50% 44%, black 50%, transparent 85%);
+    mask-image: radial-gradient(100% 56% at 50% 39%, black 50%, transparent 85%);
     top: 0px;
     right: 0px;
     bottom: 0px;
     left: 0px;
 }
 
-#openingBgrultiply{
+#openingBgrMultiply{
     width: 100%;
     height: 100%;
     position: absolute;
     background-color: var(--medium-black);
     mix-blend-mode: multiply;
-    opacity: 0.99; 
+    opacity: 0.96; 
+}
+
+#openingBgrArch{
+    width: 100svw;
+    height: 95svh;
+    position: absolute;
+    bottom: 15svh;
+    background-image: url(/assets/svg/archGraphic.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    mask-image: linear-gradient(black 45%, transparent 90%);
+    mix-blend-mode: multiply;
+    opacity: 0.4;
+}
+
+#bottomGlow-Wrapper{
+    width: 100svw;
+    height: 100svh;
+    position: absolute;
+    top: 0%;
+    border: solid 4px red;
 }
