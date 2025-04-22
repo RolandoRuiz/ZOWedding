@@ -50,13 +50,14 @@ html{
     transform-origin: bottom;
     transform: perspective(0.5svw) rotateX(-1deg) scaleY(0);
     bottom: -10%;
+    mix-blend-mode: overlay;
 
     animation: showBottomGlow 1.5s forwards cubic-bezier(.29,.53,.42,1.13), idleBottomGlow 2s alternate infinite ease-out;
 }
 
 #bgc1{
     width: 80%;
-    height: 100%;
+    height: 110%;
     background: radial-gradient(circle at bottom, #ffffff67 0%, #ffffff3f 20%, #ffffff00 40%);
     filter: blur(5px);
     animation-delay: 2s, 3.5s;
@@ -64,7 +65,7 @@ html{
 
 #bgc2{
     width: 47%;
-    height: 100%;
+    height: 105%;
     background: linear-gradient(#ffffff00 75%, #ffffff50 105%, #ffffff9a 110%);
     filter: blur(4px);
     animation-delay: 2.5s, 4s;
@@ -72,7 +73,7 @@ html{
 
 #bgc3{
     width: 35%;
-    height: 30%;
+    height: 40%;
     background: linear-gradient(#ffffff00 5%, #ffffff29 55%, #ffffff47 105%);
     filter: blur(3px);
     animation-delay: 2.3s, 3.8s;
@@ -80,7 +81,7 @@ html{
 
 #bgc4{
     width: 26%;
-    height: 35%;
+    height: 60%;
     background: radial-gradient(circle at bottom, #ffffff4a -30%, #ffffff3b 40%, #ffffff00 80%);
     filter: blur(2px);
     animation-delay: 2.7s, 4.5s;
@@ -245,9 +246,10 @@ html{
     width: 80svw;
     height: 80svw;
     position: absolute;
-    bottom: -0%;
-    background-image: url(flowerexample.png);
+    bottom: -10%;
+    background-image: url(/Assets/svg/topBranchGraphic.svg);
     background-size: contain;
+    background-repeat: no-repeat; 
     
 }
 
