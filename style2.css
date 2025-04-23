@@ -57,26 +57,224 @@ html{
     position: absolute;
     background-color: var(--medium-black);
     mix-blend-mode: multiply;
-    opacity: 0.96; 
+    opacity: 0.98; 
 }
 
 #openingBgrArch{
-    width: 100svw;
+    width: 80svw;
     height: 95svh;
     position: absolute;
     bottom: 15svh;
-    background-image: url(/assets/svg/archGraphic.svg);
-    background-repeat: no-repeat;
-    background-position: center;
+    overflow: hidden;
     mask-image: linear-gradient(black 45%, transparent 90%);
     mix-blend-mode: multiply;
     opacity: 0.4;
+}
+
+.BgrArch{
+    width: 100%;
+    height: auto;
+    position: absolute;
 }
 
 #bottomGlow-Wrapper{
     width: 100svw;
     height: 100svh;
     position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    overflow: hidden;
     top: 0%;
-    border: solid 4px red;
+}
+
+.bottomGlow-Container{
+    position: absolute;
+    bottom: 0%;
+    mix-blend-mode: overlay;
+    background-color: #FFFFFF;
+    transform: perspective(10svw) rotateX(-10deg) scaleY(0);
+    transform-origin: bottom;
+
+    animation: 
+    showBottomGlow 2s forwards cubic-bezier(.29,.53,.42,1.13), 
+    idleBottomGlow 2.5s alternate infinite ease-out;
+
+}
+
+#bgc1{
+    width: 75%;
+    height: 30%;
+    mask-image: radial-gradient(55% 90% at bottom center, black 75%, transparent 100%);
+    animation-delay: 2s, 3.5s;
+}
+
+#bgc2{
+    width: 58%;
+    height: 30%;
+    mask-image: radial-gradient(70% 110% at bottom center, black 50%, transparent 80%);
+    animation-delay: 2.5s, 4s;
+}
+
+#bgc3{
+    width: 48%;
+    height: 30%;
+    mask-image: radial-gradient(60% 100% at bottom center, black 50%, transparent 90%);
+    animation-delay: 2.3s, 3.8s;
+}
+
+#bgc4{
+    width: 40%;
+    height: 30%;
+    mask-image: radial-gradient(60% 90% at bottom center, black 40%, transparent 110%);
+    animation-delay: 2.7s, 4.5s;
+}
+
+@keyframes showBottomGlow {
+    from{
+        transform: perspective(10svw) rotateX(-10deg) scaleY(0);
+    }to{
+        transform: perspective(10svw) rotateX(-10deg) scaleY(1);
+    }
+}
+
+@keyframes idleBottomGlow {
+    from{
+        transform: perspective(10svw) rotateX(-10deg) scaleY(1);
+    }to{
+        transform: perspective(10svw) rotateX(-10deg) scaleY(0.9);
+    }
+}
+
+#bottomSpark-Wrapper{
+    width: 100svw;
+    height: 50svh;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    bottom: 15svh;
+}
+
+.bottomSpark-Container{
+    width: 0.7%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    background: linear-gradient();
+    filter: blur(0px) drop-shadow(0px 0px 2px white) drop-shadow(0px 0px 5px white) drop-shadow(0px 0px 12px white);
+    mix-blend-mode: hard-light;
+    scale: 0;
+
+    animation: glintMovement 4s infinite;
+}
+
+#bsc1{
+    height: 30%;
+    left: 30%;
+    transform-origin: bottom center;
+    transform: rotateZ(-30deg);
+    animation-delay: 3s;
+}
+
+#bsc2{
+    height: 20%;
+    left: 40%;
+    bottom: 2%;
+    transform-origin: bottom center;
+    transform: rotateZ(-20deg);
+    animation-delay: 2.5s;
+}
+
+#bsc3{
+    height: 40%;
+    left: 50%;
+    bottom: 5%;
+    transform-origin: bottom center;
+    transform: rotateZ(-1deg);
+    animation-delay: 2s;
+}
+
+#bsc4{
+    height: 30%;
+    left: 60%;
+    transform-origin: bottom center;
+    transform: rotateZ(16deg);
+    animation-delay: 3.5s;
+}
+
+#bsc5{
+    height: 30%;
+    left: 70%;
+    transform-origin: bottom center;
+    transform: rotateZ(30deg);
+    animation-delay: 5.5s;
+}
+
+#bsc6{
+    height: 40%;
+    left: 65%;
+    transform-origin: bottom center;
+    transform: rotateZ(22deg);
+    animation-delay: 5s;
+}
+
+#bsc7{
+    height: 38%;
+    left: 55%;
+    transform-origin: bottom center;
+    transform: rotateZ(10deg);
+    animation-delay: 3s;
+}
+
+#bsc8{
+    height: 30%;
+    left: 47%;
+    transform-origin: bottom center;
+    transform: rotateZ(-11deg);
+    animation-delay: 4s;
+}
+
+#bsc9{
+    height: 35%;
+    left: 35%;
+    transform-origin: bottom center;
+    transform: rotateZ(-25deg);
+    animation-delay: 5s;
+}
+
+.glintStar{
+    width: calc(100% + 15px);
+    height: auto;
+    aspect-ratio: 1 / 1;
+    position: absolute;
+    top: 25%;
+    background-color: #ffffff;
+    clip-path: polygon(50% 0, 62% 35%, 100% 50%, 62% 65%, 50% 100%, 38% 65%, 0 50%, 38% 35%);
+
+    animation: glintGlow 3s ease-in-out alternate infinite 1s;
+}
+
+@keyframes glintMovement {
+    0%{
+        scale: 0;
+        opacity: 0;
+        animation-timing-function: cubic-bezier(0.62, 0.04, 0.43, 0.76);
+    }80%{
+        scale: 1;
+        opacity: 1;
+        
+    }100%{
+        scale: 1.1;
+        opacity: 0;
+        animation-timing-function: linear;
+    }
+}
+
+@keyframes glintGlow {
+    0%{
+        scale: 0;
+    }100%{
+        scale: 1;
+    }
 }

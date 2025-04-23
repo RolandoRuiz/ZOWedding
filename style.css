@@ -50,7 +50,7 @@ html{
     transform-origin: bottom;
     transform: perspective(0.5svw) rotateX(-1deg) scaleY(0);
     bottom: -10%;
-    mix-blend-mode: overlay;
+
 
     animation: showBottomGlow 1.5s forwards cubic-bezier(.29,.53,.42,1.13), idleBottomGlow 2s alternate infinite ease-out;
 }
@@ -121,7 +121,6 @@ html{
 
 .bottomSpark-Container{
     width: 0.7%;
-    /*height: 25%;*/
     position: absolute;
     display: flex;
     justify-content: center;
