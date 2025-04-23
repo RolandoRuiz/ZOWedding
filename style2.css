@@ -43,7 +43,7 @@ html{
     background-position: 18%;
     background-repeat: repeat;
     background-size: 50svw;
-    opacity: 0.65;
+    opacity: 0.4;
     mask-image: radial-gradient(100% 56% at 50% 39%, black 50%, transparent 85%);
     top: 0px;
     right: 0px;
@@ -57,7 +57,7 @@ html{
     position: absolute;
     background-color: var(--medium-black);
     mix-blend-mode: multiply;
-    opacity: 0.97; 
+    opacity: 0.95; 
 }
 
 #openingBgrArch{
@@ -146,7 +146,7 @@ html{
         transform: perspective(10svw) rotateX(-10deg) scaleY(0.9);
     }
 }
-
+/*
 #bottomSpark-Wrapper{
     width: 100svw;
     height: 50svh;
@@ -277,4 +277,4 @@ html{
     }100%{
         scale: 1;
     }
-}
+}*/
