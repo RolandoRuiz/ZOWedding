@@ -43,7 +43,7 @@ html{
     background-position: 18%;
     background-repeat: repeat;
     background-size: 50svw;
-    opacity: 0.7;
+    opacity: 0.65;
     mask-image: radial-gradient(100% 56% at 50% 39%, black 50%, transparent 85%);
     top: 0px;
     right: 0px;
@@ -57,7 +57,7 @@ html{
     position: absolute;
     background-color: var(--medium-black);
     mix-blend-mode: multiply;
-    opacity: 0.98; 
+    opacity: 0.97; 
 }
 
 #openingBgrArch{
@@ -66,7 +66,7 @@ html{
     position: absolute;
     bottom: 15svh;
     overflow: hidden;
-    mask-image: linear-gradient(black 45%, transparent 90%);
+    mask-image: linear-gradient(black 50%, transparent 95%);
     mix-blend-mode: multiply;
     opacity: 0.4;
 }
@@ -103,32 +103,33 @@ html{
 }
 
 #bgc1{
-    width: 75%;
+    width: 70%;
     height: 30%;
-    mask-image: radial-gradient(55% 90% at bottom center, black 75%, transparent 100%);
+    mask-image: radial-gradient(50% 80% at bottom center, black 75%, transparent 105%);
     animation-delay: 2s, 3.5s;
 }
 
 #bgc2{
-    width: 58%;
+    width: 55%;
     height: 30%;
-    mask-image: radial-gradient(70% 110% at bottom center, black 50%, transparent 80%);
+    mask-image: radial-gradient(55% 80% at bottom center, black 50%, transparent 105%);
     animation-delay: 2.5s, 4s;
 }
 
 #bgc3{
-    width: 48%;
+    width: 45%;
     height: 30%;
-    mask-image: radial-gradient(60% 100% at bottom center, black 50%, transparent 90%);
+    mask-image: radial-gradient(50% 100% at bottom center, black 50%, transparent 100%);
     animation-delay: 2.3s, 3.8s;
 }
 
 #bgc4{
     width: 40%;
     height: 30%;
-    mask-image: radial-gradient(60% 90% at bottom center, black 40%, transparent 110%);
+    mask-image: radial-gradient(60% 70% at bottom center, black 0%, transparent 110%);
     animation-delay: 2.7s, 4.5s;
 }
+
 
 @keyframes showBottomGlow {
     from{
@@ -162,8 +163,7 @@ html{
     display: flex;
     justify-content: center;
     background: linear-gradient();
-    filter: blur(0px) drop-shadow(0px 0px 2px white) drop-shadow(0px 0px 5px white) drop-shadow(0px 0px 12px white);
-    mix-blend-mode: hard-light;
+    filter: blur(0px) drop-shadow(0px 0px 5px white) drop-shadow(0px 0px 7px white) drop-shadow(0px 0px 9px white);
     scale: 0;
 
     animation: glintMovement 4s infinite;
