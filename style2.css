@@ -69,7 +69,7 @@ html{
     mix-blend-mode: multiply;
     opacity: 0.99; 
 
-    animation: BgrMultiplyOpacity 1s forwards ease 2s;
+    animation: BgrMultiplyOpacity 1s forwards ease 2.5s;
 }
 
 @keyframes BgrMultiplyOpacity {
@@ -169,7 +169,7 @@ html{
     from{
         transform: scaleY(1) scaleX(1);
     }to{
-        transform: scaleY(1.1) scaleX(0.9);
+        transform: scaleY(1.1) scaleX(1.1);
     }
 }
 /*
