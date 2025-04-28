@@ -131,11 +131,6 @@ html{
     transform-origin: bottom;
     z-index: 500;
 
-
-    animation: 
-    showBottomGlow 2s forwards cubic-bezier(.29,.53,.42,1.13), 
-    idleBottomGlow 2s alternate infinite ease-out;
-
 }
 
 #bgc1{
@@ -143,7 +138,7 @@ html{
     mask-image: 
     radial-gradient(42% 100% at 50% 100%, black 45%, transparent 100%),
     radial-gradient(48% 50% at 50% 50%, black 75%, transparent 115%);
-    animation-delay: 2s, 3.5s;
+    animation-delay: 2s, 4s;
     z-index: 100;
 }
 
@@ -152,23 +147,32 @@ html{
     mask-image: 
     radial-gradient(38% 45% at 50% 80%, black 55%, transparent 100%),
     radial-gradient(45% 50% at 50% 55%, black 55%, transparent 100%);
-    animation-delay: 2.5s, 4s;
+    animation-delay: 2.5s, 4.5s;
     z-index: 200;
 }
 
 #bgc3{
     clip-path: polygon(0 0, 100% 0, 100% 75%, 75% 100%, 25% 100%, 0% 75%);
     mask-image: radial-gradient(35% 50% at 50% 90%, black 50%, transparent 100%);
-    animation-delay: 2.3s, 3.8s;
+    animation-delay: 2.3s, 4.3s;
     z-index: 300;
 }
 
 #bgc4{
     clip-path: polygon(0 0, 100% 0, 100% 60%, 68% 100%, 32% 100%, 0% 60%);
     mask-image: radial-gradient(25% 30% at 50% 105%, black 5%, transparent 100%);
-    animation-delay: 2.7s, 4.5s;
-    z-index: 4000;
-    background-color: red;
+    animation-delay: 2.7s, 4.7s;
+    z-index: 400;
+    background-color: rebeccapurple;
+}
+
+.showGlow{
+    animation-name: showBottomGlow, idleBottomGlow;
+    animation-duration: 2s, 2s;
+    animation-direction: normal, alternate;
+    animation-fill-mode: forwards, forwards;
+    animation-iteration-count: 1, infinite;
+    animation-timing-function:cubic-bezier(.29,.53,.42,1.13), ease-out;
 }
 
 
@@ -182,13 +186,14 @@ html{
     }
 }
 
-/*@keyframes idleBottomGlow {
+@keyframes idleBottomGlow {
     from{
         transform: scaleY(1) scaleX(1);
     }to{
         transform: scaleY(1.1) scaleX(1.1);
     }
 }
+
 /*
 #bottomSpark-Wrapper{
     width: 100svw;
