@@ -160,10 +160,9 @@ html{
 
 #bgc4{
     clip-path: polygon(0 0, 100% 0, 100% 60%, 68% 100%, 32% 100%, 0% 60%);
-    mask-image: radial-gradient(25% 30% at 50% 105%, black 5%, transparent 100%);
+    mask-image: radial-gradient(25% 30% at 50% 105%, black 30%, transparent 100%);
     animation-delay: 2.7s, 4.7s;
     z-index: 400;
-    background-color: rebeccapurple;
 }
 
 .showGlow{
