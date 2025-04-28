@@ -40,7 +40,7 @@ html{
 #openingBgr{
     content: "";
     position: absolute;
-    background-image: url(/assets/svg/backgroundTexture.svg);
+    background-image: url(Assets/svg/backgroundTexture.svg);
     background-position: 18%;
     background-repeat: repeat;
     background-size: 50svw;
@@ -129,6 +129,7 @@ html{
     mix-blend-mode: overlay;
     opacity: 0;
     transform-origin: bottom;
+    z-index: 500;
 
 
     animation: 
@@ -166,8 +167,8 @@ html{
     clip-path: polygon(0 0, 100% 0, 100% 60%, 68% 100%, 32% 100%, 0% 60%);
     mask-image: radial-gradient(25% 30% at 50% 105%, black 5%, transparent 100%);
     animation-delay: 2.7s, 4.5s;
-    background-color: rebeccapurple;
-    z-index: 400;
+    z-index: 4000;
+    background-color: red;
 }
 
 
