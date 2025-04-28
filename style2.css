@@ -163,6 +163,7 @@ html{
     mask-image: radial-gradient(30% 35% at 50% 100%, black 30%, transparent 100%);
     animation-delay: 2.7s, 4.7s;
     z-index: 400;
+    background-color: purple;
 }
 
 .showGlow{
