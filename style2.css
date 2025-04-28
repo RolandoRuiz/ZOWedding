@@ -19,6 +19,7 @@
 
 html{
     background-color: var(--medium-black); /* Don't change, keep values to maintain dark ui*/
+    overflow-x: hidden;
 }
 
 #openingSection{
@@ -95,6 +96,7 @@ html{
     width: 100%;
     height: auto;
     position: absolute;
+    
 }
 
 #noiseLayer{
