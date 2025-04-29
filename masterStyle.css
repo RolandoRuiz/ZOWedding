@@ -37,7 +37,7 @@ body{
     align-items: center;
     top: 0%;
     background-color: var(--pure-white);
-    border: solid 1px red;
+    border: solid 2px red;
 
 }
 
@@ -54,4 +54,37 @@ body{
     right: 0px;
     bottom: 0px;
     left: 0px;
+}
+
+#openingSection::after{
+    content: "";
+    max-width: 100svw;
+    max-height: 100svh;
+    position: absolute;
+    background-image: radial-gradient(100% 66% at 50% 44%, transparent 40%, white 90%);;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+}
+
+#bgrArch{
+    width: 100svw;
+    height: 100svh;
+    position: absolute;
+    display: flex;
+    overflow: hidden;
+}
+
+#bgrArch::before{
+    content: "";
+    width: 100svw;
+    height: auto;
+    position: relative;
+    background-image: url(Assets/svg/archGraphic.svg);
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: cover;
+    margin-left: 10svw; margin-right: 10svw; margin-top: 12svw;
+    mix-blend-mode: multiply;
 }
