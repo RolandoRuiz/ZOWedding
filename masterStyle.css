@@ -73,10 +73,24 @@ body{
     height: 100svh;
     position: absolute;
     display: flex;
+    justify-content: center;
+    align-content: center;
+    justify-items: center;
     overflow: hidden;
 }
 
 #bgrArch::before{
+    content: "";
+    width: 80svw;
+    height: 94svh;
+    position: absolute;
+    justify-self: center;
+    border-radius: 200px 200px 0px 0px;
+    background-color: rgba(0, 0, 0, 0.1);
+    bottom: 0%;
+}
+
+#bgrArch::after{
     content: "";
     width: 100svw;
     height: auto;
@@ -85,6 +99,15 @@ body{
     background-repeat: no-repeat;
     background-position: top;
     background-size: cover;
-    margin-left: 10svw; margin-right: 10svw; margin-top: 12svw;
-    mix-blend-mode: multiply;
+    margin-left: 10svw; margin-right: 10svw; margin-top: 6svh;
+    filter: brightness(2.7);
+}
+
+#bgrBranches{
+    width: 100svw;
+    height: 100svh;
+    position: absolute;
+    z-index: 100;
+    background-color: cadetblue;
+    overflow: hidden;
 }
