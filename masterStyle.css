@@ -86,7 +86,7 @@ body{
     position: absolute;
     justify-self: center;
     border-radius: 200px 200px 0px 0px;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.15);
     bottom: 0%;
 }
 
@@ -100,7 +100,7 @@ body{
     background-position: top;
     background-size: cover;
     margin-left: 10svw; margin-right: 10svw; margin-top: 6svh;
-    filter: brightness(2.7);
+    filter: brightness(2.2);
 }
 
 #bgrBranches{
@@ -108,6 +108,121 @@ body{
     height: 100svh;
     position: absolute;
     z-index: 100;
-    background-color: cadetblue;
     overflow: hidden;
+}
+
+.branch{
+    width: 85svw;
+    height: auto;
+    position: absolute;
+    aspect-ratio: 1/1;
+}
+
+#upperBranch{
+    top: 1svh;
+    left: -6svw;
+    transform-origin: bottom left;
+    transform: rotate(0deg);
+
+    animation: branchWindUp 5.5s ease-in-out alternate infinite;
+}
+
+@keyframes branchWindUp {
+    0%{
+        transform: rotate(0deg);
+    }100%{
+        transform: rotate(1deg);
+    }
+}
+
+#upperBranch > object{
+    color-scheme: normal;
+    object-fit: contain;
+}
+
+#lowerBranch{
+    bottom: -5svh;
+    right: -10svw;
+    transform-origin: top right;
+    transform: rotate(5deg);
+
+    animation: branchWindDown 5.5s ease-in-out alternate infinite;
+}
+
+@keyframes branchWindDown{
+    0%{
+        transform: rotate(5deg);
+    }100%{
+        transform: rotate(6deg);
+    }
+}
+
+#lowerBranch {
+    color-scheme: normal;
+    object-fit: contain;
+}
+
+.flower{
+    position: absolute;
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: rotate(0deg);
+
+    animation: flowerWind 4s ease-in-out alternate infinite;
+}
+
+@keyframes flowerWind {
+    0%{
+        transform: rotate(0deg);
+    }100%{
+        transform: rotate(8deg);
+    }
+}
+
+.leaf{
+    position: absolute;
+    transform-box: fill-box;
+    transform: rotate(0deg);
+    animation: leafWind 4s ease-in-out alternate infinite;
+    /*filter: invert(1);*/
+}
+
+@keyframes leafWind {
+    0%{
+        transform: rotate(0deg);
+    }100%{
+        transform: rotate(30deg);
+    }
+}
+
+.bottomLeft{
+    transform-origin: bottom left;
+}
+
+.bottomRight{
+    transform-origin: bottom right;
+}
+
+.bottom{
+    transform-origin: bottom center;
+}
+
+.left{
+    transform-origin: left center;
+}
+
+.right{
+    transform-origin: right center;
+}
+
+.top{
+    transform-origin: top center;
+}
+
+.topLeft{
+    transform-origin: top left;
+}
+
+.topRight{
+    transform-origin: top right;
 }
