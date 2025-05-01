@@ -37,8 +37,6 @@ body{
     align-items: center;
     top: 0%;
     background-color: var(--pure-white);
-    border: solid 2px red;
-
 }
 
 #openingSection::before{
@@ -141,7 +139,7 @@ body{
 }
 
 #lowerBranch{
-    bottom: -5svh;
+    bottom: -3svh;
     right: -10svw;
     transform-origin: top right;
     transform: rotate(5deg);
@@ -225,4 +223,38 @@ body{
 
 .topRight{
     transform-origin: top right;
+}
+
+
+#bgrMultiply{
+    width: 100svw;
+    height: 100svh;
+    position: absolute;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 1);
+
+    animation: bgrMultiplyOpacity 4s forwards cubic-bezier(.3,.01,.94,.62);
+}
+
+@keyframes bgrMultiplyOpacity {
+    0%{
+        background-color: rgba(0, 0, 0, 1); 
+    }29%{
+        background-color: rgba(0, 0, 0, 1);
+    }43%{
+        background-color: rgba(0, 0, 0, 0.97);
+    }95%{
+        background-color: rgba(0, 0, 0, 0.97);   
+    }100%{
+        background-color: rgba(0, 0, 0, 0.955);
+    }
+}
+
+.underGlow-Container{
+    width: 100svw;
+    height: 100svh;
+    position: absolute;
+    z-index: 150;
+    background-color: white;
+    mix-blend-mode: overlay;
 }
