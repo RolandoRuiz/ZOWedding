@@ -122,14 +122,14 @@ body{
     transform-origin: bottom left;
     transform: rotate(0deg);
 
-    animation: branchWindUp 5.5s ease-in-out alternate infinite;
+    animation: branchWindUp 4s ease-in-out alternate infinite;
 }
 
 @keyframes branchWindUp {
     0%{
         transform: rotate(0deg);
     }100%{
-        transform: rotate(1deg);
+        transform: rotate(1.5deg);
     }
 }
 
@@ -144,14 +144,14 @@ body{
     transform-origin: top right;
     transform: rotate(5deg);
 
-    animation: branchWindDown 5.5s ease-in-out alternate infinite;
+    animation: branchWindDown 4s ease-in-out alternate infinite;
 }
 
 @keyframes branchWindDown{
     0%{
         transform: rotate(5deg);
     }100%{
-        transform: rotate(6deg);
+        transform: rotate(7deg);
     }
 }
 
@@ -166,7 +166,7 @@ body{
     transform-origin: center;
     transform: rotate(0deg);
 
-    animation: flowerWind 4s ease-in-out alternate infinite;
+    animation: flowerWind 3s ease-in-out alternate infinite;
 }
 
 @keyframes flowerWind {
@@ -181,7 +181,7 @@ body{
     position: absolute;
     transform-box: fill-box;
     transform: rotate(0deg);
-    animation: leafWind 4s ease-in-out alternate infinite;
+    animation: leafWind 3s ease-in-out alternate infinite;
     /*filter: invert(1);*/
 }
 
@@ -255,6 +255,5 @@ body{
     height: 100svh;
     position: absolute;
     z-index: 150;
-    background-color: white;
-    mix-blend-mode: overlay;
+    border: solid 3px red;
 }
