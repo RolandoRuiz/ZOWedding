@@ -181,7 +181,6 @@ body{
     transform-box: fill-box;
     transform: rotate(0deg);
     animation: leafWind 4s ease-in-out alternate infinite;
-    /*filter: invert(1);*/
 }
 
 @keyframes leafWind {
@@ -246,6 +245,8 @@ body{
     position: absolute;
     z-index: 100;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
     
     background: white;
     mix-blend-mode: multiply;
@@ -260,7 +261,33 @@ body{
     }90%{
         opacity: 0.98;
     }100%{
-        opacity: 0.95;
+        opacity: 0.98;
+    }
+}
+
+.baseOverlay{
+    width: 100svw;
+    height: 100svh;
+    position: absolute;
+    z-index: 50;
+
+    will-change: opacity;
+    opacity: 0;
+
+    mix-blend-mode: overlay;
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 85% 100%, 15% 100%, 0% 90%);
+    background-image: radial-gradient(46% 90% at 50% 80%, rgb(255, 255, 255) 35%, transparent 90%);
+}
+
+#overlayBase1, #overlayBase2{
+    animation: showBaseOverlay 2s ease-in forwards 3.5s;
+}
+
+@keyframes showBaseOverlay {
+    0%{
+        opacity: 0;
+    }100%{
+        opacity: 1;
     }
 }
 
@@ -269,12 +296,28 @@ body{
     height: 100svh;
     position: absolute;
     z-index: 200;
+
+    will-change: opacity;
+    opacity: 0;
+
     transform-origin: bottom;
     mix-blend-mode: overlay;
+    transform: scaleY(0);
 }
 
-#baseOverlay, #overlay1{
-    background: rgba(255, 255, 255, 0.5);
+#overlay2, #overlay3, #overlay4, #overlay5{
+
+    animation: showBgrOverlay 2s ease-in forwards 3.5s;
+}
+
+@keyframes showBgrOverlay {
+    0%{
+        opacity: 0;
+        transform: scaleY(0);
+    }100%{
+        opacity: 1;
+        transform: scaleY(1);
+    }
 }
 
 #overlay2{
