@@ -81,6 +81,7 @@ body{
     width: 80svw;
     height: 94svh;
     position: absolute;
+    z-index: 50;
     justify-self: center;
     border-radius: 200px 200px 0px 0px;
     background-color: rgba(0, 0, 0, 0.6); /*0.15*/
@@ -91,6 +92,7 @@ body{
     content: "";
     width: 100svw;
     height: auto;
+    z-index: 100;
     position: relative;
     background-image: url(Assets/svg/archGraphic.svg);
     background-repeat: no-repeat;
@@ -98,6 +100,18 @@ body{
     background-size: cover;
     margin-left: 10svw; margin-right: 10svw; margin-top: 6svh;
     filter: brightness(2.2);
+}
+
+#wallEmblem{
+    width: 45svw;
+    height: 45svw;
+    position: absolute;
+    z-index: -0;
+    top: 15svh;
+    background-image: url(Assets/svg/wallEmblem.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: drop-shadow(0px -3px 0.5px rgba(0,0,0,0.2));
 }
 
 #bgrBranches{
@@ -300,14 +314,17 @@ body{
 #overlay1{
     clip-path: polygon(0 0, 100% 0, 100% 90%, 85% 100%, 15% 100%, 0% 90%);
     background-image: radial-gradient(80% 65% at 50% 55%, rgba(255, 255, 255, 0.5) 30%, transparent 80%);
+    animation-delay: 5.5s;
 }
 
 #overlay2{
     clip-path: polygon(0 0, 100% 0, 100% 85%, 78% 100%, 22% 100%, 0% 85%);
     background-image: radial-gradient(56% 50% at 50% 73%, rgb(255, 255, 255) 30%, transparent 80%);
+    animation-delay: 5.7s;
 }
 
 #overlay3{
     clip-path: polygon(0 0, 100% 0, 100% 75%, 75% 100%, 25% 100%, 0% 75%);
     background-image: radial-gradient(41% 45% at 50% 80%, rgb(255, 255, 255) 30%, transparent 90%);
+    animation-delay: 5.9s;
 }
