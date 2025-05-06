@@ -83,7 +83,7 @@ body{
     position: absolute;
     z-index: 50;
     justify-self: center;
-    border-radius: 200px 200px 0px 0px;
+    border-radius: 1000px 1000px 0px 0px;
     background-color: rgba(0, 0, 0, 0.6); /*0.15*/
     bottom: 0%;
 }
@@ -278,7 +278,7 @@ body{
     will-change: opacity;
     opacity: 0;
 
-    transform: scaleY(0);
+    transform: scale(0);
 
     animation: showBgrOverlay 2s ease-in forwards 3.5s;
 }
@@ -286,10 +286,10 @@ body{
 @keyframes showBgrOverlay {
     0%{
         opacity: 0;
-        transform: scaleY(0);
+        transform: scale(0);
     }100%{
         opacity: 1;
-        transform: scaleY(1);
+        transform: scale(1);
     }
 }
 
@@ -313,7 +313,9 @@ body{
 
 #overlay1{
     clip-path: polygon(0 0, 100% 0, 100% 90%, 85% 100%, 15% 100%, 0% 90%);
-    background-image: radial-gradient(80% 65% at 50% 55%, rgba(255, 255, 255, 0.5) 30%, transparent 80%);
+    background-image: 
+    radial-gradient(65% 60% at 50% 55%, rgba(255, 255, 255, 0.5) 30%, transparent 80%),
+    radial-gradient(65% 40% at 50% 36%, rgb(255, 255, 255, 0.5) 0%, transparent 70%);
     animation-delay: 5.5s;
 }
 
