@@ -280,7 +280,7 @@ body{
 
     transform: scale(0);
 
-    animation: showBgrOverlay 2s ease-in forwards 3.5s;
+    animation: showBgrOverlay 2s cubic-bezier(.45,-0.01,.61,1.19) forwards 3.5s;
 }
 
 @keyframes showBgrOverlay {
@@ -298,8 +298,9 @@ body{
     height: 100svh;
     position: absolute;
 
+    transform-origin: bottom;
     mix-blend-mode: overlay;
-    animation: pulseOverlay 3s ease-in alternate infinite /*+5.5s*/;
+    animation: pulseOverlay 3s ease-out alternate infinite /*+5.5s*/;
     transform: scale(1);
 }
 
@@ -307,26 +308,26 @@ body{
     0%{
         transform: scale(1);
     }100%{
-        transform: scale(1.02);
+        transform: scale(1.1);
     }
 }
 
 #overlay1{
     clip-path: polygon(0 0, 100% 0, 100% 90%, 85% 100%, 15% 100%, 0% 90%);
     background-image: 
-    radial-gradient(65% 60% at 50% 55%, rgba(255, 255, 255, 0.5) 30%, transparent 80%),
+    radial-gradient(62% 60% at 50% 55%, rgba(255, 255, 255, 0.5) 30%, transparent 80%),
     radial-gradient(65% 40% at 50% 36%, rgb(255, 255, 255, 0.5) 0%, transparent 70%);
-    animation-delay: 5.5s;
+    animation-delay: 5.2s;
 }
 
 #overlay2{
     clip-path: polygon(0 0, 100% 0, 100% 85%, 78% 100%, 22% 100%, 0% 85%);
-    background-image: radial-gradient(56% 50% at 50% 73%, rgb(255, 255, 255) 30%, transparent 80%);
-    animation-delay: 5.7s;
+    background-image: radial-gradient(55% 50% at 50% 74%, rgb(255, 255, 255) 20%, transparent 80%);
+    animation-delay: 5.4s;
 }
 
 #overlay3{
     clip-path: polygon(0 0, 100% 0, 100% 75%, 75% 100%, 25% 100%, 0% 75%);
     background-image: radial-gradient(41% 45% at 50% 80%, rgb(255, 255, 255) 30%, transparent 90%);
-    animation-delay: 5.9s;
+    animation-delay: 5.6s;
 }
