@@ -84,8 +84,20 @@ body{
     z-index: 50;
     justify-self: center;
     border-radius: 1000px 1000px 0px 0px;
-    background-color: rgba(0, 0, 0, 0.6); /*0.15*/
+    background-color: rgba(0, 0, 0, 1);
+    opacity: 0.6;
     bottom: 0%;
+
+    animation: ArchShadow 1s ease-out forwards 4s;
+}
+
+@keyframes ArchShadow {
+    0%{
+        opacity: 0.6;
+    }
+    100%{
+        opacity: 0.4;
+    }
 }
 
 #bgrArch::after{
@@ -94,7 +106,7 @@ body{
     height: auto;
     z-index: 100;
     position: relative;
-    background-image: url(Assets/svg/archGraphic.svg);
+    background: url(Assets/svg/archGraphic.svg);
     background-repeat: no-repeat;
     background-position: top;
     background-size: cover;
@@ -245,6 +257,7 @@ body{
 
     display: flex;
     justify-content: center;
+    align-items: end;
     overflow: hidden;
 
     background: black;
@@ -275,18 +288,21 @@ body{
     align-content: center;
     transform-origin: bottom;
 
+    
     will-change: opacity;
     opacity: 0;
-
+    
     transform: scale(0);
 
-    animation: showBgrOverlay 2s cubic-bezier(.45,-0.01,.61,1.19) forwards 3.5s;
+    animation: showBgrOverlay 2s cubic-bezier(.71,-0.01,.68,.84) forwards 3.5s;
 }
 
 @keyframes showBgrOverlay {
     0%{
         opacity: 0;
         transform: scale(0);
+    }50%{
+        opacity: 0.1;
     }100%{
         opacity: 1;
         transform: scale(1);
@@ -294,13 +310,13 @@ body{
 }
 
 .bgrOverlay{
-    width: 100svw;
-    height: 100svh;
+    width: 95svw;
+    height: 95svh;
     position: absolute;
-
+    bottom: 0%;
     transform-origin: bottom;
     mix-blend-mode: overlay;
-    animation: pulseOverlay 3s ease-out alternate infinite /*+5.5s*/;
+    animation: pulseOverlay 2s cubic-bezier(.18,.35,.46,1) alternate infinite /*+5.5s*/;
     transform: scale(1);
 }
 
@@ -308,26 +324,34 @@ body{
     0%{
         transform: scale(1);
     }100%{
-        transform: scale(1.1);
+        transform: scale(1.07);
     }
 }
 
 #overlay1{
-    clip-path: polygon(0 0, 100% 0, 100% 90%, 85% 100%, 15% 100%, 0% 90%);
-    background-image: 
-    radial-gradient(62% 60% at 50% 55%, rgba(255, 255, 255, 0.5) 30%, transparent 80%),
-    radial-gradient(65% 40% at 50% 36%, rgb(255, 255, 255, 0.5) 0%, transparent 70%);
-    animation-delay: 5.2s;
+    clip-path: polygon(0 0%, 100% 0%, 100% 90%, 82% 100%, 18% 100%, 0% 90%);
+    background-image: radial-gradient(100% 140% at 50% 70%, rgb(255, 255, 255) -10%, transparent 50%);
+    animation-delay: 5s;
+    z-index: 100;
 }
 
 #overlay2{
-    clip-path: polygon(0 0, 100% 0, 100% 85%, 78% 100%, 22% 100%, 0% 85%);
-    background-image: radial-gradient(55% 50% at 50% 74%, rgb(255, 255, 255) 20%, transparent 80%);
-    animation-delay: 5.4s;
+    clip-path: polygon(0 0, 100% 0, 100% 83%, 78% 100%, 23% 100%, 0% 83%);
+    background-image: radial-gradient(90% 110% at 50% 80%, rgb(255, 255, 255) 20%, transparent 50%);
+    animation-delay: 5.3s;
+    z-index: 200;
 }
 
 #overlay3{
-    clip-path: polygon(0 0, 100% 0, 100% 75%, 75% 100%, 25% 100%, 0% 75%);
-    background-image: radial-gradient(41% 45% at 50% 80%, rgb(255, 255, 255) 30%, transparent 90%);
-    animation-delay: 5.6s;
+    clip-path: polygon(0 0, 100% 0, 100% 70%, 75% 100%, 26% 100%, 0% 70%);
+    background-image: radial-gradient(85% 100% at 50% 90%, rgb(255, 255, 255) 20%, transparent 50%);
+    animation-delay: 5.5s;
+    z-index: 0;
+}
+
+.baseSparkWrapper{
+    width: 100svw;
+    height: 50svh;
+    position: absolute;
+    background-color: pink;
 }
