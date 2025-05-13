@@ -360,14 +360,15 @@ body{
     top: 15svh;
     transform-origin: bottom;
     border: dotted 2px pink;
-    mask-image: linear-gradient(0deg, black 40%, rgba(0, 0, 0, 0.265) 70%, transparent 100%);
+    background-color: red;
+    mask-image: radial-gradient(95% 90% at 50% 55%, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0.7) 30%, transparent 60%);
 }
 
 .bgrTopOverlay{
     width: 100%;
     height: 100%;
     position: absolute;
-    background-image: radial-gradient(70% 50% at 50% 100%, rgb(255, 255, 255) 10%, rgba(255, 255, 255, 0.7) 25%, transparent 60%);
+    background-image: radial-gradient(70% 45% at 50% 100%, rgb(255, 255, 255) 10%, rgba(255, 255, 255, 0.7) 25%, transparent 60%);
     
 }
 
@@ -375,7 +376,18 @@ body{
     position: absolute;
     z-index: 300;
     aspect-ratio: 1 / 1;
-    filter: drop-shadow(0px 0px 5px white);
+    filter: drop-shadow(0px 0px 5px white) drop-shadow(0px 0px 10px white);
+    transform: translateY(70svh);
+
+    animation: sparkMovement 15s ease-out forwards infinite;
+}
+
+@keyframes sparkMovement {
+    0%{
+        transform: translateY(70svh);
+    }100%{
+        transform: translateY(-70svh);
+    }
 }
 
 .spark::before{
@@ -390,18 +402,27 @@ body{
     animation: rotateStar 10s linear forwards infinite;
 }
 
-#spark1.spark::after, #spark2.spark::after, #spark4.spark::after, #spark6.spark::after, #spark7.spark::after{
+.spark::after{
     content: "";
-    width: 60%;
-    height: 60%;
+    width: 50%;
+    height: 50%;
     position: absolute;
-    top: 190%;
-    left: 100%;
     background-color: rgb(255, 255, 255);
     clip-path: polygon(50% 0, 62% 35%, 100% 50%, 62% 65%, 50% 100%, 38% 65%, 0 50%, 38% 35%);
 
-        animation: rotateStar 10s linear forwards infinite .5s;
+    animation: rotateStar 10s linear forwards infinite 1.5s;
 }
+
+.left::after{
+    top: 300%;
+    left: 120%;
+}
+
+.right::after{
+    top: 350%;
+    right: 130%;
+}
+
 
 @keyframes rotateStar {
     0%{
@@ -414,29 +435,29 @@ body{
 #spark1{
     width: 5svw;
     height: auto;
-    top: 10%;
-    left: 55%;
+    top: 15%;
+    left: 40%;
 }
 
 #spark2{
     width: 4svw;
     height: auto;
-    top: 25%;
+    top: 30%;
     left: 13%;
 }
 
 #spark3{
     width: 6svw;
     height: auto;
-    top: 28%;
+    top: 32%;
     right: 12%;
 }
 
 #spark4{
     width: 4svw;
     height: auto;
-    top: 50%;
-    right: 25%;
+    top: 54%;
+    right: 15%;
 }
 
 #spark5{
@@ -447,14 +468,14 @@ body{
 }
 
 #spark6{
-    width: 5svw;
+    width: 6svw;
     height: auto;
-    top: 55%;
+    top: 58%;
     left: 18%;
 }
 
 #spark7{
-    width: 6svw;
+    width: 4svw;
     height: auto;
     top: 75%;
     left: 8%;
@@ -465,4 +486,46 @@ body{
     height: auto;
     top: 70%;
     right: 8%;
+}
+
+#spark9{
+    width: 6svw;
+    height: auto;
+    top: 80%;
+    right: 18%;
+}
+
+#spark10{
+    width: 6svw;
+    height: auto;
+    top: 88%;
+    left: 18%;
+}
+
+#spark11{
+    width: 6svw;
+    height: auto;
+    top: 68%;
+    left: 50%;
+}
+
+#spark12{
+    width: 4svw;
+    height: auto;
+    top: 44%;
+    left: 7%;
+}
+
+#spark13{
+    width: 7svw;
+    height: auto;
+    top: 45%;
+    left: 59%;
+}
+
+#spark14{
+    width: 6svw;
+    height: auto;
+    top: 23%;
+    left: 54%;
 }
