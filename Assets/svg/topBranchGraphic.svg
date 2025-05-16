@@ -2,7 +2,7 @@
   <defs>
     <style>
 
-       @import url("/masterStyle.css");
+       @import url("/style.css");
        @import url("https://rolandoruiz.github.io/ZOWedding/masterStyle.css");
 
       .cls-1 {
