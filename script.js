@@ -2,15 +2,19 @@ console.log("connected");
 
 const getOverlays = document.querySelectorAll(".bgrOverlay");
 
-getOverlays.forEach(overlay => {
+getOverlays.forEach(function (overlay, i) {
+  setTimeout(function () {
     console.log(overlay);
+    overlay.style.animation = "pulseOverlay 2s cubic-bezier(.18,.35,.46,1) alternate infinite";
+    overlay.style.animationDelay = `${i * 0.2}s`;
+    /*overlay.style.animationDelay = "" + i * 0.2 + "s"; TWO WAYS OF DOING THE SAME THING*/
+  },5500);
 });
 
-var array = ['some', 'array', 'containing', 'words'];
-var interval = 1000; // how much time should the delay between two iterations be (in milliseconds)?
-array.forEach(function (el, index) {
+/*getOverlays.forEach(function (overlay, index) {
   setTimeout(function () {
-    console.log(el);
-  }, index * interval);
-});
-console.log('Loop finished.');
+    console.log(overlay);
+    overlay.style.animation = "pulseOverlay 2s cubic-bezier(.18,.35,.46,1) alternate infinite"
+    overlay.style.animationDelay = "s"
+  }, (index + 1) * 5000);
+});*/

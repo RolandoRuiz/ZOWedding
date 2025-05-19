@@ -293,7 +293,7 @@ body{
     opacity: 0;
     transform: scale(0);
 
-    animation: showBgrOverlay 2s cubic-bezier(.71,-0.01,.68,.84) forwards 3.5s;
+    animation: showBgrOverlay 2s cubic-bezier(.71,-0.01,.68,.84) forwards 3.45s;
 }
 
 @keyframes showBgrOverlay {
@@ -322,28 +322,25 @@ body{
     0%{
         transform: scale(1);
     }100%{
-        transform: scale(1.1);/* if reduced to 1.05 it doesn't flicker*/
+        transform: scale(1.1);/* if reduced to 1.05 it doesn't flicker (added js to fix issue and prevent changing value*/
     }
 }
 
 #overlay1{
     clip-path: polygon(0 0%, 100% 0%, 100% 90%, 82% 100%, 18% 100%, 0% 90%);
     background-image: radial-gradient(100% 140% at 50% 70%, rgb(255, 255, 255) -10%, transparent 50%);
-    /*animation-delay: 5s;*/
     z-index: 100;
 }
 
 #overlay2{
     clip-path: polygon(0 0, 100% 0, 100% 83%, 78% 100%, 23% 100%, 0% 83%);
     background-image: radial-gradient(90% 110% at 50% 80%, rgb(255, 255, 255) 20%, transparent 50%);
-    /*animation-delay: 5.3s;*/
     z-index: 200;
 }
 
 #overlay3{
     clip-path: polygon(0 0, 100% 0, 100% 70%, 75% 100%, 26% 100%, 0% 70%);
     background-image: radial-gradient(85% 100% at 50% 90%, rgb(255, 255, 255) 20%, transparent 50%);
-    /*animation-delay: 5.5s;*/
     z-index: 0;
 }
 
@@ -361,7 +358,7 @@ body{
     mask-image: radial-gradient(95% 80% at 50% 70%, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0.7) 30%, rgba(255, 255, 255, 0.1) 50%, transparent 60%);
 }
 
-/*.bgrTopOverlay{
+.bgrTopOverlay{
     width: 100%;
     height: 100%;
     position: absolute;
@@ -384,9 +381,9 @@ body{
         opacity: 1;
         transform: scale(1);
     }
-}*/
+}
 
-/*.sparkGrpStart{
+.sparkGrpStart{
     width: 100%;
     height: 34%;
     position: absolute;
@@ -587,7 +584,7 @@ body{
     height: auto;
     top: 50%;
     left: 40%;
-}*/
+}
 
 /*.letterWrapper{
     width: 100svw;
