@@ -322,7 +322,7 @@ body{
     0%{
         transform: scale(1);
     }100%{
-        transform: scale(1.1);/* if reduced to 1.05 it doesn't flicker (added js to fix issue and prevent changing value*/
+        transform: scale(1.07);/* if reduced to 1.05 it doesn't flicker (added js to fix issue and prevent changing value*/
     }
 }
 
@@ -398,7 +398,7 @@ body{
     position: absolute;
     transform: translateY(100svh);
 
-    animation: sparkMovement 15s linear forwards infinite 8s;
+    animation: sparkMovement 15s linear forwards infinite 7.5s;
 }
 
 .sparkGrpEnd{
@@ -407,7 +407,7 @@ body{
     position: absolute;
     transform: translateY(100svh);
 
-    animation: sparkMovement 15s linear forwards infinite 12s;
+    animation: sparkMovement 15s linear forwards infinite 11.5s;
 }
 
 .spark{
@@ -419,9 +419,9 @@ body{
 
 @keyframes sparkMovement {
     0%{
-        transform: translateY(100svh);
+        transform: translateY(100svh) scale(0.4);
     }100%{
-        transform: translateY(0svh);
+        transform: translateY(0svh) scale(1.1);
     }
 }
 
@@ -684,8 +684,13 @@ body{
     position: absolute;
     display: grid;
     z-index: 200;
-    transform: rotateX(40deg);
+
+    transform: rotateX(0deg);
+    transform-origin: top;
+    transform-style: preserve-3d;
     
+    filter: drop-shadow(0px 4px 1px var(--shadow-red));
+
     grid-template-rows: repeat(3, 1fr);
     grid-template-columns: 1fr 0.2fr 1fr;
 }
@@ -696,7 +701,7 @@ body{
     height: 100%;
     grid-column-start: 1; grid-column-end: 4;
     grid-row-start: 1; grid-row-end: 3;
-    background-color: rgba(255, 192, 203, 0.469);
+    background: var(--deep-red);
     clip-path: polygon(0% 0%, 0% 20%, 46% 97%, 47% 98% , 47.5% 98.5% ,48% 99% , 49% 99.5%, 50% 99.7%, 51% 99.5%,  52% 99%, 52.5% 98.5%, 53% 98%, 54% 97%, 100% 20%, 100% 0%);
     
     transform: rotateY(180deg);
@@ -711,7 +716,7 @@ body{
     height: 100%;
     grid-column-start: 1; grid-column-end: 4;
     grid-row-start: 1; grid-row-end: 3;
-    background-color: rgba(192, 197, 255, 0.469);
+    background-image: radial-gradient(ellipse at top center, var(--bright-red) 15%, var(--deep-red) 75%);
     clip-path: polygon(0% 0%, 0% 20%, 46% 97%, 47% 98% , 47.5% 98.5% ,48% 99% , 49% 99.5%, 50% 99.7%, 51% 99.5%,  52% 99%, 52.5% 98.5%, 53% 98%, 54% 97%, 100% 20%, 100% 0%);
     
     transform-style: preserve-3d;
