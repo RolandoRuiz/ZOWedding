@@ -18,3 +18,11 @@ getOverlays.forEach(function (overlay, i) {
     overlay.style.animationDelay = "s"
   }, (index + 1) * 5000);
 });*/
+
+const getLidShadow = document.querySelector(".letterLid");
+
+setTimeout(() => {
+
+    console.log(getLidShadow);
+    getLidShadow.classList.remove("letterLidShadow");
+}, 5000);

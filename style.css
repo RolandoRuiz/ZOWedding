@@ -625,6 +625,16 @@ body{
     backface-visibility: hidden;
 }
 
+.letterCard{
+    width: 100%;
+    height: 100%;
+    margin: 3%;
+    background-color: var(--pure-white);
+    grid-column-start: 1; grid-column-end: 4;
+    grid-row-start: 1; grid-row-end: 4;
+
+}
+
 .innerLetterLeft{
     width: 100%;
     height: 100%;
@@ -685,14 +695,16 @@ body{
     display: grid;
     z-index: 200;
 
-    transform: rotateX(0deg);
+    transform: rotateX(180deg);
     transform-origin: top;
     transform-style: preserve-3d;
-    
-    filter: drop-shadow(0px 4px 1px var(--shadow-red));
 
     grid-template-rows: repeat(3, 1fr);
     grid-template-columns: 1fr 0.2fr 1fr;
+}
+
+.letterLidShadow{
+    filter: drop-shadow(0px 4px 1px var(--shadow-red));
 }
 
 .letterLid::before{
