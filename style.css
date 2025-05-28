@@ -605,9 +605,9 @@ body{
     justify-content: center;
     align-items: flex-end;
     aspect-ratio: 1 / 1.2;
-    border: dotted 2px rgb(255, 0, 238);
+    
 
-    transform: rotateY(180deg);
+    transform: rotateY(0deg);
     transform-style: preserve-3d;
     transform-origin: center;
 }
@@ -627,6 +627,7 @@ body{
     height: 100%;
     position: absolute;
     background-image: radial-gradient(ellipse at center, var(--bright-red) 30%, var(--deep-red) 75%);
+    border-radius: 0px 0px 10px 10px;
 
     transform: rotateY(180deg);
     transform-style: preserve-3d;
@@ -639,6 +640,7 @@ body{
     height: 100%;
     position: absolute;
     background: var(--deep-red);
+    border-radius: 0px 0px 10px 10px;
 
     transform-style: preserve-3d;
     backface-visibility: hidden;
@@ -653,6 +655,7 @@ body{
     grid-template-columns: 1fr 0.2fr 1fr;
     grid-template-rows: repeat(3, 1fr);
     overflow: hidden;
+    border-radius: 0px 0px 10px 10px;
 
     transform-style: preserve-3d;
     backface-visibility: hidden;
