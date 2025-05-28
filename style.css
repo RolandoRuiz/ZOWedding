@@ -389,7 +389,7 @@ body{
     position: absolute;
     transform: translateY(100svh);
 
-    animation: sparkMovement 15s linear forwards infinite 3s;
+    animation: sparkMovement 15s linear forwards infinite 1.5s;
 }
 
 .sparkGrpMiddle{
@@ -398,7 +398,7 @@ body{
     position: absolute;
     transform: translateY(100svh);
 
-    animation: sparkMovement 15s linear forwards infinite 7.5s;
+    animation: sparkMovement 15s linear forwards infinite 6s;
 }
 
 .sparkGrpEnd{
@@ -407,7 +407,7 @@ body{
     position: absolute;
     transform: translateY(100svh);
 
-    animation: sparkMovement 15s linear forwards infinite 11.5s;
+    animation: sparkMovement 15s linear forwards infinite 10s;
 }
 
 .spark{
@@ -594,7 +594,7 @@ body{
     justify-content: center;
     align-items: center;
     z-index: 100;
-    border: dotted 2px red;
+    border: dotted 2px rgb(0, 255, 26);
 }
 
 .letterBox{
@@ -605,34 +605,57 @@ body{
     justify-content: center;
     align-items: flex-end;
     aspect-ratio: 1 / 1.2;
-    border: dotted 2px red;
+    border: dotted 2px rgb(255, 0, 238);
+
+    transform: rotateY(180deg);
+    transform-style: preserve-3d;
+    transform-origin: center;
 }
 
 .letterBody{
     width: 100%;
     height: auto;
     position: absolute;
+    aspect-ratio: 1 / 0.6;
+    transform-style: preserve-3d;
+    transform-origin: center;
+}   
+
+.letterBody::before{
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-image: radial-gradient(ellipse at center, var(--bright-red) 30%, var(--deep-red) 75%);
+
+    transform: rotateY(180deg);
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+}
+
+.letterBody::after{
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: var(--deep-red);
+
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+}
+
+.letterComponents{
+    width: 100%;
+    height: auto;
+    position: absolute;
+    aspect-ratio: 1 / 0.6;
     display: grid;
     grid-template-columns: 1fr 0.2fr 1fr;
     grid-template-rows: repeat(3, 1fr);
     overflow: hidden;
-    aspect-ratio: 1 / 0.6;
-    background-image: linear-gradient(var(--deep-red) 20%, #1b0006 70%);
-    border-radius: 0px 0px 9px 9px;
 
     transform-style: preserve-3d;
-    transform-origin: center;
     backface-visibility: hidden;
-}
-
-.letterCard{
-    width: 100%;
-    height: 100%;
-    margin: 3%;
-    background-color: var(--pure-white);
-    grid-column-start: 1; grid-column-end: 4;
-    grid-row-start: 1; grid-row-end: 4;
-
 }
 
 .innerLetterLeft{
@@ -641,12 +664,11 @@ body{
     display: grid;
     grid-column-start: 1; grid-column-end: 2;
     grid-row-start: 1; grid-row-end: 4;
-    filter: drop-shadow(0px -5px 1px var(--shadow-red));
+    filter: drop-shadow(0px -4px 1.5px #47000fc1);
 }
 
 .innerLetterLeft::before{
     content: "";
-    position: absolute;
     width: 100%;
     height: 100%;
     background-image: radial-gradient(ellipse at top right, var(--bright-red) 30%, var(--deep-red) 75%);
@@ -656,14 +678,14 @@ body{
 .innerLetterRight{
     width: 100%;
     height: 100%;
+    display: grid;
     grid-column-start: 3; grid-column-end: 4;
     grid-row-start: 1; grid-row-end: 4;
-    filter: drop-shadow(0px -5px 1px var(--shadow-red));
+    filter: drop-shadow(0px -4px 1.5px #47000fc1);
 }
 
 .innerLetterRight::before{
     content: "";
-    position: absolute;
     width: 100%;
     height: 100%;
     background-image: radial-gradient(ellipse at top left, var(--bright-red) 30%, var(--deep-red) 75%);
@@ -673,18 +695,28 @@ body{
 .innerLetterBottom{
     width: 100%;
     height: 100%;
+    display: grid;
     grid-column-start: 1; grid-column-end: 4;
     grid-row-start: 2; grid-row-end: 4;
-    filter: drop-shadow(0px -5px 1px #47000fad);
+    filter: drop-shadow(0px -4px 1px #47000fc1);
 }
 
 .innerLetterBottom::before{
     content: "";
-    position: absolute;
     width: 100%;
     height: 100%;
     background-image: radial-gradient(ellipse at top center, var(--bright-red) 30%, var(--deep-red) 75%);
     clip-path: polygon(0% 100%, 46% 3%, 47% 2% , 47.5% 1.5% ,48% 1% , 49% 0.5%, 50% 0.3%, 51% 0.5%,  52% 1%, 52.5% 1.5%, 53% 2%, 54% 3%, 100% 100%);
+}
+
+.letterCar{
+    width: 100%;
+    height: 100%;
+    padding: 3%;
+    background-color: var(--pure-white);
+    grid-column-start: 1; grid-column-end: 4;
+    grid-row-start: 1; grid-row-end: 4;
+    transform: translateY(-5svh);
 }
 
 .letterLid{
