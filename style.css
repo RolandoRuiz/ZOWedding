@@ -13,6 +13,7 @@
     --soft-gold: #D5B88F;
     --soft-grey: #F0F0F0;
     --pure-white: #FFFFFF;
+    --soft-white: #f4f4f4;
     --medium-black: #070707;
 }
 
@@ -744,9 +745,9 @@ body{
     aspect-ratio: 1/0.6;
     position: absolute;
     display: grid;
-    z-index: 200;
+    z-index: 400;
 
-    transform: rotateX(180deg);
+    transform: rotateX(0deg);
     transform-origin: top;
     transform-style: preserve-3d;
 
@@ -785,4 +786,16 @@ body{
     transform-style: preserve-3d;
     transform-origin: center;
     backface-visibility: hidden;
+}
+
+/* Letter seal properties*/
+
+.letterSeal{
+    width: 100%;
+    height: auto;
+    position: absolute;
+    z-index: 400;
+    aspect-ratio: 1 / 0.6;
+    border: 3px dotted fuchsia;
+
 }
