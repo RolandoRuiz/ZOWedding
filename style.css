@@ -614,7 +614,7 @@ body{
     transform-style: preserve-3d;
     transform-origin: bottom;
 
-    animation: letterEntry 5s ease-out forwards 5s;
+    animation: letterEntry 3s cubic-bezier(.33,1.08,.84,1.08) forwards 5s;
     animation-direction: reverse;
 }
 
@@ -622,6 +622,10 @@ body{
     0%{
 
         transform: rotateY(0deg) scale(1) translateY(-120%);
+
+    }65%{
+        
+        transform: scale(0.4) translateY(-45%);
 
     }75%{
 
