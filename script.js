@@ -11,12 +11,6 @@ getOverlays.forEach(function (overlay, i) {
   },5600);
 });
 
-const getLetterBox = document.querySelector(".letterBox");
-
-setTimeout(() => {
-  getLetterBox.classList.add("letterBoxGlow")
-}, 16000);
-
 /*getOverlays.forEach(function (overlay, index) {
   setTimeout(function () {
     console.log(overlay);
