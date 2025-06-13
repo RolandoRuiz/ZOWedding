@@ -618,11 +618,21 @@ body{
     will-change: transform;
     transform-style: preserve-3d;
     transform-origin: bottom;
+    animation-composition: replace, replace, add;
 
     animation: 
         letterEntry 6s cubic-bezier(.33,1.08,.84,1.08) forwards 8s,
-        letterPulse 5s cubic-bezier(.33,1.08,.84,1.08)  infinite 16s
+        letterBob 1.8s ease-in-out infinite alternate 14s,
+        letterPulse 5.5s cubic-bezier(.33,1.08,.84,1)  infinite 14s
     ; 
+}
+
+@keyframes letterBob {
+    0%{
+        transform: translateY(-140%);
+    }100%{
+        transform: translateY(-145%);
+    }
 }
 
 @keyframes letterEntry {
@@ -645,13 +655,15 @@ body{
 
 @keyframes letterPulse {
     0%{
-         transform: translateY(-140%) scale(1) rotateY(360deg);
-    }60%{
-         transform: translateY(-140%) scale(1) rotateY(360deg);
+         transform: scale(1) rotateY(360deg);
+    }65%{
+         transform: scale(1) rotateY(360deg);
     }80%{
-         transform: translateY(-140%) scale(1.05) rotateY(360deg);
+         transform: scale(1.05) rotateY(360deg);
+    }85%{
+         transform: scale(1.05) rotateY(360deg);
     }100%{
-         transform: translateY(-140%) scale(1) rotateY(360deg);
+         transform: scale(1) rotateY(360deg);
     }
 }
 
@@ -663,8 +675,23 @@ body{
     aspect-ratio: 1 / 0.6;
     transform-style: preserve-3d;
     transform-origin: center;
-    /*box-shadow: 0px 0px 20px red;*/
     border-radius: 0px 0px 10px 10px;
+
+    animation: letterGlow 5.5s cubic-bezier(.33,1.08,.84,1)  infinite 14s; 
+}
+
+@keyframes letterGlow {
+    0%{
+         box-shadow: 0px 0px 0px white;
+    }65%{
+         box-shadow: 0px 0px 0px white;
+    }80%{
+         box-shadow: 0px 0px 40px white;
+    }82%{
+         box-shadow: 0px 0px 40px white;
+    }100%{
+         box-shadow: 0px 0px 0px white;
+    }
 }
 
 /* Letter body properties*/
