@@ -622,7 +622,7 @@ body{
 
     animation: 
         letterEntry 6s cubic-bezier(.33,1.08,.84,1.08) forwards 8s,
-        letterBob 1.8s ease-in-out infinite alternate 14s,
+        letterBob 5.5s linear infinite 14s,
         letterPulse 5.5s cubic-bezier(.33,1.08,.84,1)  infinite 14s
     ; 
 }
@@ -630,8 +630,18 @@ body{
 @keyframes letterBob {
     0%{
         transform: translateY(-140%);
-    }100%{
+    }10%{
+        transform: translateY(-135%);
+    }30%{
         transform: translateY(-145%);
+    }50%{
+        transform: translateY(-135%);
+    }70%{
+        transform: translateY(-145%);
+    }90%{
+        transform: translateY(-145%);
+    }100%{
+        transform: translateY(-140%);
     }
 }
 
