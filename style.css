@@ -631,15 +631,15 @@ body{
     0%{
         transform: translateY(-140%);
     }10%{
-        transform: translateY(-135%);
+        transform: translateY(-139%);
     }30%{
-        transform: translateY(-145%);
+        transform: translateY(-141%);
     }50%{
-        transform: translateY(-135%);
+        transform: translateY(-139%);
     }70%{
-        transform: translateY(-145%);
+        transform: translateY(-141%);
     }90%{
-        transform: translateY(-145%);
+        transform: translateY(-141%);
     }100%{
         transform: translateY(-140%);
     }
@@ -922,7 +922,7 @@ body{
     justify-content: center;
     z-index: 600;
     aspect-ratio: 1 / 0.6;
-    /*border: 3px dotted fuchsia;*/
+    border: 3px dotted fuchsia;
     filter: drop-shadow(0px -1px 1px #47000fc1);
 
     transform-style: preserve-3d;
@@ -976,6 +976,7 @@ body{
     aspect-ratio: 1 / 1;
     background: linear-gradient(#BF6C25 20%, #EDDE9A 40%, #EDDE9A 60%, #BF6C25 80%);
     border-radius: 100%;
+
 }
 
 .sealRidge{
@@ -1034,4 +1035,76 @@ body{
     background-repeat: no-repeat;
     background-position: 50% 50%;
     border-radius: 100%;
+}
+
+.sealSparkBox{
+    width: auto;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    top: 15%;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1/1;
+
+    border: 3px dotted yellow;
+}
+
+.sealSparkBgrGlow{
+    width: 90%;
+    height: auto;
+    position: absolute;
+    aspect-ratio: 1/1;
+    background: radial-gradient(circle at center, #e0b336 0%, transparent 70%);
+}
+
+.sealSpark{
+    content: "";
+    width: 10%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    position: absolute;
+       background: radial-gradient(circle at center, #ffefa8 0%, #e5a628 50%);
+    clip-path: polygon(50% 0, 62% 35%, 100% 50%, 62% 65%, 50% 100%, 38% 65%, 0 50%, 38% 35%);
+    will-change: transform;
+    transform-origin: center;
+
+    animation: sealSparkMovement 2s ease forwards 15s;
+
+}
+
+#sealSpark1{
+    width: 8%;
+    left: 65%;
+    top: 20%;
+}
+
+#sealSpark2{
+    left: 20%;
+    top: 25%;
+}
+
+#sealSpark3{
+    right: 12%;
+    top: 50%;
+}
+
+#sealSpark4{
+    width: 8%;
+    right: 40%;
+    top: 75%;
+}
+
+#sealSpark5{
+        width: 8%;
+    left: 20%;
+    top: 70%;
+}
+
+@keyframes sealSparkMovement {
+    0%{
+        right: 50%; left: 50%; top: 50%;
+    }100%{
+        
+    }
 }
