@@ -979,6 +979,21 @@ body{
 
 }
 
+.openSeal{
+    animation: openSeal 0.2s cubic-bezier(.64,-0.01,.68,.96) forwards 0.3s;
+}
+
+@keyframes openSeal {
+    0%{
+        opacity: 1;
+        scale: 1;
+
+    }100%{
+        opacity: 0;
+        scale: 1.02;
+    }
+}
+
 .sealRidge{
     width: 92%;
     height: auto;
@@ -1056,8 +1071,10 @@ body{
     aspect-ratio: 1/1;
     background: radial-gradient(circle at center, #e0b336 0%, transparent 70%);
     opacity: 0;
+}
 
-    animation: sealSparkGlowMovement 2s cubic-bezier(.82,.41,.42,1.03) forwards 15s;
+.SealSparkGlowShow{
+    animation: sealSparkGlowMovement 1.5s cubic-bezier(.2,.62,.38,1.16) forwards;
 }
 
 .sealSpark{
@@ -1070,10 +1087,11 @@ body{
     clip-path: polygon(50% 0, 62% 35%, 100% 50%, 62% 65%, 50% 100%, 38% 65%, 0 50%, 38% 35%);
     opacity: 0;
     will-change: transform;
-    transform-origin: center;
 
-    animation: sealSparkMovement 2s cubic-bezier(.82,.41,.42,1.03) forwards 15s;
+}
 
+.SealSparkShow{
+    animation: sealSparkMovement 1.5s cubic-bezier(.2,.62,.38,1.16) forwards;
 }
 
 #sealSpark1{
@@ -1088,13 +1106,13 @@ body{
 }
 
 #sealSpark3{
-    right: 12%;
+    left: 78%;
     top: 50%;
 }
 
 #sealSpark4{
     width: 8%;
-    right: 40%;
+    left: 60%;
     top: 75%;
 }
 
@@ -1118,9 +1136,11 @@ body{
 
 @keyframes sealSparkMovement {
     0%{
-        right: 50%; left: 50%; top: 50%;
+        left: 50%; top: 50%;
         opacity: 0;
-    }10%{
+    }35%{
+        opacity: 0;
+    }45%{
         opacity: 1;
     }80%{
         opacity: 1;

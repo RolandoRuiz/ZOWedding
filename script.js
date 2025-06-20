@@ -26,3 +26,19 @@ setTimeout(() => {
     console.log(getLidShadow);
     getLidShadow.classList.remove("letterLidShadow");
 }, 5000);
+
+const letterSeal = document.querySelector(".sealBody");
+const letterBranch = document.querySelector(".letterBranchBox");
+const sparkGlow = document.querySelector(".sealSparkBgrGlow");
+const sealSpark = document.querySelectorAll(".sealSpark");
+
+function openLetter() {
+  letterSeal.classList.add("openSeal");
+  letterBranch.classList.add("openSeal");
+  sparkGlow.classList.add("SealSparkGlowShow");
+  
+  sealSpark.forEach(element => {
+    element.classList.add("SealSparkShow");
+  });
+
+}
