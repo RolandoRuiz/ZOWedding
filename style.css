@@ -1069,12 +1069,13 @@ body{
     height: auto;
     position: absolute;
     aspect-ratio: 1/1;
-    background: radial-gradient(circle at center, #e0b336 0%, transparent 70%);
+    background: radial-gradient(circle at center, #f9c128 -50%, #fbaa13af 0%, #fbbd1323 50%, transparent 70%);
+    background-blend-mode: lighten;
     opacity: 0;
 }
 
 .SealSparkGlowShow{
-    animation: sealSparkGlowMovement 1.5s cubic-bezier(.2,.62,.38,1.16) forwards;
+    animation: sealSparkGlowMovement 1s cubic-bezier(.2,.62,.38,1.16) forwards;
 }
 
 .sealSpark{
@@ -1091,7 +1092,7 @@ body{
 }
 
 .SealSparkShow{
-    animation: sealSparkMovement 1.5s cubic-bezier(.2,.62,.38,1.16) forwards;
+    animation: sealSparkMovement 1s cubic-bezier(.2,.62,.38,1.16) forwards;
 }
 
 #sealSpark1{
@@ -1138,9 +1139,9 @@ body{
     0%{
         left: 50%; top: 50%;
         opacity: 0;
-    }35%{
+    }30%{
         opacity: 0;
-    }45%{
+    }40%{
         opacity: 1;
     }80%{
         opacity: 1;
