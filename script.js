@@ -31,8 +31,15 @@ const letterSeal = document.querySelector(".sealBody");
 const letterBranch = document.querySelector(".letterBranchBox");
 const sparkGlow = document.querySelector(".sealSparkBgrGlow");
 const sealSpark = document.querySelectorAll(".sealSpark");
+const stopLetterMovement = document.querySelector(".letterBox");
+const stopLetterGlow = document.querySelector(".letterGlow");
+const openLid = document.querySelector(".letterLid");
 
 function openLetter() {
+  stopLetterMovement.style.animationPlayState = "running, running, paused";
+  stopLetterGlow.style.animationIterationCount = "1";
+
+
   letterSeal.classList.add("openSeal");
   letterBranch.classList.add("openSeal");
   sparkGlow.classList.add("SealSparkGlowShow");
@@ -40,5 +47,8 @@ function openLetter() {
   sealSpark.forEach(element => {
     element.classList.add("SealSparkShow");
   });
+
+  openLid.classList.add("openLid");
+
 
 }
