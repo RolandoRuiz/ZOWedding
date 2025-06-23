@@ -11,22 +11,8 @@ getOverlays.forEach(function (overlay, i) {
   },5600);
 });
 
-/*getOverlays.forEach(function (overlay, index) {
-  setTimeout(function () {
-    console.log(overlay);
-    overlay.style.animation = "pulseOverlay 2s cubic-bezier(.18,.35,.46,1) alternate infinite"
-    overlay.style.animationDelay = "s"
-  }, (index + 1) * 5000);
-});*/
 
 const getLidShadow = document.querySelector(".letterLid");
-
-setTimeout(() => {
-
-    console.log(getLidShadow);
-    getLidShadow.classList.remove("letterLidShadow");
-}, 5000);
-
 const letterSeal = document.querySelector(".sealBody");
 const letterBranch = document.querySelector(".letterBranchBox");
 const sparkGlow = document.querySelector(".sealSparkBgrGlow");
@@ -34,11 +20,23 @@ const sealSpark = document.querySelectorAll(".sealSpark");
 const stopLetterMovement = document.querySelector(".letterBox");
 const stopLetterGlow = document.querySelector(".letterGlow");
 const openLid = document.querySelector(".letterLid");
+const takeCard = document.querySelector(".letterCard");
+const clearSparks = document.querySelector(".sparkBox");
+const endSpark1 = document.querySelector(".sparkGrpStart");
+const endSpark2 = document.querySelector(".sparkGrpMiddle");
+const endSpark3 = document.querySelector(".sparkGrpEnd");
+
 
 function openLetter() {
-  stopLetterMovement.style.animationPlayState = "running, running, paused";
-  stopLetterGlow.style.animationIterationCount = "1";
 
+  stopLetterMovement.style.animationPlayState = "running, running, paused";
+
+  /*stopLetterGlow.style.animationIterationCount = "1";*/
+  stopLetterGlow.addEventListener("animationiteration", stopGlow);
+
+  function stopGlow() {
+    stopLetterGlow.classList.remove("letterGlowAnim");
+  }
 
   letterSeal.classList.add("openSeal");
   letterBranch.classList.add("openSeal");
@@ -48,7 +46,21 @@ function openLetter() {
     element.classList.add("SealSparkShow");
   });
 
+  setTimeout(() => {
+    getLidShadow.classList.remove("letterLidShadow");
+  }, 1950);
+
   openLid.classList.add("openLid");
+  takeCard.classList.add("cardMovement");
 
+  clearSparks.classList.add("endSpark");
 
+  setTimeout(() => {
+    endSpark1.style.animationPlayState = "paused";
+    endSpark2.style.animationPlayState = "paused";
+    endSpark3.style.animationPlayState = "paused";
+    endSpark1.style.display = "none";
+    endSpark2.style.display = "none";
+    endSpark3.style.display = "none";
+  }, 2500);
 }

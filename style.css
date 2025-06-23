@@ -385,13 +385,35 @@ body{
     }
 }
 
+.sparkBox{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.endSpark{
+    animation: endSpark 1s ease forwards 1.5s;
+}
+
+@keyframes endSpark {
+    0%{
+        opacity: 1;
+        scale: 1;
+    }100%{
+        opacity: 0;
+        scale: 1.1;
+    }
+}
+
 .sparkGrpStart{
     width: 100%;
     height: 34%;
     position: absolute;
     transform: translateY(100svh);
     will-change: transform;
+}
 
+.startSparkAnimOne{
     animation: sparkMovement 15s linear forwards infinite 1.5s;
 }
 
@@ -401,7 +423,9 @@ body{
     position: absolute;
     transform: translateY(100svh);
     will-change: transform;
+}
 
+.startSparkAnimTwo{
     animation: sparkMovement 15s linear forwards infinite 5.5s;
 }
 
@@ -411,15 +435,10 @@ body{
     position: absolute;
     transform: translateY(100svh);
     will-change: transform;
-
-    animation: sparkMovement 15s linear forwards infinite 9.5s;
 }
 
-.spark{
-    position: absolute;
-    z-index: 300;
-    aspect-ratio: 1 / 1;
-    filter: drop-shadow(0px 0px 5px white) drop-shadow(0px 0px 10px white);
+.startSparkAnimThree{
+    animation: sparkMovement 15s linear forwards infinite 9.5s;
 }
 
 @keyframes sparkMovement {
@@ -428,6 +447,13 @@ body{
     }100%{
         transform: translateY(-15svh) scale(1.1);
     }
+}
+
+.spark{
+    position: absolute;
+    z-index: 300;
+    aspect-ratio: 1 / 1;
+    filter: drop-shadow(0px 0px 5px white) drop-shadow(0px 0px 10px white);
 }
 
 .spark::before{
@@ -686,7 +712,9 @@ body{
     transform-style: preserve-3d;
     transform-origin: center;
     border-radius: 0px 0px 10px 10px;
+}
 
+.letterGlowAnim{
     animation: letterGlow 5.5s cubic-bezier(.33,1.08,.84,1)  infinite 14s; 
     animation-direction: normal;
 }
@@ -748,7 +776,10 @@ body{
     width: 90%;
     height: auto;
     position: absolute;
-    z-index: 200;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 500;
     aspect-ratio: 1 / 0.6;
     background-color: var(--pure-white);
     border-radius: 4%;
@@ -757,6 +788,48 @@ body{
     transform: translateY(0svh);
     transform-style: preserve-3d;
     backface-visibility: hidden;
+
+}
+
+.cardMovement{
+    animation: openCard 2.2s ease forwards 2.5s;
+}
+
+@keyframes openCard {
+    0%{
+        transform: translateY(0svh);
+        z-index: 500;
+    }20%{
+        transform: translateY(-3svh);
+        z-index: 500;
+    }50%{
+        transform: translateY(0svh);
+        z-index: 500;
+    }100%{
+        transform: translateY(-35svh);
+        z-index: 600;
+    }
+}
+
+.letterCardGlow{
+    width: 100%;
+    height: auto;
+    position: absolute;
+    aspect-ratio: 1 / 1;
+    background: radial-gradient(circle at center, white 0%, transparent 70%);
+    opacity: 1;
+}
+
+.screenGlowAni{
+    animation: screenGlow 10s ease forwards;
+}
+
+@keyframes screenGlow {
+    0%{
+        scale: 0;
+    }100%{
+        scale: 17;
+    }
 }
 
 /* Inner letter properties*/
@@ -765,7 +838,7 @@ body{
     width: 100%;
     height: auto;
     position: absolute;
-    z-index: 300;
+    z-index: 600;
     aspect-ratio: 1 / 0.6;
     display: grid;
     grid-template-columns: 1fr 0.2fr 1fr;
@@ -847,7 +920,7 @@ body{
     aspect-ratio: 1/0.6;
     position: absolute;
     display: grid;
-    z-index: 400;
+    z-index: 600;
     transform: rotateX(0deg);
     transform-style: preserve-3d;
     transform-origin: top;
@@ -857,14 +930,20 @@ body{
 }
 
 .openLid{
-    animation: openLidMovement 2s cubic-bezier(.3,.48,.36,1) forwards 1.2s;
+    animation: openLidMovement 1.5s cubic-bezier(.3,.48,.36,1) forwards 1.2s;
 }
 
 @keyframes openLidMovement {
     0%{
         transform: rotateX(0deg);
+        z-index: 600;
+    }49%{
+        z-index: 600;
+    }50%{
+        z-index: 400;
     }100%{
         transform: rotateX(180deg);
+        z-index: 400;
     }
 }
 
@@ -1089,7 +1168,7 @@ body{
 }
 
 .SealSparkGlowShow{
-    animation: sealSparkGlowMovement 1.5s cubic-bezier(.32,1.15,.78,1.15) forwards;
+    animation: sealSparkGlowMovement 1.3s cubic-bezier(.32,1.15,.78,1.15) forwards;
 }
 
 .sealSpark{
@@ -1106,7 +1185,7 @@ body{
 }
 
 .SealSparkShow{
-    animation: sealSparkMovement 1.5s cubic-bezier(.32,1.15,.78,1.15) forwards 0.2s;
+    animation: sealSparkMovement 1.3s cubic-bezier(.32,1.15,.78,1.15) forwards 0.2s;
 }
 
 #sealSpark1{
