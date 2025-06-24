@@ -18,6 +18,7 @@ const sparkGlow = document.querySelector(".sealSparkBgrGlow");
 const sealSpark = document.querySelectorAll(".sealSpark");
 const stopLetterMovement = document.querySelector(".letterBox");
 const stopLetterGlow = document.querySelector(".letterGlow");
+const closeLetterGlowBox = document.querySelector(".letterGlowBox");
 const openLid = document.querySelector(".letterLid");
 const takeCard = document.querySelector(".letterCard");
 const clearSparks = document.querySelector(".sparkBox");
@@ -37,11 +38,10 @@ function openLetter() {
   stopLetterMovement.style.animationPlayState = "running, running, paused";
 
   /*stopLetterGlow.style.animationIterationCount = "1";*/
-  stopLetterGlow.addEventListener("animationiteration", stopGlow);
+  closeLetterGlowBox.classList.add("stopLetterGlow");
+  stopLetterGlow.style.animationPlayState = "paused";
 
-  function stopGlow() {
-    stopLetterGlow.classList.remove("letterGlowAnim");
-  }
+  
 
   letterSeal.classList.add("openSeal");
   letterBranch.classList.add("openSeal");

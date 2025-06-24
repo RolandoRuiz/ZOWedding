@@ -309,7 +309,6 @@ body{
     }
 }
 
-
 .baseOverlayWrapper{
     width: 100svw;
     height: 100svh;
@@ -350,7 +349,6 @@ body{
     bottom: 0%;
     transform-origin: bottom;
     mix-blend-mode: overlay;
-    /*animation: pulseOverlay 2s cubic-bezier(.18,.35,.46,1) alternate infinite;*/
 }
 
 @keyframes pulseOverlay {
@@ -407,8 +405,6 @@ body{
 .topOverlayAnim{
     animation: showTopOverlay 2s forwards cubic-bezier(.71,-0.01,.68,.84) 3.5s;
 }
-
-
 
 @keyframes showTopOverlay {
     0%{
@@ -759,7 +755,7 @@ body{
     }
 }
 
-.letterGlow{
+.letterGlowBox{
     width: 99%;
     height: auto;
     position: absolute;
@@ -767,7 +763,16 @@ body{
     aspect-ratio: 1 / 0.6;
     transform-style: preserve-3d;
     transform-origin: center;
+    opacity: 1;
+}
+
+.letterGlow{
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transform-origin: center;
     border-radius: 0px 0px 10px 10px;
+    opacity: 1;
 }
 
 .letterGlowAnim{
@@ -786,6 +791,19 @@ body{
          box-shadow: 0px 0px 40px white;
     }100%{
          box-shadow: 0px 0px 0px white;
+    }
+}
+
+.stopLetterGlow{
+    animation: stopLetterGlow 0.5s cubic-bezier(.33,1.08,.84,1)  forwards;
+    opacity: 1;
+}
+
+@keyframes stopLetterGlow {
+    0%{
+        opacity: 1;
+    }100%{
+        opacity: 0;
     }
 }
 
@@ -848,7 +866,7 @@ body{
 }
 
 .cardMovement{
-    animation: openCard 2.2s ease forwards 2.5s;
+    animation: openCard 2.2s ease forwards 3s;
 }
 
 @keyframes openCard {
@@ -881,7 +899,7 @@ body{
 }
 
 .screenGlowAnim{
-    animation: screenGlow 10s ease forwards;
+    animation: screenGlow 10s ease forwards 0.5s;
 }
 
 @keyframes screenGlow {
@@ -995,7 +1013,7 @@ body{
     position: absolute;
     display: grid;
     z-index: 600;
-    transform: rotateX(0deg);
+    transform: rotateX(0deg) translateY(0svh);
     transform-style: preserve-3d;
     transform-origin: top;
 
@@ -1005,19 +1023,21 @@ body{
 }
 
 .openLid{
-    animation: openLidMovement 3s cubic-bezier(.3,.48,.36,1) forwards 1.2s;
+    animation: openLidMovement 1s linear forwards 1.2s;
 }
 
 @keyframes openLidMovement {
     0%{
-        transform: rotateX(0deg);
+        transform: rotateX(0deg) translateY(0svh);
         z-index: 600;
     }49%{
+        transform: rotateX(90deg) translateY(0svh);
         z-index: 600;
     }50%{
+        transform: rotateX(90deg) translateY(-0.2svh);
         z-index: 400;
     }100%{
-        transform: rotateX(180deg);
+        transform: rotateX(180deg) translateY(-0.2svh);
         z-index: 400;
     }
 }
