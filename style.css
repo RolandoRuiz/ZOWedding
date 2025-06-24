@@ -88,6 +88,7 @@ body{
     background-repeat: no-repeat;
     background-position: top;
     background-size: cover;
+    mask-image: linear-gradient(black 0%, black 60%, transparent 100%);
     margin-left: 10svw; margin-right: 10svw; margin-top: 6svh;
     filter: brightness(2.2);
 }
@@ -113,6 +114,7 @@ body{
     justify-self: center;
     border-radius: 1000px 1000px 0px 0px;
     background-color: rgba(0, 0, 0, 1);
+    mask-image: linear-gradient(black 0%, black 60%, transparent 100%);
     opacity: 0.6;
     bottom: 0%;
 
@@ -131,7 +133,7 @@ body{
 .lightenArchShadow{
     opacity: 0.4;
 
-    animation: lightenArch 1s forwards cubic-bezier(.3,.01,.94,.62) 2s;
+    animation: lightenArch 0.5s forwards cubic-bezier(.3,.01,.94,.62) 5s;
 }
 
 @keyframes lightenArch {
@@ -296,7 +298,7 @@ body{
 
 .closeBgrMultiply{
     opacity: 0.94;
-    animation: closeMultiplyOpacity 1s forwards cubic-bezier(.3,.01,.94,.62) 2s;
+    animation: closeMultiplyOpacity 0.5s forwards cubic-bezier(.3,.01,.94,.62) 5s;
 }
 
 @keyframes closeMultiplyOpacity {
@@ -421,18 +423,21 @@ body{
 }
 
 .endOverlayAnim{
-    animation: endOverlayAnim 1s forwards cubic-bezier(.3,.01,.94,.62);
+    animation: endOverlayAnim 0.5s forwards cubic-bezier(.3,.01,.94,.62) 5s;
     transform: scale(1);
     opacity: 1;
 }
 
 @keyframes endOverlayAnim {
     0%{
-        transform: scale(1);
         opacity: 1;
-    }100%{
-        transform: scale(0);
+        transform: scale(1);
+    }99%{
         opacity: 0;
+        transform: scale(1);
+    }100%{
+        opacity: 0;
+        transform: scale(0);
     }
 }
 
@@ -856,6 +861,8 @@ body{
     }50%{
         transform: translateY(0svh);
         z-index: 500;
+    }70%{
+        z-index: 600;
     }100%{
         transform: translateY(-35svh);
         z-index: 600;
@@ -869,17 +876,33 @@ body{
     aspect-ratio: 1 / 1;
     background: radial-gradient(circle at center, white 0%, transparent 70%);
     opacity: 1;
+    will-change: transform;
+    transform: scale(0);
 }
 
-.screenGlowAni{
+.screenGlowAnim{
     animation: screenGlow 10s ease forwards;
 }
 
 @keyframes screenGlow {
     0%{
-        scale: 0;
+        transform: scale(0);
+        opacity: 1;
+    }40%{
+        transform: scale(0);
+        opacity: 1;
+    }60%{
+        transform: scale(15);
+        opacity: 1;
+    }85%{
+        transform: scale(15);
+        opacity: 0;
+    }99%{
+        transform: scale(15);
+        opacity: 0;
     }100%{
-        scale: 17;
+        transform: scale(0);
+        opacity: 0;
     }
 }
 
@@ -978,10 +1001,11 @@ body{
 
     grid-template-rows: repeat(3, 1fr);
     grid-template-columns: 1fr 0.2fr 1fr;
+    
 }
 
 .openLid{
-    animation: openLidMovement 1.5s cubic-bezier(.3,.48,.36,1) forwards 1.2s;
+    animation: openLidMovement 3s cubic-bezier(.3,.48,.36,1) forwards 1.2s;
 }
 
 @keyframes openLidMovement {

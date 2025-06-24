@@ -4,7 +4,6 @@ const getOverlays = document.querySelectorAll(".bgrOverlay");
 
 getOverlays.forEach(function (overlay, i) {
   setTimeout(function () {
-    console.log(overlay);
     overlay.style.animation = "pulseOverlay 2s cubic-bezier(.18,.35,.46,1) alternate infinite";
     overlay.style.animationDelay = `${i * 0.2}s`;
     /*overlay.style.animationDelay = "" + i * 0.2 + "s"; TWO WAYS OF DOING THE SAME THING*/
@@ -30,6 +29,7 @@ const bgrClose = document.querySelector(".bgrMultiply");
 const archShadow = document.querySelector(".archShadow");
 const endOverlay = document.querySelector(".baseOverlayWrapper");
 const endTopOverlay = document.querySelector(".bgrTopOverlay");
+const letterCardGlow = document.querySelector(".letterCardGlow");
 
 
 function openLetter() {
@@ -53,7 +53,7 @@ function openLetter() {
 
   setTimeout(() => {
     getLidShadow.classList.remove("letterLidShadow");
-  }, 1950);
+  }, 1600);
 
   openLid.classList.add("openLid");
   takeCard.classList.add("cardMovement");
@@ -69,8 +69,14 @@ function openLetter() {
     endSpark3.style.display = "none";
   }, 2500);
 
-  bgrClose.classList.add("closeBgrMultiply");
-  archShadow.classList.add("lightenArchShadow");
+  getOverlays.forEach(element => {
+    element.style.animationPlayState = "paused";
+  });
+
   endOverlay.classList.add("endOverlayAnim");
   endTopOverlay.classList.add("endOverlayAnim");
+  bgrClose.classList.add("closeBgrMultiply");
+  archShadow.classList.add("lightenArchShadow");
+
+  letterCardGlow.classList.add("screenGlowAnim");
 }
