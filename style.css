@@ -966,7 +966,7 @@ body{
     0%{
         transform: rotateX(0deg) translateY(0svh);
         z-index: 600;
-    }49%{
+    }49.99%{
         transform: rotateX(90deg) translateY(0svh);
         z-index: 600;
     }50%{
