@@ -26,6 +26,11 @@ const endSpark1 = document.querySelector(".sparkGrpStart");
 const endSpark2 = document.querySelector(".sparkGrpMiddle");
 const endSpark3 = document.querySelector(".sparkGrpEnd");
 
+const bgrClose = document.querySelector(".bgrMultiply");
+const archShadow = document.querySelector(".archShadow");
+const endOverlay = document.querySelector(".baseOverlayWrapper");
+const endTopOverlay = document.querySelector(".bgrTopOverlay");
+
 
 function openLetter() {
 
@@ -63,4 +68,9 @@ function openLetter() {
     endSpark2.style.display = "none";
     endSpark3.style.display = "none";
   }, 2500);
+
+  bgrClose.classList.add("closeBgrMultiply");
+  archShadow.classList.add("lightenArchShadow");
+  endOverlay.classList.add("endOverlayAnim");
+  endTopOverlay.classList.add("endOverlayAnim");
 }

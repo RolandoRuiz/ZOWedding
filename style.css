@@ -67,7 +67,7 @@ body{
     left: 0px;
 }
 
-#bgrArch{
+.bgrArch{
     width: 100svw;
     height: 100svh;
     position: absolute;
@@ -78,31 +78,7 @@ body{
     overflow: hidden;
 }
 
-#bgrArch::before{
-    content: "";
-    width: 80svw;
-    height: 94svh;
-    position: absolute;
-    z-index: 50;
-    justify-self: center;
-    border-radius: 1000px 1000px 0px 0px;
-    background-color: rgba(0, 0, 0, 1);
-    opacity: 0.6;
-    bottom: 0%;
-
-    animation: ArchShadow 1s ease-out forwards 4s;
-}
-
-@keyframes ArchShadow {
-    0%{
-        opacity: 0.6;
-    }
-    100%{
-        opacity: 0.4;
-    }
-}
-
-#bgrArch::after{
+.bgrArch::after{
     content: "";
     width: 100svw;
     height: auto;
@@ -127,6 +103,45 @@ body{
     background-position: center;
     filter: drop-shadow(0px -3px 0.5px rgba(0,0,0,0.2));
 }
+
+.archShadow{
+    content: "";
+    width: 80svw;
+    height: 94svh;
+    position: absolute;
+    z-index: 50;
+    justify-self: center;
+    border-radius: 1000px 1000px 0px 0px;
+    background-color: rgba(0, 0, 0, 1);
+    opacity: 0.6;
+    bottom: 0%;
+
+    animation: ArchShadow 1s ease-out forwards 4s;
+}
+
+@keyframes ArchShadow {
+    0%{
+        opacity: 0.6;
+    }
+    100%{
+        opacity: 0.4;
+    }
+}
+
+.lightenArchShadow{
+    opacity: 0.4;
+
+    animation: lightenArch 1s forwards cubic-bezier(.3,.01,.94,.62) 2s;
+}
+
+@keyframes lightenArch {
+    0%{
+        opacity: 0.4; 
+    }100%{
+        opacity: 0.2;
+    }
+}
+
 
 #bgrBranches{
     width: 100svw;
@@ -251,7 +266,7 @@ body{
     transform-origin: top right;
 }
 
-#bgrMultiply{
+.bgrMultiply{
     width: 100svw;
     height: 100svh;
     position: absolute;
@@ -279,6 +294,20 @@ body{
     }
 }
 
+.closeBgrMultiply{
+    opacity: 0.94;
+    animation: closeMultiplyOpacity 1s forwards cubic-bezier(.3,.01,.94,.62) 2s;
+}
+
+@keyframes closeMultiplyOpacity {
+    0%{
+        opacity: 0.94; 
+    }100%{
+        opacity: 0;
+    }
+}
+
+
 .baseOverlayWrapper{
     width: 100svw;
     height: 100svh;
@@ -294,7 +323,9 @@ body{
     will-change: opacity;
     opacity: 0.1;
     transform: scale(0);
+}
 
+.baseOverlayAnim{
     animation: showBgrOverlay 2s cubic-bezier(.71,-0.01,.68,.84) forwards 3.45s;
 }
 
@@ -369,9 +400,13 @@ body{
     opacity: 0;
     transform: scale(0);
 
-    animation: showTopOverlay 2s forwards cubic-bezier(.71,-0.01,.68,.84) 3.5s;
-
 }
+
+.topOverlayAnim{
+    animation: showTopOverlay 2s forwards cubic-bezier(.71,-0.01,.68,.84) 3.5s;
+}
+
+
 
 @keyframes showTopOverlay {
     0%{
@@ -382,6 +417,22 @@ body{
     }100%{
         opacity: 1;
         transform: scale(1);
+    }
+}
+
+.endOverlayAnim{
+    animation: endOverlayAnim 1s forwards cubic-bezier(.3,.01,.94,.62);
+    transform: scale(1);
+    opacity: 1;
+}
+
+@keyframes endOverlayAnim {
+    0%{
+        transform: scale(1);
+        opacity: 1;
+    }100%{
+        transform: scale(0);
+        opacity: 0;
     }
 }
 
