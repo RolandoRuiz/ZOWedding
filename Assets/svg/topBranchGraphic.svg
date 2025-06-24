@@ -2,8 +2,69 @@
   <defs>
     <style>
 
-       @import url("/style.css");
-       @import url("https://rolandoruiz.github.io/ZOWedding/masterStyle.css");
+      .flower{
+          position: absolute;
+          transform-box: fill-box;
+          transform-origin: center;
+          transform: rotate(0deg);
+
+          animation: flowerWind 4s ease-in-out alternate infinite;
+      }
+
+      @keyframes flowerWind {
+          0%{
+              transform: rotate(0deg);
+          }100%{
+              transform: rotate(8deg);
+          }
+      }
+
+      .leaf{
+          position: absolute;
+          transform-box: fill-box;
+          transform: rotate(0deg);
+          animation: leafWind 4s ease-in-out alternate infinite;
+      }
+
+      @keyframes leafWind {
+          0%{
+              transform: rotate(0deg);
+          }100%{
+              transform: rotate(40deg);
+          }
+      }
+
+      .bottomLeft{
+          transform-origin: bottom left;
+      }
+
+      .bottomRight{
+          transform-origin: bottom right;
+      }
+
+      .bottom{
+          transform-origin: bottom center;
+      }
+
+      .left{
+          transform-origin: left center;
+      }
+
+      .right{
+          transform-origin: right center;
+      }
+
+      .top{
+          transform-origin: top center;
+      }
+
+      .topLeft{
+          transform-origin: top left;
+      }
+
+      .topRight{
+          transform-origin: top right;
+      }
 
       .cls-1 {
         fill: #666;
