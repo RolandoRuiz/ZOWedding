@@ -354,7 +354,7 @@ body{
     }
 }
 
-.endOverlayAni{
+.endOverlayAnim{
     animation: endOverlayAnim 0.5s forwards cubic-bezier(.3,.01,.94,.62) 5s;
     transform: scale(1);
     opacity: 1;
@@ -966,7 +966,7 @@ body{
     0%{
         transform: rotateX(0deg) translateY(0svh);
         z-index: 600;
-    }49.99%{
+    }49.999%{
         transform: rotateX(90deg) translateY(0svh);
         z-index: 600;
     }50%{

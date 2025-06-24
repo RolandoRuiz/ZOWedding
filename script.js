@@ -36,8 +36,6 @@ const letterCardGlow = document.querySelector(".letterCardGlow");
 function openLetter() {
 
   stopLetterMovement.style.animationPlayState = "running, running, paused";
-
-  /*stopLetterGlow.style.animationIterationCount = "1";*/
   closeLetterGlowBox.classList.add("stopLetterGlow");
   stopLetterGlow.style.animationPlayState = "paused";
 
