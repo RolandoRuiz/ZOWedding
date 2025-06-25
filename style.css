@@ -731,15 +731,17 @@ body{
 }
 
 .stopLetterGlow{
-    animation: stopLetterGlow 0.5s cubic-bezier(.33,1.08,.84,1)  forwards;
+    animation: stopLetterGlow 1s ease-out  forwards;
     opacity: 1;
 }
 
 @keyframes stopLetterGlow {
     0%{
         opacity: 1;
+        display: block;
     }100%{
         opacity: 0;
+        display: none;
     }
 }
 
@@ -802,7 +804,7 @@ body{
 }
 
 .cardMovement{
-    animation: openCard 2.2s ease forwards 3s;
+    animation: openCard 2.2s ease forwards 3.4s;
 }
 
 @keyframes openCard {
@@ -815,11 +817,9 @@ body{
     }50%{
         transform: translateY(0svh);
         z-index: 500;
-    }70%{
-        z-index: 600;
     }100%{
         transform: translateY(-35svh);
-        z-index: 600;
+        z-index: 700;
     }
 }
 
@@ -828,14 +828,14 @@ body{
     height: auto;
     position: absolute;
     aspect-ratio: 1 / 1;
-    background: radial-gradient(circle at center, white 0%, transparent 70%);
+    background: radial-gradient(circle at center, white 10%, transparent 80%);
     opacity: 1;
     will-change: transform;
     transform: scale(0);
 }
 
 .screenGlowAnim{
-    animation: screenGlow 10s ease forwards 0.5s;
+    animation: screenGlow 10s ease forwards 1.1s;
 }
 
 @keyframes screenGlow {
@@ -846,13 +846,13 @@ body{
         transform: scale(0);
         opacity: 1;
     }60%{
-        transform: scale(18);
+        transform: scale(25);
         opacity: 1;
     }85%{
-        transform: scale(18);
+        transform: scale(25);
         opacity: 0;
     }99%{
-        transform: scale(18);
+        transform: scale(25);
         opacity: 0;
     }100%{
         transform: scale(0);
@@ -940,6 +940,7 @@ body{
     align-items: center;
     justify-content: center;
     backface-visibility: hidden;
+
 }
 
 .letterLid{
@@ -949,9 +950,10 @@ body{
     position: absolute;
     display: grid;
     z-index: 600;
-    transform: rotateX(0deg) translateY(0svh);
+    transform: rotateX(0deg);
     transform-style: preserve-3d;
     transform-origin: top;
+    will-change: transform;
 
     grid-template-rows: repeat(3, 1fr);
     grid-template-columns: 1fr 0.2fr 1fr;
@@ -959,41 +961,15 @@ body{
 }
 
 .openLid{
-    animation: openLidMovement 1s linear forwards 1.2s;
+    animation: openLidMovement 2s cubic-bezier(.2,.88,.68,1.14) forwards 1.2s;
 }
 
 @keyframes openLidMovement {
     0%{
-        transform: rotateX(0deg) translateY(0svh);
-        z-index: 600;
-    }49.999%{
-        transform: rotateX(90deg) translateY(0svh);
-        z-index: 600;
-    }50%{
-        transform: rotateX(90deg) translateY(-0.2svh);
-        z-index: 400;
+        transform: rotateX(0deg);
     }100%{
-        transform: rotateX(180deg) translateY(-0.2svh);
-        z-index: 400;
+        transform: rotateX(180deg);
     }
-}
-
-.letterLidShadow{
-    filter: drop-shadow(0px 4px 1px var(--shadow-red));
-}
-
-.letterLid::before{
-    content: "";
-    width: 100%;
-    height: 100%;
-    grid-column-start: 1; grid-column-end: 4;
-    grid-row-start: 1; grid-row-end: 3;
-    background: var(--deep-red2);
-    clip-path: polygon(0% 0%, 0% 20%, 46% 97%, 47% 98% , 47.5% 98.5% ,48% 99% , 49% 99.5%, 50% 99.7%, 51% 99.5%,  52% 99%, 52.5% 98.5%, 53% 98%, 54% 97%, 100% 20%, 100% 0%);
-    
-    transform: rotateY(180deg);
-    transform-origin: center;
-    backface-visibility: hidden;
 }
 
 .letterLid::after{
@@ -1009,6 +985,24 @@ body{
     backface-visibility: hidden;
 }
 
+.letterLidShadow{
+    width: 100%;
+    height: 100%;
+    grid-column-start: 1; grid-column-end: 4;
+    grid-row-start: 1; grid-row-end: 3;
+    filter: drop-shadow(0px 4px 1px var(--shadow-red));
+}
+
+.letterLidShadow::before{
+    content: "";    
+    width: 100%;
+    height: 100%;
+    display: flex;
+    background-color: var(--deep-red2);
+    clip-path: polygon(0% 0%, 0% 20%, 46% 97%, 47% 98% , 47.5% 98.5% ,48% 99% , 49% 99.5%, 50% 99.7%, 51% 99.5%,  52% 99%, 52.5% 98.5%, 53% 98%, 54% 97%, 100% 20%, 100% 0%);
+
+}
+
 /* LetterBranch properties*/
 
 .letterBranchBox{
@@ -1018,7 +1012,7 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 500;
+    z-index: 1000;
     aspect-ratio: 1 / 0.6;
 
     transform-style: preserve-3d;
@@ -1043,7 +1037,7 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 600;
+    z-index: 1000;
     aspect-ratio: 1 / 0.6;
     /*border: 3px dotted fuchsia;*/
     filter: drop-shadow(0px -1px 1px #47000fc1);
@@ -1198,10 +1192,6 @@ body{
     will-change: transform;
 }
 
-.SealSparkGlowShow{
-    animation: sealSparkGlowMovement 1.3s cubic-bezier(.32,1.15,.78,1.15) forwards;
-}
-
 .sealSpark{
     content: "";
     width: 15%;
@@ -1213,10 +1203,6 @@ body{
     opacity: 0;
     transform-origin: center;
     will-change: transform;
-}
-
-.SealSparkShow{
-    animation: sealSparkMovement 1.3s cubic-bezier(.32,1.15,.78,1.15) forwards 0.2s;
 }
 
 #sealSpark1{
@@ -1239,6 +1225,10 @@ body{
      transform: translate(-550%, -150%) rotate(270deg);
 }
 
+.SealSparkGlowShow{
+    animation: sealSparkGlowMovement 1.3s cubic-bezier(.32,1.15,.78,1.15) forwards;
+}
+
 @keyframes sealSparkGlowMovement {
     0%{
         scale: 0;
@@ -1249,6 +1239,10 @@ body{
         scale: 1;
         opacity: 0;
     }
+}
+
+.SealSparkShow{
+    animation: sealSparkMovement 1.3s cubic-bezier(.32,1.15,.78,1.15) forwards 0.2s;
 }
 
 @keyframes sealSparkMovement {

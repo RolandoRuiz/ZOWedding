@@ -36,17 +36,18 @@ const letterCardGlow = document.querySelector(".letterCardGlow");
 function openLetter() {
 
   stopLetterMovement.style.animationPlayState = "running, running, paused";
+  
   closeLetterGlowBox.classList.add("stopLetterGlow");
   stopLetterGlow.style.animationPlayState = "paused";
 
   
-
   letterSeal.classList.add("openSeal");
   letterBranch.classList.add("openSeal");
+
+
   sparkGlow.classList.add("SealSparkGlowShow");
-  
-  sealSpark.forEach(element => {
-    element.classList.add("SealSparkShow");
+  sealSpark.forEach(sealSparkElem => {
+    sealSparkElem.classList.add("SealSparkShow");
   });
 
   setTimeout(() => {
