@@ -79,7 +79,7 @@ function openLetter() {
 
   setTimeout(() => {
     takeCard.classList.add("cardRepo");
-  }, 7050);
+  }, 7100);
 
   setTimeout(() => {
     moveBranchTwo.style.zIndex = "200";
