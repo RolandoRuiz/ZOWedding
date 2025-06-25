@@ -33,6 +33,7 @@ const endTopOverlay = document.querySelector(".bgrTopOverlay");
 const letterCardGlow = document.querySelector(".letterCardGlow");
 
 const removeLidShadow = document.querySelector(".letterLidShadow");
+const moveBranchTwo = document.querySelector(".branchTwo");
 
 
 function openLetter() {
@@ -64,19 +65,23 @@ function openLetter() {
   
   openLid.classList.add("openLid");
   removeLidShadow.classList.add("removeLidShadow");
+
   
   takeCard.classList.add("cardMovement");
 
 
   endOverlay.classList.add("endOverlayAnim");
   endTopOverlay.classList.add("endOverlayAnim");
-  /*getOverlays.forEach(element => {
-    element.style.animationPlayState = "paused";
-  });*/
-
-
   bgrClose.classList.add("closeBgrMultiply");
   archShadow.classList.add("lightenArchShadow");
 
   letterCardGlow.classList.add("screenGlowAnim");
+
+  setTimeout(() => {
+    takeCard.classList.add("cardRepo");
+  }, 7050);
+
+  setTimeout(() => {
+    moveBranchTwo.style.zIndex = "200";
+  }, 8500);
 }

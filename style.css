@@ -27,6 +27,8 @@ body{
     max-width: 100svw;
 }
 
+/*Opening Section (Background of initial area)*/
+
 #openingSection{
     width: 100svw;
     height: 115svh;
@@ -43,7 +45,7 @@ body{
 #openingSection::before{
     content: "";
     max-width: 100svw;
-    max-height: 100svh;
+    max-height: 115svh;
     position: absolute;
     background-image: url(Assets/svg/backgroundTexture.svg);
     background-repeat: repeat;
@@ -58,18 +60,20 @@ body{
 #openingSection::after{
     content: "";
     max-width: 100svw;
-    max-height: 100svh;
+    max-height: 115svh;
     position: absolute;
-    background-image: radial-gradient(100% 66% at 50% 44%, transparent 40%, white 90%);;
+    background-image: radial-gradient(100% 60% at 50% 44%, transparent 40%, white 100%);;
     top: 0px;
     right: 0px;
     bottom: 0px;
     left: 0px;
 }
 
+/* Arch Components*/
+
 .bgrArch{
     width: 100svw;
-    height: 100svh;
+    height: 115svh;
     position: absolute;
     display: flex;
     justify-content: center;
@@ -80,35 +84,17 @@ body{
 
 .bgrArch::after{
     content: "";
-    width: 100svw;
-    height: auto;
-    z-index: 100;
-    position: relative;
-    background: url(Assets/svg/archGraphic.svg);
-    background-repeat: no-repeat;
-    background-position: top;
-    background-size: cover;
-    mask-image: linear-gradient(black 0%, black 60%, transparent 100%);
-    margin-left: 10svw; margin-right: 10svw; margin-top: 6svh;
-    filter: brightness(2.2);
-}
-
-#wallEmblem{
-    width: 45svw;
-    height: 45svw;
+    width: 75svw;
+    height: 109svh;
     position: absolute;
-    z-index: -0;
-    top: 15svh;
-    background-image: url(Assets/svg/wallEmblem.svg);
-    background-repeat: no-repeat;
-    background-position: center;
-    filter: drop-shadow(0px -3px 0.5px rgba(0,0,0,0.2));
+    bottom: 0%;
+    border: solid 8px rgb(181, 181, 181);
+    border-radius: 1000px 1000px 0px 0px;
 }
 
 .archShadow{
-    content: "";
-    width: 80svw;
-    height: 94svh;
+    width: 75svw;
+    height: 109svh;
     position: absolute;
     z-index: 50;
     justify-self: center;
@@ -133,35 +119,60 @@ body{
 .lightenArchShadow{
     opacity: 0.4;
 
-    animation: lightenArch 0.5s forwards cubic-bezier(.3,.01,.94,.62) 5s;
+    animation: lightenArch 0.5s forwards cubic-bezier(.3,.01,.94,.62) 6s;
 }
 
 @keyframes lightenArch {
     0%{
         opacity: 0.4; 
     }100%{
-        opacity: 0.2;
+        opacity: 0.15;
     }
 }
 
+/* Wall Component*/
 
-#bgrBranches{
+#wallEmblem{
+    width: 45svw;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    position: absolute;
+    z-index: -0;
+    top: 15svh;
+    background-image: url(Assets/svg/wallEmblem.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: drop-shadow(0px -3px 0.5px rgba(0,0,0,0.2));
+}
+
+/* Background Branch Components*/
+
+.bgrBranches{
     width: 100svw;
     height: 100svh;
     position: absolute;
-    z-index: 100;
     overflow: hidden;
 }
 
+.branchOne{
+    z-index: 100;
+}
+
+.branchTwo{
+    z-index: 100;
+}
+
 .branch{
-    width: 85svw;
+    width: 84svw;
     height: auto;
     position: absolute;
     aspect-ratio: 1/1;
 }
 
+/* Upper Branch Components*/
+
 #upperBranch{
-    top: 1svh;
+    top: 0svh;
     left: -6svw;
     transform-origin: bottom left;
     transform: rotate(0deg);
@@ -182,8 +193,10 @@ body{
     object-fit: contain;
 }
 
+/* Lower Branch Components*/
+
 #lowerBranch{
-    bottom: -3svh;
+    bottom: -5svh;
     right: -10svw;
     transform-origin: top right;
     transform: rotate(5deg);
@@ -199,10 +212,12 @@ body{
     }
 }
 
-#lowerBranch {
+#lowerBranch > object{
     color-scheme: normal;
     object-fit: contain;
 }
+
+/* Initial Background Darkness Components*/
 
 .bgrMultiply{
     width: 100svw;
@@ -234,7 +249,7 @@ body{
 
 .closeBgrMultiply{
     opacity: 0.94;
-    animation: closeMultiplyOpacity 0.5s forwards cubic-bezier(.3,.01,.94,.62) 5s;
+    animation: closeMultiplyOpacity 0.5s forwards cubic-bezier(.3,.01,.94,.62) 6s;
 }
 
 @keyframes closeMultiplyOpacity {
@@ -313,6 +328,8 @@ body{
     z-index: 0;
 }
 
+/* Initial Background Sparks Components*/
+
 .baseSparkWrapper{
     width: 100svw;
     height: 85svh;
@@ -335,7 +352,6 @@ body{
     transform-origin: bottom;
     opacity: 0;
     transform: scale(0);
-
 }
 
 .topOverlayAnim{
@@ -355,7 +371,7 @@ body{
 }
 
 .endOverlayAnim{
-    animation: endOverlayAnim 0.5s forwards cubic-bezier(.3,.01,.94,.62) 5s;
+    animation: endOverlayAnim 0.5s forwards cubic-bezier(.3,.01,.94,.62) 6s;
     animation-composition: replace;
     transform: scale(1);
     opacity: 1;
@@ -391,6 +407,8 @@ body{
         scale: 1.05;
     }
 }
+
+/* Spark Group Components*/
 
 .sparkGrpStart{
     width: 100%;
@@ -610,19 +628,21 @@ body{
 
 .letterWrapper{
     width: 100svw;
-    height: 100svh;
+    height: 115svh;
     position: absolute;
     display: flex;
     justify-content: center;
     align-items: flex-end;
     z-index: 100;
     overflow: hidden;
+    opacity: 1;
 }
 
 .letterBox{
-    width: 50%;
+    width: 45%;
     height: auto;
     position: absolute;
+    bottom: 15svh;
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -822,6 +842,24 @@ body{
     }
 }
 
+.cardRepo{
+    animation: cardReposition 3s ease-in-out forwards;
+    z-index: 900;
+    animation-composition: accumulate;
+}
+
+@keyframes cardReposition {
+    0%{
+        transform: translateY(-35svh) scale(1, 1);
+        filter: drop-shadow(0px 0px 0px rgb(177, 177, 177));
+    }70%{
+        filter: drop-shadow(0px 0px 0px rgb(177, 177, 177));
+    }100%{
+        transform: translateY(48svh) scale(2, 2.1);
+        filter: drop-shadow(0px -10px 5px rgb(177, 177, 177));  
+    }
+}
+
 .letterCardGlow{
     width: 100%;
     height: auto;
@@ -841,16 +879,13 @@ body{
     0%{
         transform: scale(0);
         opacity: 1;
-    }40%{
+    }36%{
         transform: scale(0);
         opacity: 1;
-    }60%{
+    }50%{
         transform: scale(25);
         opacity: 1;
-    }85%{
-        transform: scale(25);
-        opacity: 0;
-    }99%{
+    }70%{
         transform: scale(25);
         opacity: 0;
     }100%{
