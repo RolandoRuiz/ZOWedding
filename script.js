@@ -32,6 +32,8 @@ const endOverlay = document.querySelector(".baseOverlayWrapper");
 const endTopOverlay = document.querySelector(".bgrTopOverlay");
 const letterCardGlow = document.querySelector(".letterCardGlow");
 
+const removeLidShadow = document.querySelector(".letterLidShadow");
+
 
 function openLetter() {
 
@@ -51,29 +53,28 @@ function openLetter() {
   });
 
   setTimeout(() => {
-    getLidShadow.classList.remove("letterLidShadow");
-  }, 1600);
-
-  openLid.classList.add("openLid");
-  takeCard.classList.add("cardMovement");
-
-  clearSparks.classList.add("endSpark");
-
-  setTimeout(() => {
     endSpark1.style.animationPlayState = "paused";
     endSpark2.style.animationPlayState = "paused";
     endSpark3.style.animationPlayState = "paused";
     endSpark1.style.display = "none";
     endSpark2.style.display = "none";
     endSpark3.style.display = "none";
-  }, 2500);
+  }, 2600);
+  clearSparks.classList.add("endSpark");
+  
+  openLid.classList.add("openLid");
+  removeLidShadow.classList.add("removeLidShadow");
+  
+  takeCard.classList.add("cardMovement");
 
-  getOverlays.forEach(element => {
-    element.style.animationPlayState = "paused";
-  });
 
   endOverlay.classList.add("endOverlayAnim");
   endTopOverlay.classList.add("endOverlayAnim");
+  /*getOverlays.forEach(element => {
+    element.style.animationPlayState = "paused";
+  });*/
+
+
   bgrClose.classList.add("closeBgrMultiply");
   archShadow.classList.add("lightenArchShadow");
 
