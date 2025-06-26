@@ -17,6 +17,26 @@
     --medium-black: #070707;
 }
 
+@font-face {
+    font-family: zText;
+    src: url(Assets/fonts/Radicalis.ttf);
+}
+
+@font-face {
+    font-family: titleText;
+    src: url(Assets/fonts/MightiestAutograph.ttf);
+}
+
+@font-face {
+    font-family: specialText;
+    src: url(Assets/fonts/GriffithsRegular.otf);
+}
+
+@font-face {
+    font-family: normalText;
+    src: url(Assets/fonts/sikandinarie.ttf);
+}
+
 html{
     color-scheme: dark light;
     background-color: var(--medium-black); /* Don't change, keep values to maintain dark ui*/
@@ -119,7 +139,7 @@ body{
 .lightenArchShadow{
     opacity: 0.4;
 
-    animation: lightenArch 0.5s forwards cubic-bezier(.3,.01,.94,.62) 5.5s;
+    animation: lightenArch 0.5s forwards cubic-bezier(.3,.01,.94,.62) 5.2s;
 }
 
 @keyframes lightenArch {
@@ -163,7 +183,7 @@ body{
 }
 
 .branchTwoAnim{
-    animation: branchTwoAnim 0.1s linear forwards 7s;
+    animation: branchTwoAnim 0.1s linear forwards 6.5s;
 }
 
 @keyframes branchTwoAnim {
@@ -261,7 +281,7 @@ body{
 
 .closeBgrMultiply{
     opacity: 0.94;
-    animation: closeMultiplyOpacity 0.5s forwards cubic-bezier(.3,.01,.94,.62) 5.5s;
+    animation: closeMultiplyOpacity 0.5s forwards cubic-bezier(.3,.01,.94,.62) 5.2s;
 }
 
 @keyframes closeMultiplyOpacity {
@@ -271,6 +291,62 @@ body{
         opacity: 0;
     }
 }
+
+/* Initial Text Components*/
+
+.initialTextWrapper{
+    width: 100svw;
+    height: 100svh;
+    position: absolute;
+    z-index: 150;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    filter: drop-shadow(0px 0px 10px rgb(0, 0, 0)) drop-shadow(0px 0px 5px rgba(0, 0, 0)) drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.4));
+    margin-top: 12%;
+}
+
+.initialText{
+    width: 80svw;
+    height: auto;
+    position: absolute;
+    aspect-ratio: 1 / 0.8;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    font-family: specialText;
+    font-size: 1.4rem;
+    text-align: center;
+    vertical-align: text-top;
+}
+
+.initTxt3{
+    font-family: titleText;
+    font-size: 3.5rem;
+    text-align: center;
+    line-height: 50%;
+    vertical-align: text-bottom;
+}
+
+.lineMask{
+    background-color: red;
+    mask-image: radial-gradient(10% 50% at 50% 50% , transparent 60%, black 100%);
+    mask-repeat: no-repeat;
+    mask-size: 100% 100%;
+    mask-position: 50% 50%;
+    animation: lineMaskMovement 2s ease infinite;
+}
+
+@keyframes lineMaskMovemen {
+    0%{
+        mask-position: left;
+    }100%{
+        mask-position: right;
+    }
+}
+
+/* Overlay Components*/
 
 .baseOverlayWrapper{
     width: 100svw;
@@ -383,7 +459,7 @@ body{
 }
 
 .endOverlayAnim{
-    animation: endOverlayAnim 0.5s forwards cubic-bezier(.3,.01,.94,.62) 5.5s;
+    animation: endOverlayAnim 0.5s forwards cubic-bezier(.3,.01,.94,.62) 5.2s;
     animation-composition: replace;
     transform: scale(1);
     opacity: 1;
@@ -647,7 +723,7 @@ body{
     align-items: flex-end;
     z-index: 100;
     overflow: hidden;
-    opacity: 1;
+    opacity: 0;
 }
 
 .letterBox{
@@ -827,7 +903,7 @@ body{
     background-color: var(--pure-white);
     border-radius: 4%;
     margin-bottom: 2%;
-
+    filter: drop-shadow(0px 0px 0px rgb(177, 177, 177));
     transform: translateY(0svh);
     transform-style: preserve-3d;
     backface-visibility: hidden;
@@ -836,39 +912,41 @@ body{
 
 .cardMovement{
     animation: openCard 2s ease forwards 2.5s,
-    cardReposition 3s ease-in-out forwards 6s;
+    cardReposition 1.5s ease-in-out forwards 6s;
 }
 
 @keyframes openCard {
-    0%{
+    0%{ 
+        filter: drop-shadow(0px 0px 0px rgb(177, 177, 177));
         transform: translateY(0svh);
         z-index: 700;
     }20%{
+        filter: drop-shadow(0px 0px 0px rgb(177, 177, 177));
         transform: translateY(-3svh);
         z-index: 700;
     }50%{
+        filter: drop-shadow(0px 0px 0px rgb(177, 177, 177));
         transform: translateY(0svh);
         z-index: 700;
     }100%{
+        filter: drop-shadow(0px 0px 0px rgb(177, 177, 177));
         transform: translateY(-35svh);
         z-index: 900;
     }
-}
-
-.cardRepo{
-    animation: cardReposition 3s ease-in-out forwards 7s;
-    animation-composition: accumulate;
 }
 
 @keyframes cardReposition {
     0%{
         transform: translateY(-35svh) scale(1, 1);
         filter: drop-shadow(0px 0px 0px rgb(177, 177, 177));
+        z-index: 900;
     }70%{
         filter: drop-shadow(0px 0px 0px rgb(177, 177, 177));
+        z-index: 900;
     }100%{
         transform: translateY(48svh) scale(2, 2.1);
-        filter: drop-shadow(0px -10px 5px rgb(177, 177, 177));  
+        filter: drop-shadow(0px -10px 5px rgb(177, 177, 177));
+        z-index: 900;
     }
 }
 
@@ -894,7 +972,7 @@ body{
     }50%{
         transform: scale(25);
         opacity: 1;
-    }75%{
+    }51%{
         transform: scale(25);
         opacity: 1;
     }100%{
