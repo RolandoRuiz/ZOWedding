@@ -162,6 +162,18 @@ body{
     z-index: 100;
 }
 
+.branchTwoAnim{
+    animation: branchTwoAnim 0.1s linear forwards 7s;
+}
+
+@keyframes branchTwoAnim {
+    0%{
+        z-index: 100;
+    }100%{
+        z-index: 200;
+    }
+}
+
 .branch{
     width: 84svw;
     height: auto;
@@ -823,7 +835,8 @@ body{
 }
 
 .cardMovement{
-    animation: openCard 2s ease forwards 2.5s;
+    animation: openCard 2s ease forwards 2.5s,
+    cardReposition 3s ease-in-out forwards 6s;
 }
 
 @keyframes openCard {
@@ -842,9 +855,8 @@ body{
     }
 }
 
-.cardRep{
-    animation: cardReposition 3s ease-in-out forwards;
-    z-index: 900;
+.cardRepo{
+    animation: cardReposition 3s ease-in-out forwards 7s;
     animation-composition: accumulate;
 }
 
@@ -871,15 +883,12 @@ body{
     transform: scale(0);
 }
 
-.screenGlowAni{
-    animation: screenGlow 10s ease forwards 1.5s;
+.screenGlowAnim{
+    animation: screenGlow 3s ease forwards 4s;
 }
 
 @keyframes screenGlow {
     0%{
-        transform: scale(0);
-        opacity: 1;
-    }36%{
         transform: scale(0);
         opacity: 1;
     }50%{
@@ -887,7 +896,7 @@ body{
         opacity: 1;
     }75%{
         transform: scale(25);
-        opacity: 0;
+        opacity: 1;
     }100%{
         transform: scale(0);
         opacity: 0;

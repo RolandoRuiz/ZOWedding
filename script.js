@@ -68,6 +68,7 @@ function openLetter() {
 
   
   takeCard.classList.add("cardMovement");
+  letterCardGlow.classList.add("screenGlowAnim");
 
 
   endOverlay.classList.add("endOverlayAnim");
@@ -75,10 +76,5 @@ function openLetter() {
   bgrClose.classList.add("closeBgrMultiply");
   archShadow.classList.add("lightenArchShadow");
 
-  letterCardGlow.classList.add("screenGlowAnim");
-
-  setTimeout(() => {
-    takeCard.classList.add("cardRepo");
-  }, 8000);
-
+  moveBranchTwo.classList.add("branchTwoAnim");
 }
