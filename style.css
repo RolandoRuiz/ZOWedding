@@ -395,7 +395,7 @@ body{
 }
 
 .endSpark{
-    animation: endSpark 1s ease-out forwards 1.5s;
+    animation: endSpark 1.5s ease-out forwards 1.5s;
 }
 
 @keyframes endSpark {
@@ -823,7 +823,7 @@ body{
 }
 
 .cardMovement{
-    animation: openCard 2.2s ease forwards 3.4s;
+    animation: openCard 2s ease forwards 2.5s;
 }
 
 @keyframes openCard {
@@ -842,7 +842,7 @@ body{
     }
 }
 
-.cardRepo{
+.cardRep{
     animation: cardReposition 3s ease-in-out forwards;
     z-index: 900;
     animation-composition: accumulate;
@@ -871,7 +871,7 @@ body{
     transform: scale(0);
 }
 
-.screenGlowAnim{
+.screenGlowAni{
     animation: screenGlow 10s ease forwards 1.5s;
 }
 
@@ -999,8 +999,8 @@ body{
 
 .openLid{
     animation: 
-    openLidMovement 2s cubic-bezier(.2,.88,.68,1.14) forwards 1.2s,
-    lidIndex 2s cubic-bezier(.2,.88,.68,1.14) forwards 1.2s;
+    openLidMovement 2s cubic-bezier(.2,.88,.68,1.14) forwards 1s,
+    lidIndex 2s cubic-bezier(.2,.88,.68,1.14) forwards 1s;
     animation-composition: replace, replace;
 }
 
@@ -1049,7 +1049,7 @@ body{
 }
 
 .removeLidShadow{
-    animation: removeLidShadow 2s cubic-bezier(.2,.88,.68,1.14) forwards 1.2s;
+    animation: removeLidShadow 2s cubic-bezier(.2,.88,.68,1.14) forwards 1s;
 }
 
 @keyframes removeLidShadow {

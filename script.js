@@ -79,9 +79,6 @@ function openLetter() {
 
   setTimeout(() => {
     takeCard.classList.add("cardRepo");
-  }, 7100);
+  }, 8000);
 
-  setTimeout(() => {
-    moveBranchTwo.style.zIndex = "200";
-  }, 8500);
 }
