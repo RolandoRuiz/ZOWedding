@@ -364,7 +364,7 @@ body{
     mask-repeat: no-repeat;
     mask-size: 230% 100%;
     mask-position: 100%;
-    animation: lineMaskMovement 3.5s linear forwards;
+    animation: lineMaskMovement 3.2s linear forwards;
 }
 
 @keyframes lineMaskMovement {
@@ -376,7 +376,7 @@ body{
 }
 
 .lineBox .ph1Glow{
-    filter: drop-shadow(0px 0px 5px rgb(255, 255, 255)) drop-shadow(0px 0px 5px rgb(255, 255, 255)) drop-shadow(0px 0px 5px rgba(255, 255, 255, 0.4));
+    filter: drop-shadow(0px 0px 5px rgb(255, 255, 255)) drop-shadow(0px 0px 5px rgb(255, 255, 255)) drop-shadow(0px 0px 5px rgba(255, 255, 255, 0.6));
 }
 
 .ph1Glow{
@@ -393,7 +393,7 @@ body{
     mask-repeat: no-repeat;
     mask-size: 200% 100%;
     mask-position: 130%;
-    animation: glowMaskMovement 3.5s linear forwards;
+    animation: glowMaskMovement 3.2s linear forwards;
 }
 
 @keyframes glowMaskMovement {
