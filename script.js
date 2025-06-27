@@ -10,13 +10,22 @@ getOverlays.forEach(function (overlay, i) {
   },5600);
 });
 
-const getParagraphOne = document.querySelectorAll(".ph1");
+const getPh1 = document.querySelectorAll(".ph1");
+const getPhGlow1 = document.querySelectorAll(".ph1Glow")
 
 
 setTimeout(() => {
-  getParagraphOne.forEach((element, index) => {
+  getPh1.forEach((element, index) => {
   setTimeout(() => {
     element.classList.add("lineMask")
+  }, (index + 1)*(1800));
+  });
+}, 3000);
+
+setTimeout(() => {
+  getPhGlow1.forEach((element, index) => {
+  setTimeout(() => {
+    element.classList.add("glowMask")
   }, (index + 1)*(1800));
   });
 }, 3000);
