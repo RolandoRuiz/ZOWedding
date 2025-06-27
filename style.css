@@ -67,7 +67,7 @@ body{
     max-width: 100svw;
     max-height: 115svh;
     position: absolute;
-    background-image: url(Assets/svg/backgroundTexture.svg);
+    background-image: url(Assets/svg/backgroundTexture.min.svg);
     background-repeat: repeat;
     background-size: 50svw;
     opacity: 0.6;
@@ -319,6 +319,7 @@ body{
     font-size: 1.4rem;
     text-align: center;
     vertical-align: text-top;
+    color: white;
 }
 
 .initTxt3{
@@ -326,6 +327,7 @@ body{
     font-size: 3.5rem;
     text-align: center;
     vertical-align: middle;
+    color: white;
 }
 
 .ParagraphOne{
@@ -487,7 +489,7 @@ body{
     overflow: hidden;
     top: 15svh;
     transform-origin: bottom;
-    mask-image: radial-gradient(95% 80% at 50% 70%, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0.7) 50%, rgba(255, 255, 255, 0.1) 60%, transparent 70%);
+    mask-image: radial-gradient(95% 80% at 50% 60%, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0.7) 40%, rgba(255, 255, 255, 0.1) 50%, transparent 60%);
 }
 
 .bgrTopOverlay{
@@ -565,7 +567,7 @@ body{
 }
 
 .startSparkAnimOne{
-    animation: sparkMovement 15s linear forwards infinite 1.5s;
+    animation: sparkMovement 15s linear forwards infinite 3s;
 }
 
 .sparkGrpMiddle{
@@ -577,7 +579,7 @@ body{
 }
 
 .startSparkAnimTwo{
-    animation: sparkMovement 15s linear forwards infinite 5.5s;
+    animation: sparkMovement 15s linear forwards infinite 7s;
 }
 
 .sparkGrpEnd{
@@ -589,14 +591,14 @@ body{
 }
 
 .startSparkAnimThree{
-    animation: sparkMovement 15s linear forwards infinite 9.5s;
+    animation: sparkMovement 15s linear forwards infinite 11s;
 }
 
 @keyframes sparkMovement {
     0%{
-        transform: translateY(100svh) scale(0.4);
+        transform: translateY(100svh);
     }100%{
-        transform: translateY(-15svh) scale(1.1);
+        transform: translateY(-17svh);
     }
 }
 
