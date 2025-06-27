@@ -10,6 +10,16 @@ getOverlays.forEach(function (overlay, i) {
   },5600);
 });
 
+const getParagraphOne = document.querySelectorAll(".ph1");
+
+
+setTimeout(() => {
+  getParagraphOne.forEach((element, index) => {
+  setTimeout(() => {
+    element.classList.add("lineMask")
+  }, (index + 1)*(1800));
+  });
+}, 3000);
 
 const getLidShadow = document.querySelector(".letterLid");
 const letterSeal = document.querySelector(".sealBody");

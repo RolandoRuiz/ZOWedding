@@ -325,24 +325,47 @@ body{
     font-family: titleText;
     font-size: 3.5rem;
     text-align: center;
-    line-height: 50%;
-    vertical-align: text-bottom;
+    vertical-align: middle;
+}
+
+.ParagraphOne{
+    opacity: 1;
+    display: flex;
+
+    animation: closeParagraph 1s ease-in forwards 15s;
+}
+
+@keyframes closeParagraph {
+    0%{
+        opacity: 1;
+        display: flex;
+    }100%{
+        opacity: 0;
+        display: none;
+    }
+}
+
+.ph1{
+    width: 100%;
+    mask-image: radial-gradient(80% 400% at 100% 50% , transparent 50%, black 100%);
+    mask-repeat: no-repeat;
+    mask-size: 350% 100%;
+    mask-position: 100%;
 }
 
 .lineMask{
-    background-color: red;
-    mask-image: radial-gradient(10% 50% at 50% 50% , transparent 60%, black 100%);
+    mask-image: radial-gradient(80% 400% at 100% 50% , transparent 50%, black 100%);
     mask-repeat: no-repeat;
-    mask-size: 100% 100%;
-    mask-position: 50% 50%;
-    animation: lineMaskMovement 2s ease infinite;
+    mask-size: 350% 100%;
+    mask-position: 100%;
+    animation: lineMaskMovement 3.5s ease-out forwards;
 }
 
-@keyframes lineMaskMovemen {
+@keyframes lineMaskMovement {
     0%{
-        mask-position: left;
+        mask-position: 100%;
     }100%{
-        mask-position: right;
+        mask-position: 0%;
     }
 }
 
