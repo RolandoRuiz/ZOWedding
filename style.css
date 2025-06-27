@@ -364,7 +364,7 @@ body{
     mask-repeat: no-repeat;
     mask-size: 230% 100%;
     mask-position: 100%;
-    animation: lineMaskMovement 3s linear forwards;
+    animation: lineMaskMovement 3.2s linear forwards;
 }
 
 @keyframes lineMaskMovement {
@@ -389,11 +389,11 @@ body{
 }
 
 .glowMask{
-    mask-image: radial-gradient(15% 95% at 50% 50%, black 0%, transparent 60%);
+    mask-image: radial-gradient(15% 95% at 50% 50%, black 20%, transparent 60%);
     mask-repeat: no-repeat;
     mask-size: 200% 100%;
     mask-position: 130%;
-    animation: glowMaskMovement 3s linear forwards;
+    animation: glowMaskMovement 3.2s linear forwards;
 }
 
 @keyframes glowMaskMovement {
