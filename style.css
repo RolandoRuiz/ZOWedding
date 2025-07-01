@@ -368,39 +368,42 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    filter: drop-shadow(0px 0px 10px rgb(0, 0, 0)) drop-shadow(0px 0px 5px rgba(0, 0, 0));
+    filter: drop-shadow(0px 0px 10px rgb(0, 0, 0)) drop-shadow(0px 0px 10px rgba(0, 0, 0));
     margin-top: 12%;
 }
 
-.initialText{
-    width: 80svw;
-    height: auto;
-    position: absolute;
-    aspect-ratio: 1 / 0.8;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: column;
+.initTxt1{
     font-family: specialText;
-    font-size: 1.4rem;
-    text-align: center;
-    vertical-align: text-top;
-    color: white;
-}
-
-.initTxt3{
-    font-family: titleText;
-    font-size: 3.5rem;
+    font-size: 1.6rem;
     text-align: center;
     vertical-align: middle;
     color: white;
 }
 
-.ParagraphOne{
-    opacity: 1;
-    display: flex;
+.initTxt3{
+    font-family: titleText;
+    font-size: 4rem;
+    text-align: center;
+    vertical-align: middle;
+    color: white;
+    margin-bottom: -5%;
+}
 
-    animation: closeParagrap 1s ease-in forwards 15s;
+
+.ParagraphOne, .ParagraphTwo{
+    width: 80svw;
+    height: auto;
+    aspect-ratio: 1 / 0.8;
+    position: absolute;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.ParagraphOne{
+    animation: closeParagraph 0.5s ease-in forwards 17s;
 }
 
 @keyframes closeParagraph {
@@ -416,8 +419,9 @@ body{
 .lineBox{
     width: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 }
+
 
 .ph1{
     width: 100%;
@@ -602,7 +606,7 @@ body{
     }
 }
 
-.sparkBox{
+.sparkWrapper{
     width: 100%;
     height: 100%;
     position: absolute;
@@ -626,11 +630,11 @@ body{
 
 .sparkGrpStart{
     width: 100%;
-    height: 34%;
+    height: auto;
     position: absolute;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: start;
     transform: translateY(100svh);
     will-change: transform;
 }
@@ -642,44 +646,44 @@ body{
 
 .sparkGrpMiddle{
     width: 100%;
-    height: 24%;
+    height: auto;
     position: absolute;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: start;
     transform: translateY(100svh);
     will-change: transform;
 }
 
 .startSparkAnimTwo{
-    animation: sparkMovement 15s linear forwards infinite 7s;
+    animation: sparkMovement 15s linear forwards infinite 8s;
 }
 
 .sparkGrpEnd{
     width: 100%;
-    height: 20%;
+    height: auto;
     position: absolute;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: start;
     transform: translateY(100svh);
     will-change: transform;
 }
 
 .startSparkAnimThree{
-    animation: sparkMovement 15s linear forwards infinite 10s;
+    animation: sparkMovement 15s linear forwards infinite 11.75s;
 }
 
 @keyframes sparkMovement {
     0%{
         transform: translateY(100svh);
     }100%{
-        transform: translateY(-17svh);
+        transform: translateY(-24svh);
     }
 }
 
 .sparkBox{
-    width: 100%;
+    width: 85%;
     filter: drop-shadow(0px 0px 7px white);
 }
 

@@ -17,18 +17,20 @@ const getPhGlow1 = document.querySelectorAll(".ph1Glow")
 setTimeout(() => {
   getPh1.forEach((element, index) => {
   setTimeout(() => {
-    element.classList.add("lineMask")
-  }, (index + 1)*(1800));
+    element.classList.add("lineMask");
+    element.style.animationDelay = `${index * 2}s`;
+  }, (index + 1));
   });
-}, 3000);
+}, 4000);
 
 setTimeout(() => {
   getPhGlow1.forEach((element, index) => {
   setTimeout(() => {
-    element.classList.add("glowMask")
-  }, (index + 1)*(1800));
+    element.classList.add("glowMask");
+    element.style.animationDelay = `${index * 2}s`;
+  }, index + 1);
   });
-}, 3000);
+}, 4000);
 
 const getLidShadow = document.querySelector(".letterLid");
 const letterSeal = document.querySelector(".sealBody");
