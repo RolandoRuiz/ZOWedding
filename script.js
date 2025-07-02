@@ -11,7 +11,9 @@ getOverlays.forEach(function (overlay, i) {
 });
 
 const getPh1 = document.querySelectorAll(".ph1");
-const getPhGlow1 = document.querySelectorAll(".ph1Glow")
+const getPhGlow1 = document.querySelectorAll(".ph1Glow");
+const getPh2 = document.querySelectorAll(".ph2");
+const getPhGlow2 = document.querySelectorAll(".ph2Glow");
 
 
 setTimeout(() => {
@@ -31,6 +33,24 @@ setTimeout(() => {
   }, index + 1);
   });
 }, 4000);
+
+setTimeout(() => {
+  getPh2.forEach((element, index) => {
+  setTimeout(() => {
+    element.classList.add("lineMask");
+    element.style.animationDelay = `${index * 2}s`;
+  }, (index + 1));
+  });
+}, 16000);
+
+setTimeout(() => {
+  getPhGlow2.forEach((element, index) => {
+  setTimeout(() => {
+    element.classList.add("glowMask");
+    element.style.animationDelay = `${index * 2}s`;
+  }, index + 1);
+  });
+}, 16000);
 
 const getLidShadow = document.querySelector(".letterLid");
 const letterSeal = document.querySelector(".sealBody");
