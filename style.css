@@ -52,7 +52,7 @@ body{
 #openingSection{
     width: 100svw;
     height: 115svh;
-    position: absolute;
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -1419,4 +1419,12 @@ body{
     }100%{
         opacity: 0;
     }
+}
+
+/*First Section Components*/
+
+#firstSection{
+    width: 100svw;
+    height: 85svh;
+    background-color: white;
 }
