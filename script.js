@@ -75,6 +75,7 @@ const letterCardGlow = document.querySelector(".letterCardGlow");
 
 const removeLidShadow = document.querySelector(".letterLidShadow");
 const moveBranchTwo = document.querySelector(".branchTwo");
+const arrowBob = document.querySelector(".bottomArrowBox");
 
 
 function openLetter() {
@@ -118,4 +119,5 @@ function openLetter() {
   archShadow.classList.add("lightenArchShadow");
 
   moveBranchTwo.classList.add("branchTwoAnim");
+  arrowBob.classList.add("arrowBobAnim");
 }
