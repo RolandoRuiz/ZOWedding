@@ -11,7 +11,7 @@
     --bright-red: #990E0E;
     --shadow-red: #47000f;
     --soft-gold: #D5B88F;
-    --soft-grey: #F0F0F0;
+    --soft-grey: #d4d4d4;
     --pure-white: #FFFFFF;
     --soft-white: #f4f4f4;
     --medium-black: #202020;
@@ -1460,7 +1460,7 @@ body{
     fill: var(--pure-white);
 }
 
-/*First Section Components*/
+/*font value Components*/
 
 .normalText{
     color: var(--medium-black);
@@ -1477,6 +1477,8 @@ body{
     font-size: 3rem;
     text-align: center;
 }
+
+/*First Section Components*/
 
 #firstSection{
     width: 100svw;
@@ -1499,6 +1501,10 @@ body{
     grid-column-start: 1; grid-column-end: 3;
     grid-row-start: 1; grid-row-end: 2;
     text-align: center;
+}
+
+.fs1 > .normalTextCursive{
+    color: var(--soft-gold);
 }
 
 .firstSectionBox{
@@ -1612,4 +1618,72 @@ body{
     background-size: 50svw;
     opacity: 0.4;
     box-shadow: inset 0px 0px 25px rgb(0, 0, 0);
+}
+
+#secondSection{
+    width: 100svw;
+    height: 80svh;
+    position: absolute;
+    z-index: 300;
+    top: 175svh;
+    display: grid;
+    background-color: var(--pure-white);
+    border: solid 2px white;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.8fr 1fr 0.2fr 6fr;
+}
+
+.textBlock.fs2{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    grid-column-start: 1; grid-column-end: 2;
+    grid-row-start: 2; grid-row-end: 3;
+    text-align: center;
+}
+
+.fs2 > .normalText{
+    font-size: 1.1rem;
+}
+
+.fs2 > .normalTextCursive{
+    color: var(--soft-gold);
+}
+
+.secondSectionBox{
+    width: 100%;
+    height: 100%;
+    display: grid;
+
+    grid-template-columns: 0.2fr 0.1fr 1fr 0.1fr 0.2fr;
+    grid-template-rows: 1fr 0.3fr 0.3fr;
+
+    grid-column-start: 1; grid-column-end: 2;
+    grid-row-start: 4; grid-row-end: 5;
+}
+
+.partnerImgSection2{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    background-image: url(Assets/svg/backgroundTexture.min.svg);
+    background-repeat: repeat;
+    background-size: 50svw;
+    opacity: 0.4;
+    box-shadow: inset 0px 0px 15px rgb(0, 0, 0);
+}
+
+.Bgr1{
+    grid-column-start: 1; grid-column-end: 2;
+    grid-row-start: 1; grid-row-end: 4;
+}
+
+.Bgr2{
+    grid-column-start: 3; grid-column-end: 4;
+    grid-row-start: 1; grid-row-end: 4;
+}
+
+.Bgr3{
+    grid-column-start: 5; grid-column-end: 6;
+    grid-row-start: 1; grid-row-end: 4;
 }
