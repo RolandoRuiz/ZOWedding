@@ -11,7 +11,7 @@
     --bright-red: #990E0E;
     --shadow-red: #47000f;
     --soft-gold: #D5B88F;
-    --soft-grey: #d4d4d4;
+    --soft-grey: #f2f2f2;
     --pure-white: #FFFFFF;
     --soft-white: #f4f4f4;
     --medium-black: #202020;
@@ -1640,7 +1640,7 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     grid-column-start: 2; grid-column-end: 3;
     grid-row-start: 1; grid-row-end: 2;
     bottom: 0%;
@@ -1656,7 +1656,7 @@ body{
 
 .decorativeMouldingPart2{
     width: 105%;
-    height: 10%;
+    height: 12%;
     position: relative;
     background: rgb(255, 255, 255);
     box-shadow: 0px 2px 5px rgb(170, 170, 170);
@@ -1672,8 +1672,8 @@ body{
 }
 
 .decorativeMouldingPart4{
-    width: 110%;
-    height: 15%;
+    width: 105%;
+    height: 12%;
     position: relative;
     background-color: rgb(255, 255, 255);
     box-shadow: 0px 2px 5px rgb(170, 170, 170);
@@ -1682,14 +1682,14 @@ body{
 }
 
 .decorativeMouldingPart5{
-    width: 105%;
+    width: 95%;
     height: 10%;
     position: relative;
     background-color: rgb(255, 255, 255);
     box-shadow: 0px 2px 5px rgb(170, 170, 170);
 }
 
-
+/* Section two components*/
 
 #secondSection{
     width: 100svw;
@@ -1720,6 +1720,8 @@ body{
     width: 100%;
     height: 100%;
     display: grid;
+    align-items: center;
+    justify-items: center;
     position: absolute;
     overflow: hidden;
 
@@ -1897,4 +1899,136 @@ body{
     bottom: 0%;
     line-height: 20%;
     margin-left: 2%;
+}
+
+.decorativeMouldingBox2{
+    width: 150%;
+    height: 10%;
+    position: absolute;
+    top: 20%;
+    right: -40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    grid-column-start: 2; grid-column-end: 3;
+    grid-row-start: 1; grid-row-end: 2;
+}
+
+.decorativeMouldingBox3{
+    width: 150%;
+    height: 10%;
+    position: absolute;
+    top: 20%;
+    left: -40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    grid-column-start: 4; grid-column-end: 5;
+    grid-row-start: 1; grid-row-end: 2;
+}
+
+.decorativeMouldingBox2 > .decorativeMouldingPart1, .decorativeMouldingBox3 > .decorativeMouldingPart1{
+    width: 170%;
+    height: 8%;
+}
+
+.decorativeMouldingBox2 > .decorativeMouldingPart2, .decorativeMouldingBox3 > .decorativeMouldingPart2{
+    width: 140%;
+}
+
+.decorativeMouldingBox2 > .decorativeMouldingPart3, .decorativeMouldingBox3 > .decorativeMouldingPart3{
+    width: 110%;
+}
+
+.decorativeMouldingBox2 > .decorativeMouldingPart4, .decorativeMouldingBox3 > .decorativeMouldingPart4{
+    width: 140%;
+    height: 8%;
+}
+
+.decorativeMouldingBox2 > .decorativeMouldingPart5, .decorativeMouldingBox3 > .decorativeMouldingPart5{
+    width: 160%;
+    height: 8%;
+    z-index: 200;
+}
+
+.thirdSection{
+    width: 100svw;
+    height: 100svh;
+    position: absolute;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1.6fr 4fr;
+    background-color: var(--pure-white);
+    top: 264svh;
+}
+
+.clockWrapper{
+    height: 100%;
+    width: auto;
+    aspect-ratio: 1 / 1;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 300;
+    top: -10%;
+
+    grid-row-start: 1; grid-row-end: 2;
+    background: linear-gradient(var(--soft-grey) 30%, var(--pure-white) 80%);
+    border-radius: 100%;
+    box-shadow: 0px 10px 15px rgb(233, 233, 233);
+}
+
+.clockWrapperInner1{
+    width: 96%;
+    height: 96%;
+    position: absolute;
+    background: linear-gradient(var(--pure-white) 40%, var(--soft-grey) 70%);
+    border-radius: 100%;
+}
+
+.clockWrapperInner2{
+    width: 82%;
+    height: 82%;
+    position: absolute;
+    background: rgb(220, 220, 220);
+    border-radius: 100%;
+}
+
+.clockWrapperInner3{
+    width: 79%;
+    height: 79%;
+    position: absolute;
+    background: var(--pure-white);
+    border-radius: 100%;
+}
+
+.clockWrapperInner4{
+    width: 70%;
+    height: 70%;
+    position: absolute;
+      background-image: repeating-conic-gradient(var(--pure-white) 10%, var(--pure-white) 14.6%, rgb(195, 195, 195) 14.6%, rgb(195, 195, 195) 15%);
+    border: solid 1.5px rgb(195, 195, 195);
+    border-radius: 100%;
+}
+
+.clockWrapperInner5{
+    width: 63%;
+    height: 63%;
+    position: absolute;
+    background: var(--pure-white);
+    border-radius: 100%;
+}
+
+.clockWrapperInner6{
+    width: 40%;
+    height: 40%;
+    position: absolute;
+    background: var(--pure-white);
+    border: solid 1.5px rgb(195, 195, 195);
+    border-radius: 100%;
 }
