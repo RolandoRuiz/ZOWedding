@@ -421,7 +421,7 @@ body{
     width: 100%;
     mask-image: radial-gradient(85% 400% at 100% 50% , transparent 50%, black 55%);
     mask-repeat: no-repeat;
-    mask-size: 230% 100%;
+    mask-size: 240% 100%;
     mask-position: 100%;
 }
 
@@ -458,7 +458,7 @@ body{
 .lineMask{
     mask-image: radial-gradient(85% 400% at 100% 50% , transparent 50%, black 55%);
     mask-repeat: no-repeat;
-    mask-size: 230% 100%;
+    mask-size: 240% 100%;
     mask-position: 100%;
     animation: lineMaskMovement 3.2s linear forwards;
 }
@@ -1955,7 +1955,7 @@ body{
 
 .thirdSection{
     width: 100svw;
-    height: 100svh;
+    height: 100.5lvh;
     position: absolute;
     display: grid;
     align-items: center;
@@ -1966,19 +1966,54 @@ body{
     top: 264svh;
 }
 
+.thirdSectionBackground{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: url(Assets/svg/backgroundTexture.min.svg);
+    background-repeat: repeat;
+    background-size: 50svw;
+    opacity: 0.6;
+    mask-image: linear-gradient(180deg, black 10%, rgba(0, 0, 0, 0.2) 60%);
+
+}
+
 .decorativeMouldingBox4{
     width: 100%;
-    height: 90%;
+    height: 100%;
     position: absolute;
     display: grid;
     align-self: flex-start;
     grid-row-start: 1; grid-row-end: 2;
-    background: repeating-conic-gradient(from 0deg at bottom, var(--pure-white) 10%, var(--pure-white) 14.6%, rgb(195, 195, 195) 14.6%, rgb(195, 195, 195) 15%), var(--pure-white);
-    background-image: repeating-conic-gradient(from 0deg at 50% 100%, rgb(195, 195, 195) 0%, rgb(195, 195, 195) 0.3%, var(--pure-white) 0.3%, var(--pure-white) 4.8%, rgb(195, 195, 195) 4.8%, rgb(195, 195, 195) 5%);       
+    filter: drop-shadow(0px 5px 5px rgb(176, 176, 176));
+}
 
+.decorativeMouldingBox4 > .decorativeMouldingPart1{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: repeating-conic-gradient(from 0deg at 50% 95%, rgb(240, 240, 240) 0%, rgb(225, 225, 225) 0.298%, rgb(240, 240, 240) 0.3%, var(--pure-white) 0.3%, var(--pure-white) 4.7%,rgb(240, 240, 240) 4.7%, rgb(225, 225, 225) 4.7%, rgb(240, 240, 240) 5%);       
     box-shadow: 0px 5px 10px rgb(217, 217, 217);
     mask-image: radial-gradient(circle at 50% 100%, transparent 0%, transparent 55%, black 55%, black 100%);
 }
+
+.decorativeMouldingBox4 > .decorativeMouldingPart2{
+    width: 100%;
+    height: 7%;
+    position: absolute;
+    z-index: 300;
+    background-color: var(--soft-gold);
+}
+
+.decorativeMouldingBox4 > .decorativeMouldingPart3{
+    width: 100%;
+    height: 5%;
+    position: absolute;
+    top: 7%;
+    z-index: 200;
+}
+
+
 
 .clockWrapper{
     height: 100%;
