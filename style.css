@@ -1972,11 +1972,12 @@ body{
     position: absolute;
     display: grid;
     align-self: flex-start;
-    justify-self: center;
     grid-row-start: 1; grid-row-end: 2;
-    background-color: var(--deep-red);
+    background: repeating-conic-gradient(from 0deg at bottom, var(--pure-white) 10%, var(--pure-white) 14.6%, rgb(195, 195, 195) 14.6%, rgb(195, 195, 195) 15%), var(--pure-white);
+    background-image: repeating-conic-gradient(from 0deg at 50% 100%, rgb(195, 195, 195) 0%, rgb(195, 195, 195) 0.3%, var(--pure-white) 0.3%, var(--pure-white) 4.8%, rgb(195, 195, 195) 4.8%, rgb(195, 195, 195) 5%);       
+
     box-shadow: 0px 5px 10px rgb(217, 217, 217);
-    mask-image: radial-gradient(circle at 50% 110%, transparent 0%, transparent 55%, black 55%, black 100%);
+    mask-image: radial-gradient(circle at 50% 100%, transparent 0%, transparent 55%, black 55%, black 100%);
 }
 
 .clockWrapper{
@@ -2024,7 +2025,7 @@ body{
     width: 70%;
     height: 70%;
     position: absolute;
-      background-image: repeating-conic-gradient(var(--pure-white) 10%, var(--pure-white) 14.6%, rgb(195, 195, 195) 14.6%, rgb(195, 195, 195) 15%);
+    background-image: repeating-conic-gradient(var(--pure-white) 10%, var(--pure-white) 14.6%, rgb(195, 195, 195) 14.6%, rgb(195, 195, 195) 15%);
     border: solid 1.5px rgb(195, 195, 195);
     border-radius: 100%;
 }
