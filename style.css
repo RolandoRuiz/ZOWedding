@@ -2039,7 +2039,7 @@ body{
 
 
 .clockWrapper{
-    height: 100%;
+    height: 92%;
     width: auto;
     aspect-ratio: 1 / 1;
     position: absolute;
@@ -2047,12 +2047,13 @@ body{
     align-items: center;
     justify-content: center;
     z-index: 300;
-    top: 20%;
+    top: 65%;
 
     grid-row-start: 1; grid-row-end: 2;
-    background: linear-gradient(var(--soft-grey) 30%, var(--pure-white) 80%);
+    background-color: #a7a7a7;
     border-radius: 100%;
     box-shadow: 0px 10px 15px rgb(233, 233, 233);
+    mix-blend-mode: multiply;
 }
 
 .clockWrapperInner1{
@@ -2061,6 +2062,8 @@ body{
     position: absolute;
     background: linear-gradient(var(--pure-white) 40%, var(--soft-grey) 70%);
     border-radius: 100%;
+    isolation: isolate;
+    mix-blend-mode: normal;
 }
 
 .clockWrapperInner2{
