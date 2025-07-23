@@ -1992,7 +1992,7 @@ body{
     width: 100%;
     height: 100%;
     position: absolute;
-        background-color: rgb(228, 228, 228);
+    background-color: rgb(228, 228, 228);
     z-index: -100;
 
     clip-path: shape(
@@ -2039,7 +2039,7 @@ body{
 
 
 .clockWrapper{
-    height: 92%;
+    height: 96%;
     width: auto;
     aspect-ratio: 1 / 1;
     position: absolute;
@@ -2047,63 +2047,89 @@ body{
     align-items: center;
     justify-content: center;
     z-index: 300;
-    top: 65%;
+    top: 68%;
 
     grid-row-start: 1; grid-row-end: 2;
-    background-color: #a7a7a7;
+    background-color: var(--soft-gold);
+    filter: brightness(0.9);
     border-radius: 100%;
-    box-shadow: 0px 10px 15px rgb(233, 233, 233);
-    mix-blend-mode: multiply;
+}
+
+.clockWrapper.innerClock{
+    background-color: var(--soft-gold);
+    opacity: 1;
+    top: 65%;
+    box-shadow: 0px 0px 0px rgb(233, 233, 233);
+    filter: brightness(1);
 }
 
 .clockWrapperInner1{
-    width: 96%;
-    height: 96%;
+    width: 95%;
+    height: 95%;
     position: absolute;
-    background: linear-gradient(var(--pure-white) 40%, var(--soft-grey) 70%);
+    background: var(--soft-gold);
     border-radius: 100%;
-    isolation: isolate;
-    mix-blend-mode: normal;
+    filter: brightness(1.1);
 }
 
 .clockWrapperInner2{
-    width: 82%;
-    height: 82%;
+    width: 92%;
+    height: 92%;
     position: absolute;
-    background: rgb(220, 220, 220);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom: 3%;
+    background: rgb(255, 252, 244);
     border-radius: 100%;
 }
 
 .clockWrapperInner3{
-    width: 79%;
-    height: 79%;
+    width: 90%;
+    height: 90%;
     position: absolute;
-    background: var(--pure-white);
+    border: solid 1.5px rgb(205, 192, 184);
     border-radius: 100%;
 }
 
 .clockWrapperInner4{
-    width: 70%;
-    height: 70%;
+    width: 85%;
+    height: 85%;
     position: absolute;
-    background-image: repeating-conic-gradient(var(--pure-white) 10%, var(--pure-white) 14.6%, rgb(195, 195, 195) 14.6%, rgb(195, 195, 195) 15%);
-    border: solid 1.5px rgb(195, 195, 195);
+    background-image: repeating-conic-gradient(transparent 10%, transparent 14.6%, rgb(205, 192, 184) 14.6%, rgb(205, 192, 184) 15%);
+    mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0) 48%, black 75%);
+    border: solid 2px rgb(205, 192, 184);
     border-radius: 100%;
 }
 
 .clockWrapperInner5{
-    width: 50%;
-    height: 50%;
+    width: 54%;
+    height: 54%;
     position: absolute;
-    background: var(--pure-white);
+    border: solid 1.5px rgb(205, 192, 184);
     border-radius: 100%;
+    opacity: 0.5;
 }
 
 .clockWrapperInner6{
-    width: 40%;
-    height: 40%;
+    width: 50%;
+    height: 50%;
     position: absolute;
-    background: var(--pure-white);
-    border: solid 1.5px rgb(195, 195, 195);
+    --s: 8px; /* control the size*/
+    --c1: rgb(205, 192, 184);
+    --c2: rgb(255, 252, 244);
+  
+    --_g: #0000 83%,var(--c1) 85% 99%,#0000 101%;
+    background:
+    radial-gradient(27% 29% at right ,var(--_g)) calc(var(--s)/ 2) var(--s),
+    radial-gradient(27% 29% at left  ,var(--_g)) calc(var(--s)/-2) var(--s),
+    radial-gradient(29% 27% at top   ,var(--_g)) 0 calc(var(--s)/ 2),
+    radial-gradient(29% 27% at bottom,var(--_g)) 0 calc(var(--s)/-2)
+    var(--c2);
+    background-size: calc(2*var(--s)) calc(2*var(--s));
+
+    border: solid 1.5px rgb(205, 192, 184);
+    border-radius: 100%;
+    opacity: 0.5;
     border-radius: 100%;
 }
