@@ -80,7 +80,7 @@ const arrowBob = document.querySelector(".bottomArrowBox");
 
 function openLetter() {
 
-  stopLetterMovement.style.animationPlayState = "running, running, paused";
+  stopLetterMovement.style.animationPlayState = "running, paused, paused";
   
   closeLetterGlowBox.classList.add("stopLetterGlow");
   stopLetterGlow.style.animationPlayState = "paused";
