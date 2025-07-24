@@ -122,15 +122,10 @@ function openLetter() {
   arrowBob.classList.add("arrowBobAnim");
 }
 
-document.querySelector('object[data="Assets/svg/topBranchGraphic.min.svg"]').addEventListener("load", function(){
-  const leafTargets = document.querySelector(".leaf"); 
 
-    
-  console.log(leafTargets);
-});
+const leafTargets = document.querySelectorAll(".leaf");
 
-
-/**const stopLeafAnimOptions = {
+const stopLeafAnimOptions = {
   root: null,
   rootMargin: "0px",
   threshold: 1.0,
@@ -145,4 +140,4 @@ const stopLeafAnim = (entries) => {
 }
 
 const stopLeafObserver = new IntersectionObserver(stopLeafAnim, stopLeafAnimOptions);
-leafTargets.forEach(leafTarget => stopLeafObserver.observe(leafTarget));**/
+leafTargets.forEach(leafTarget => stopLeafObserver.observe(leafTarget));
