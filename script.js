@@ -121,3 +121,28 @@ function openLetter() {
   moveBranchTwo.classList.add("branchTwoAnim");
   arrowBob.classList.add("arrowBobAnim");
 }
+
+document.querySelector('object[data="Assets/svg/topBranchGraphic.min.svg"]').addEventListener("load", function(){
+  const leafTargets = document.querySelector(".leaf"); 
+
+    
+  console.log(leafTargets);
+});
+
+
+/**const stopLeafAnimOptions = {
+  root: null,
+  rootMargin: "0px",
+  threshold: 1.0,
+}
+
+const stopLeafAnim = (entries) => {
+  entries.forEach((entry) =>{
+    if (entry.isIntersecting) {
+      entry.target.classList.remove("leaf")
+    }
+  })
+}
+
+const stopLeafObserver = new IntersectionObserver(stopLeafAnim, stopLeafAnimOptions);
+leafTargets.forEach(leafTarget => stopLeafObserver.observe(leafTarget));**/
