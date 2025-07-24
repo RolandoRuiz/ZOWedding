@@ -122,8 +122,39 @@ function openLetter() {
   arrowBob.classList.add("arrowBobAnim");
 }
 
+const topBranchObject = document.getElementById('topBranch');
 
-const leafTargets = document.querySelectorAll(".leaf");
+topBranchObject.addEventListener('load', () =>{
+  const topBranchDoc = topBranchObject.contentDocument;
+  const leafTargets = topBranchDoc.querySelectorAll(".leaf");
+
+  const stopLeafAnimOptions = {
+  root: null,
+  rootMargin: "0px",
+  threshold: 0.5,
+}
+
+const stopLeafAnim = (entries) => {
+  entries.forEach((entry) =>{
+    if (!entry.isIntersecting) {
+      entry.target.style.opacity = "0";
+    }else{
+      entry.target.style.opacity = "1";
+    }
+  })
+}
+
+  const stopLeafObserver = new IntersectionObserver(stopLeafAnim, stopLeafAnimOptions);
+
+  leafTargets.forEach(function (leafTarget) {
+    console.log(leafTarget)
+    stopLeafObserver.observe(leafTarget)
+  })
+
+  
+})
+
+/**
 
 const stopLeafAnimOptions = {
   root: null,
@@ -140,4 +171,4 @@ const stopLeafAnim = (entries) => {
 }
 
 const stopLeafObserver = new IntersectionObserver(stopLeafAnim, stopLeafAnimOptions);
-leafTargets.forEach(leafTarget => stopLeafObserver.observe(leafTarget));
+leafTargets.forEach(leafTarget => stopLeafObserver.observe(leafTarget));**/
