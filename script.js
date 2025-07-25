@@ -123,32 +123,65 @@ function openLetter() {
 }
 
 const topBranchObject = document.getElementById('topBranch');
+const bottomBranchObject = document.getElementById('bottomBranch');
 
 topBranchObject.addEventListener('load', () =>{
   const topBranchDoc = topBranchObject.contentDocument;
-  const leafTargets = topBranchDoc.querySelectorAll(".leaf");
+  const leafTopTargets = topBranchDoc.querySelectorAll(".leaf");
 
-  const stopLeafAnimOptions = {
+  const stopTopLeafAnimOptions = {
   root: null,
   rootMargin: "0px",
   threshold: 0.5,
-}
+  }
 
-const stopLeafAnim = (entries) => {
-  entries.forEach((entry) =>{
-    if (!entry.isIntersecting) {
-      entry.target.style.opacity = "0";
-    }else{
-      entry.target.style.opacity = "1";
-    }
+  const stopTopLeafAnim = (entries) => {
+    entries.forEach((entry) =>{
+      if (!entry.isIntersecting) {
+        entry.target.style.animationPlayState = "paused";
+      }else{
+        entry.target.style.animationPlayState = "running";
+      }
+    })
+  }
+
+  const stopLeafObserver = new IntersectionObserver(stopTopLeafAnim, stopTopLeafAnimOptions);
+
+  leafTopTargets.forEach(function (leafTopTarget) {
+    //console.log(leafTopTarget)
+    stopLeafObserver.observe(leafTopTarget)
   })
-}
 
-  const stopLeafObserver = new IntersectionObserver(stopLeafAnim, stopLeafAnimOptions);
+  
+})
 
-  leafTargets.forEach(function (leafTarget) {
-    console.log(leafTarget)
-    stopLeafObserver.observe(leafTarget)
+bottomBranchObject.addEventListener('load', () =>{
+  const bottomBranchDoc = bottomBranchObject.contentDocument;
+  const leafBottomTargets = bottomBranchDoc.querySelectorAll(".leaf");
+
+  const stopBottomLeafAnimOptions = {
+  root: null,
+  rootMargin: "0px",
+  threshold: 0.5,
+  }
+
+  const stopBottomLeafAnim = (entries) => {
+    entries.forEach((entry) =>{
+      if (!entry.isIntersecting) {
+        entry.target.style.animationPlayState = "paused";
+      }else{
+        setTimeout(() => {
+          entry.target.style.animationPlayState = "running";
+        }, 3000);
+      }
+    })
+  }
+
+  const stopLeafObserver = new IntersectionObserver(stopBottomLeafAnim, stopBottomLeafAnimOptions);
+
+  leafBottomTargets.forEach(function (leafBottomTarget) {
+    //console.log(leafBottomTarget)
+    stopLeafObserver.observe(leafBottomTarget)
   })
 
   
