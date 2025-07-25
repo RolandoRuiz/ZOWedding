@@ -140,7 +140,10 @@ topBranchObject.addEventListener('load', () =>{
       if (!entry.isIntersecting) {
         entry.target.style.animationPlayState = "paused";
       }else{
-        entry.target.style.animationPlayState = "running";
+        setTimeout(() => {
+          entry.target.style.animationPlayState = "running";
+        }, 4000);
+        
       }
     })
   }
@@ -172,7 +175,7 @@ bottomBranchObject.addEventListener('load', () =>{
       }else{
         setTimeout(() => {
           entry.target.style.animationPlayState = "running";
-        }, 3000);
+        }, 4000);
       }
     })
   }
