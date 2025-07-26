@@ -37,6 +37,11 @@
     src: url(Assets/fonts/sikandinarie.ttf);
 }
 
+@font-face {
+    font-family: numberText;
+    src: url(Assets/fonts/Avenue.ttf);
+}
+
 html{
     color-scheme: dark light;
     background-color: var(--medium-black); /* Don't change, keep values to maintain dark ui*/
@@ -1478,6 +1483,13 @@ body{
     text-align: center;
 }
 
+.numberText{
+    color: var(--medium-black);
+    font-family: numberText;
+    font-size: 3rem;
+    text-align: center;
+}
+
 /*First Section Components*/
 
 #firstSection{
@@ -2080,8 +2092,13 @@ body{
     align-items: center;
     justify-content: center;
     bottom: 3%;
-    background: rgb(253, 253, 251);
+    background: rgb(254, 249, 241);
     border-radius: 100%;
+}
+
+.clockWrapperInner2 > .numberText{
+    font-size: 8rem;
+    z-index: 200;
 }
 
 .clockWrapperInner3{
@@ -2132,4 +2149,30 @@ body{
     border-radius: 100%;
     opacity: 0.5;
     border-radius: 100%;
+}
+
+@property --clockTime{
+    syntax: '<percentage>';
+    initial-value: 100%;
+    inherits: false;
+}
+
+.clockWrapperInnerTimer{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 100%;
+    will-change: transform, background-image;
+    opacity: 1;
+
+    background-image: conic-gradient(rgb(255, 255, 255) 0%, rgb(255, 255, 255) var(--clockTime), transparent var(--clockTime));
+    animation: conic-gradient 8s linear 0s infinite none running;
+}
+
+@keyframes conic-gradient {
+    0%{
+        --clockTime: 0%;
+    }100%{
+        --clockTime: 100%;
+    }
 }
