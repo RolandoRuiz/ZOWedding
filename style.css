@@ -1835,56 +1835,62 @@ body{
     height: 100%;
     position: absolute;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 0.8fr 1fr;
     grid-template-rows: repeat(2, 1fr);
     grid-column-start: 2; grid-column-end: 3;
     grid-row-start: 1; grid-row-end: 2;
 }
 
 #partnerNameText1{
-    width: 100%;
-    height: 100%;
-    display: grid;
+    position: absolute;
     grid-column-start: 1; grid-column-end: 5;
     grid-row-start: 2; grid-row-end: 3;
-    align-items: flex-end;
-    line-height: 60%;
+
+    align-self: end;
+    text-box-trim: trim-both;
+    text-box-edge: ex alphabetic;
+    border-top: 1px solid red;
+    border-bottom: 1px solid red;
 }
 
 #partnerNameText2{
-    display: grid;
     position:absolute;
-    align-self: flex-end;
-    justify-self: end;
     grid-column-start: 1; grid-column-end: 2;
     grid-row-start: 1; grid-row-end: 2;
     font-size: 5.3rem;
-    line-height: 20%
+    bottom: 0%;
+    right: 0%;
+    text-box-trim: trim-both;
+    text-box-edge: ex alphabetic;
+    border-top: 1px solid red;
+    border-bottom: 1px solid red;
 }
 
 #partnerNameText3{
-    display: grid;
     position: absolute;
-    align-self: flex-end;
-    justify-self: end;
     grid-column-start: 1; grid-column-end: 2;
     grid-row-start: 2; grid-row-end: 3;
-    margin-right: 3%;
-    margin-bottom: 3%;
     font-size: 3.5rem;
     color: var(--soft-gold);
-    line-height: 50%;
+    bottom: 0%;
+    right: 5%;
+    text-box-trim: trim-both;
+    text-box-edge: cap alphabetic;
+    border-top: 1px solid red;
+    border-bottom: 1px solid red;
 }
 
 #partnerNameText4{
-    display: grid;
     position: absolute;
-    align-self: flex-end;
-    justify-self: start;
     grid-column-start: 2; grid-column-end: 3;
     grid-row-start: 2; grid-row-end: 3;
     font-size: 5rem;
-    line-height: 40%
+    bottom: 0%;
+    left: 0%;
+    text-box-trim: trim-both;
+    text-box-edge: ex alphabetic;
+    border-top: 1px solid red;
+    border-bottom: 1px solid red;
 }
 
 .partnerNameTextComposite2{
@@ -1900,17 +1906,25 @@ body{
 }
 
 #partnerNameText5{
-    display: grid;
+    position: relative;
     bottom: 0%;
-    line-height: 50%;
     margin-right: 2%;
+
+    text-box-trim: trim-both;
+    text-box-edge: ex alphabetic;
+    border-top: 1px solid red;
+    border-bottom: 1px solid red;
 }
 
 #partnerNameText6{
-    display: grid;
-    bottom: 0%;
-    line-height: 20%;
+    position: relative;
+    bottom: -20%;
     margin-left: 2%;
+
+    text-box-trim: trim-both;
+    text-box-edge: ex alphabetic;
+    border-top: 1px solid red;
+    border-bottom: 1px solid red;
 }
 
 .decorativeMouldingBox2{
@@ -2051,7 +2065,7 @@ body{
 
 
 .clockWrapper{
-    height: 96%;
+    height: 100%;
     width: auto;
     aspect-ratio: 1 / 1;
     position: absolute;
@@ -2059,7 +2073,7 @@ body{
     align-items: center;
     justify-content: center;
     z-index: 300;
-    top: 68%;
+    top: 78%;
 
     grid-row-start: 1; grid-row-end: 2;
     background-color: var(--soft-gold);
@@ -2070,7 +2084,7 @@ body{
 .clockWrapper.innerClock{
     background-color: var(--soft-gold);
     opacity: 1;
-    top: 65%;
+    top: 75%;
     box-shadow: 0px 0px 0px rgb(233, 233, 233);
     filter: brightness(1);
 }
@@ -2092,13 +2106,8 @@ body{
     align-items: center;
     justify-content: center;
     bottom: 3%;
-    background: rgb(255, 248, 238);
+    background: rgb(255, 253, 247);
     border-radius: 100%;
-}
-
-.clockWrapperInner2 > .numberText{
-    font-size: 8rem;
-    z-index: 200;
 }
 
 .clockWrapperInner3{
@@ -2165,7 +2174,7 @@ body{
     will-change: transform, background-image;
     opacity: 1;
 
-    background-image: conic-gradient(rgb(255, 255, 255) 0%, rgb(255, 255, 255) var(--clockTime), transparent var(--clockTime));
+    background-image: conic-gradient(rgb(248, 241, 233) 0%, rgb(248, 241, 233) var(--clockTime), transparent var(--clockTime));
     animation: conic-gradient 8s linear 0s infinite none running;
 }
 
@@ -2175,4 +2184,119 @@ body{
     }100%{
         --clockTime: 100%;
     }
+}
+
+/*.dateBox{
+    width: 80%;
+    height: 80%;
+    position: absolute;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 0.4fr 0.4fr;
+    border-radius: 100%;
+
+}
+
+.dateBox > .numberText.day{
+    position: absolute;
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    font-size: 6rem;
+    z-index: 200;
+    text-box-trim: trim-both;
+    text-box-edge: cap alphabetic;
+}
+
+.dateBox > .normalText.month{
+    position: absolute;
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    font-size: 2rem;
+    z-index: 200;
+    text-box-trim: trim-both;
+    text-box-edge: cap alphabetic;
+}
+
+.dateBox > .numberText.year{
+    position: absolute;
+    grid-column: 1 / 2;
+    grid-row: 3 / 4;
+    font-size: 2rem;
+    z-index: 200;
+    text-box-trim: trim-both;
+    text-box-edge: cap alphabetic;
+}*/
+
+.dateBox{
+    width: 80%;
+    height: 70%;
+    position: absolute;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    grid-template-columns: 1fr 0.8fr;
+    grid-template-rows: 1fr 0.5fr 1fr;
+    border-radius: 100%;
+
+}
+
+.dateBox > .numberText.day{
+    position: absolute;
+    font-size: 6.5rem;
+    z-index: 200;
+    text-box-trim: trim-both;
+    text-box-edge: cap alphabetic;
+}
+
+.numberText.day.number1{
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
+    justify-self: flex-start;
+    align-self: center;
+}
+
+.numberText.day.number2{
+    grid-column: 1 / 2;
+    grid-row: 2 / 4;
+    justify-self: flex-end;
+    align-self: center;
+}
+
+.monthYearBox  {
+    width: 80%;
+    height: 50%;
+    position: absolute;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.8fr 1fr;
+    grid-column: 2 / 3;
+    grid-row: 1 / 4;
+    border-left: 3px solid rgb(205, 192, 184);
+}
+
+.monthYearBox > .normalText.month{
+    position: absolute;
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    font-size: 1.5rem;
+    z-index: 200;
+    text-box-trim: trim-both;
+    text-box-edge: cap alphabetic;
+    margin-left: 13%;
+    letter-spacing: 0.2rem;
+}
+
+.monthYearBox > .numberText.year{
+    position: absolute;
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    font-size: 2.3rem;
+    z-index: 200;
+    text-box-trim: trim-both;
+    text-box-edge: cap alphabetic;
+    margin-left: 10%;
 }
