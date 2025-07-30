@@ -1479,7 +1479,7 @@ body{
 .normalText{
     color: var(--medium-black);
     font-family: normalText;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     text-align: center;
     letter-spacing: 0.05rem;
     font-weight: bold;
@@ -1992,7 +1992,7 @@ body{
 
 .thirdSection{
     width: 100svw;
-    height: 110.5lvh;
+    height: 112.5lvh;
     position: absolute;
     display: grid;
     align-items: center;
@@ -2084,7 +2084,7 @@ body{
     align-items: center;
     justify-content: center;
     z-index: 300;
-    top: 54%;
+    top: 52%;
 
     grid-row-start: 1; grid-row-end: 2;
     background-color: var(--soft-gold);
@@ -2095,7 +2095,7 @@ body{
 .clockWrapper.innerClock{
     background-color: var(--soft-gold);
     opacity: 1;
-    top: 51%;
+    top: 49%;
     box-shadow: 0px 0px 0px rgb(233, 233, 233);
     filter: brightness(1);
 }
@@ -2310,7 +2310,7 @@ body{
     width: 40%;
     height: 100%;
     position: absolute;
-    border-top: 3px solid rgb(205, 192, 184);
+    border-top: 2px solid rgb(205, 192, 184);
     left: 0%;
 }
 
@@ -2318,7 +2318,7 @@ body{
     width: 19%;
     height: 100%;
     position: absolute;
-    border-top: 3px solid rgb(205, 192, 184);
+    border-top: 2px solid rgb(205, 192, 184);
     right: 0%;
 }
 
@@ -2359,7 +2359,7 @@ body{
 
 .locationBox{
     width: 100%;
-    height: 50%;
+    height: 80%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -2367,20 +2367,35 @@ body{
 
 .locationInfo{
     width: 70%;
-    height: 75%;
+    height: 80%;
     display: grid;
     align-items: center;
     justify-content: center;
     grid-template-columns: 1fr;
-    grid-template-rows: 1.5fr 0.3fr 2fr 0.3fr 1fr 0.3fr 1fr;
+    grid-template-rows: 2fr 0.4fr 2fr 0.2fr 1fr 0.4fr 1fr;
 }
 
 .locationIcon{
     height: 100%;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     grid-column: 1 / 2;
     grid-row: 1 / 2;
+}
+
+.locationIcon.ceremonyIcon{
+    background-image: url(assets/svg/ceremonyIcon.svg);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+
+.locationIcon.receptionIcon{
+    background-image: url(assets/svg/receptionIcon.svg);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
 }
 
 .locationName{
@@ -2394,9 +2409,18 @@ body{
 .locationTime{
     height: 100%;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     grid-column: 1 / 2;
     grid-row: 5 / 6;
+}
+
+.locationTime > .normalText{
+    font-size: 1.2rem;
+    text-box-trim: trim-both;
+    text-box-edge: cap alphabetic;
 }
 
 .locationMapLink{
@@ -2421,10 +2445,17 @@ body{
     background: #d5b88fae;
     border: 0;
     appearance: none;
+    margin-top: 2.5%;
+    margin-bottom: 2.5%;
+}
+
+.locationBtn:focus{
+    background-color: #fde6c6ae;
 }
 
 
 .locationBtn > .normalTextSlant{
+    font-size: 1.4rem;
     text-box-trim: trim-both;
     text-box-edge: cap alphabetic;
 }
