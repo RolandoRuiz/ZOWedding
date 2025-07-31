@@ -2499,7 +2499,7 @@ body{
         transform: scale(1.22);
         opacity: 1;
         display: block;
-    }5%{
+    }2.5%{
         transform: scale(1.2);
         display: none;
     }100%{
@@ -2513,7 +2513,7 @@ body{
     background-image: url(Assets/svg/stopMotionFrames/frameSeven.svg);
     margin-left: 0%;
 
-    animation: frameSeven 5s linear infinite forwards 4.25s;
+    animation: frameSeven 5s linear infinite forwards 4.125s;
 }
 
 @keyframes frameSeven {
@@ -2521,7 +2521,7 @@ body{
         transform: scale(1.2);
         opacity: 1;
         display: block;
-    }15%{
+    }17.5%{
         transform: scale(1.18);
         display: none;
     }100%{
