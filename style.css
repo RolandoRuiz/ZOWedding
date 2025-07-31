@@ -2455,7 +2455,7 @@ body{
         transform: scale(1.18);
         opacity: 1;
         display: block;
-    }15%{
+    }5%{
         transform: scale(1.2);
         display: none;
     }100%{
@@ -2469,7 +2469,7 @@ body{
     background-image: url(Assets/svg/stopMotionFrames/frameFive.svg);
     margin-left: 7%;
 
-    animation: frameFive 5s linear infinite forwards 2.5s;
+    animation: frameFive 5s linear infinite forwards 2s;
 }
 
 @keyframes frameFive {
@@ -2477,7 +2477,7 @@ body{
         transform: scale(1.2);
         opacity: 1;
         display: block;
-    }30%{
+    }5%{
         transform: scale(1.22);
         display: none;
     }100%{
@@ -2491,7 +2491,7 @@ body{
     background-image: url(Assets/svg/stopMotionFrames/frameSix.svg);
     margin-left: 7%;
 
-    animation: frameSix 5s linear infinite forwards 4s;
+    animation: frameSix 5s linear infinite forwards 2.25s;
 }
 
 @keyframes frameSix {
@@ -2499,11 +2499,11 @@ body{
         transform: scale(1.22);
         opacity: 1;
         display: block;
-    }2.5%{
-        transform: scale(1.2);
+    }15%{
+        transform: scale(1.24);
         display: none;
     }100%{
-        transform: scale(1.2);
+        transform: scale(1.24);
         display: none;
     }
     
@@ -2513,19 +2513,19 @@ body{
     background-image: url(Assets/svg/stopMotionFrames/frameSeven.svg);
     margin-left: 0%;
 
-    animation: frameSeven 5s linear infinite forwards 4.125s;
+    animation: frameSeven 5s linear infinite forwards 3s;
 }
 
 @keyframes frameSeven {
     0%{
-        transform: scale(1.2);
+        transform: scale(1.24);
         opacity: 1;
         display: block;
-    }17.5%{
-        transform: scale(1.18);
+    }30%{
+        transform: scale(1.26);
         display: none;
     }100%{
-        transform: scale(1.18);
+        transform: scale(1.26);
         display: none;
     }
     
