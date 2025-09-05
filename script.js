@@ -118,7 +118,7 @@ function openLetter() {
   bgrClose.classList.add("closeBgrMultiply");
   archShadow.classList.add("lightenArchShadow");
 
-  moveBranchTwo.classList.add("branchTwoAnim");
+  moveBranchTwo.classList.add("branchTwoIndexAnim");
   arrowBob.classList.add("arrowBobAnim");
 }
 
