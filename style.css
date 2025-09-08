@@ -292,17 +292,27 @@ body{
 .bgrMultiply{
     width: 100svw;
     height: 100svh;
+    max-height: 100svh;
     position: absolute;
     z-index: 100;
+    top: 0%;
+    opacity: 1;
+    border: solid pink 2px;
 
-    display: flex;
-    justify-content: center;
-    align-items: end;
     overflow: hidden;
-
-    background: black;
     mix-blend-mode: multiply;
-    animation: bgrMultiplyOpacity 3s forwards cubic-bezier(.3,.01,.94,.62) 2s;
+}
+
+.bgrMultiply::before{
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: rgb(0, 0, 0);
+
+    animation: bgrMultiplyOpacity 2s forwards cubic-bezier(.3,.01,.94,.62) 1s;
+    animation-iteration-count: 1;
+
 }
 
 @keyframes bgrMultiplyOpacity {
@@ -313,18 +323,18 @@ body{
     }80%{
         opacity: 0.96;
     }100%{
-        opacity: 0.94;
+        opacity: 0.90;
     }
 }
 
 .closeBgrMultiply{
-    opacity: 0.94;
+    opacity: 1;
     animation: closeMultiplyOpacity 0.5s forwards cubic-bezier(.3,.01,.94,.62) 5.2s;
 }
 
 @keyframes closeMultiplyOpacity {
     0%{
-        opacity: 0.94; 
+        opacity: 1; 
     }100%{
         opacity: 0;
     }
@@ -462,29 +472,25 @@ body{
 /* Overlay Components*/
 
 .baseOverlayWrapper{
-    width: 100svw;
-    height: 100svh;
+    width: 100%;
+    height: 100%;
     position: absolute;
-    display: flex;
     z-index: 100;
-
-    justify-content: center;
-    align-content: center;
     transform-origin: bottom;
 
-    
-    will-change: opacity;
-    opacity: 0.1;
+    opacity: 0;
     transform: scale(0);
 }
 
 .baseOverlayAnim{
-    animation: showBgrOverlay 2s cubic-bezier(.71,-0.01,.68,.84) forwards 3.45s;
+    animation: showBgrOverlay 2s cubic-bezier(.71,-0.01,.68,.84) forwards 3.45s,
+                pulseOverlay 2s cubic-bezier(.18,.35,.46,1) alternate 5.45s;
+    animation-iteration-count: 1, infinite;
 }
 
 @keyframes showBgrOverlay {
     0%{
-        opacity: 0.1;
+        opacity: 0;
         transform: scale(0);
     }50%{
         opacity: 0.1;
@@ -494,21 +500,20 @@ body{
     }
 }
 
-.bgrOverlay{
-    width: 95svw;
-    height: 95svh;
-    position: absolute;
-    bottom: 0%;
-    transform-origin: bottom;
-    mix-blend-mode: overlay;
-}
-
 @keyframes pulseOverlay {
     0%{
         transform: scale(1);
     }100%{
         transform: scale(1.07);/* if reduced to 1.05 it doesn't flicker (added js to fix issue and prevent changing value*/
     }
+}
+
+.bgrOverlay{
+    width: 95%;
+    height: 95%;
+    position: absolute;
+    bottom: 0%;
+    mix-blend-mode: overlay;
 }
 
 #overlay1{

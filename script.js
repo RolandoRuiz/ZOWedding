@@ -1,15 +1,5 @@
 console.log("connected");
 
-const getOverlays = document.querySelectorAll(".bgrOverlay");
-
-getOverlays.forEach(function (overlay, i) {
-  setTimeout(function () {
-    overlay.style.animation = "pulseOverlay 2s cubic-bezier(.18,.35,.46,1) alternate infinite";
-    overlay.style.animationDelay = `${i * 0.2}s`;
-    /*overlay.style.animationDelay = "" + i * 0.2 + "s"; TWO WAYS OF DOING THE SAME THING*/
-  },5600);
-});
-
 const getPh1 = document.querySelectorAll(".ph1");
 const getPhGlow1 = document.querySelectorAll(".ph1Glow");
 const getPh2 = document.querySelectorAll(".ph2");
