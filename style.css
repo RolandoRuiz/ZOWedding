@@ -395,13 +395,13 @@ body{
     }
 }
 
-.lineBox{
+.paragraphLineBox{
     width: 100%;
     display: flex;
     flex-direction: row;
 }
 
-.ph1, .ph2{
+.paragraphLine{
     width: 100%;
     ask-image: radial-gradient(85% 400% at 100% 50% , transparent 50%, black 55%);
     mask-repeat: no-repeat;

@@ -43,19 +43,25 @@ setTimeout(() => {
 }, 16000);*/
 
 const getInitialParagraphs = document.querySelectorAll(".initialParagraph");
+const getParagraphLines = document.querySelectorAll(".paragraphLine");
 
 
 setTimeout(() => {
     getInitialParagraphs.forEach((paragraph, i) => {
       setTimeout(() => {
-        console.log("paragraph read timeout");
-
+        console.log(paragraph);
         
+        getParagraphLines.forEach(paragraphLine => {
+
+          if (paragraph.classList.contains("One") && paragraphLine.parentElement.parentElement.classList.contains("One")) {
+            console.log(paragraphLine.parentElement.parentElement)
+          }
+        });
 
       }, 10000 * i+1);
       //8000 * (i+1)) starts in intervals of 8 seconds every 8 seconds;
   }); 
-}, 4000); 
+}, 3000); 
 
 const getLidShadow = document.querySelector(".letterLid");
 const letterSeal = document.querySelector(".sealBody");
