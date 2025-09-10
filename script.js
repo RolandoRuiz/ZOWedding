@@ -6,7 +6,7 @@ const getPh2 = document.querySelectorAll(".ph2");
 const getPhGlow2 = document.querySelectorAll(".ph2Glow");
 
 
-setTimeout(() => {
+/*setTimeout(() => {
   getPh1.forEach((element, index) => {
   setTimeout(() => {
     element.classList.add("lineMask");
@@ -40,7 +40,22 @@ setTimeout(() => {
     element.style.animationDelay = `${index * 2}s`;
   }, index + 1);
   });
-}, 16000);
+}, 16000);*/
+
+const getInitialParagraphs = document.querySelectorAll(".initialParagraph");
+
+
+setTimeout(() => {
+    getInitialParagraphs.forEach((paragraph, i) => {
+      setTimeout(() => {
+        console.log("paragraph read timeout");
+
+        
+
+      }, 10000 * i+1);
+      //8000 * (i+1)) starts in intervals of 8 seconds every 8 seconds;
+  }); 
+}, 4000); 
 
 const getLidShadow = document.querySelector(".letterLid");
 const letterSeal = document.querySelector(".sealBody");

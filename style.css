@@ -297,7 +297,6 @@ body{
     z-index: 100;
     top: 0%;
     opacity: 1;
-    border: solid pink 2px;
 
     overflow: hidden;
     mix-blend-mode: multiply;
@@ -310,7 +309,7 @@ body{
     position: absolute;
     background-color: rgb(0, 0, 0);
 
-    animation: bgrMultiplyOpacity 2s forwards cubic-bezier(.3,.01,.94,.62) 1s;
+    animation: bgrMultiplyOpacity 2s forwards cubic-bezier(.3,.01,.94,.62) 3.5s;
     animation-iteration-count: 1;
 
 }
@@ -346,12 +345,13 @@ body{
     width: 100svw;
     height: 100svh;
     position: absolute;
-    z-index: 150;
     display: flex;
     justify-content: center;
     align-items: center;
+
     filter: drop-shadow(0px 0px 10px rgb(0, 0, 0)) drop-shadow(0px 0px 10px rgba(0, 0, 0));
-    margin-top: 12%;
+    z-index: 150;
+    padding-top: 12%;
 
     animation: textIndex 0.2s linear forwards 30s;
 }
@@ -365,10 +365,10 @@ body{
 }
 
 
-.ParagraphOne, .ParagraphTwo{
-    width: 80svw;
+.initialParagraph{
+    width: 80%;
     height: auto;
-    aspect-ratio: 1 / 0.8;
+    aspect-ratio: 1 / 1;
     position: absolute;
     z-index: 200;
     display: flex;
@@ -377,12 +377,14 @@ body{
     align-items: center;
 }
 
-.ParagraphOne{
-    animation: closeParagraph 0.5s ease-in forwards 16s;
+.initialParagraph.One{
+    animation: closeParagrap 0.5s ease-in forwards 16s;
+    opacity: 1;
 }
 
-.ParagraphTwo{
-    animation: closeParagraph 0.5s ease-in forwards 28s;
+.initialParagraph.Two{
+    animation: closeParagrap 0.5s ease-in forwards 28s;
+    opacity: 0;
 }
 
 @keyframes closeParagraph {
@@ -401,22 +403,22 @@ body{
 
 .ph1, .ph2{
     width: 100%;
-    mask-image: radial-gradient(85% 400% at 100% 50% , transparent 50%, black 55%);
+    ask-image: radial-gradient(85% 400% at 100% 50% , transparent 50%, black 55%);
     mask-repeat: no-repeat;
-    mask-size: 240% 100%;
+    mask-size: 230% 100%;
     mask-position: 100%;
 }
 
 .ph1Glow, .ph2Glow{
     width: 100%;
-    mask-image: radial-gradient(15% 95% at 50% 50%, black 0%, transparent 60%);
+    ask-image: radial-gradient(5% 200% at 50% 50%, black 40%, transparent 50%);
     mask-repeat: no-repeat;
-    mask-size: 200% 100%;
-    mask-position: 130%;
+    mask-size: 110% 100%;
+    mask-position: 600%;
     position: absolute;
 }
 
-.lineBox .ph1Glow, .lineBox .ph2Glow{
+.ph1Glow, .ph2Glow{
     filter: drop-shadow(0px 0px 5px rgb(255, 255, 255)) drop-shadow(0px 0px 5px rgb(255, 255, 255)) drop-shadow(0px 0px 5px rgba(255, 255, 255, 0.6));
 }
 
@@ -475,6 +477,9 @@ body{
     width: 100%;
     height: 100%;
     position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     z-index: 100;
     transform-origin: bottom;
 
