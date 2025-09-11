@@ -377,11 +377,11 @@ body{
 }
 
 .initialParagraph.One{
-    animation: closeParagraph 1s ease-in forwards 16s;
+    animation: closeParagraph 1s ease-in forwards 14s;
 }
 
 .initialParagraph.Two{
-    animation: closeParagraph 1s ease-in forwards 27.5s;
+    animation: closeParagraph 1s ease-in forwards 23s;
 }
 
 @keyframes closeParagraph {
@@ -407,11 +407,11 @@ body{
 }
 
 .lineMaskOne{
-    animation: lineMaskMovement 3s linear forwards;
+    animation: lineMaskMovement 3s cubic-bezier(.47,0,.78,1) forwards;
 }
 
 .lineMaskTwo{
-    animation: lineMaskMovement 3s linear forwards;
+    animation: lineMaskMovement 3s cubic-bezier(.47,0,.78,1) forwards;
 }
 
 @keyframes lineMaskMovement {

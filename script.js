@@ -17,10 +17,10 @@ setTimeout(() => {
             if (paragraph.classList.contains("Two") && paragraphLine.parentElement.parentElement.classList.contains("Two")) {
               paragraphLine.classList.add("lineMaskTwo")
             }
-          }, 1800 * (index+1));
+          }, 1500 * (index+1));
 
         });
-      }, 2900 * i+1);
+      }, 2100 * i+1);
       //8000 * (i+1)) starts in intervals of 8 seconds every 8 seconds;
   }); 
 }, 3000); 
