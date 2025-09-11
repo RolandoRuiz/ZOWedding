@@ -381,7 +381,7 @@ body{
 }
 
 .initialParagraph.Two{
-    animation: closeParagraph 1s ease-in forwards 23s;
+    animation: closeParagraph 1s ease-in forwards 24s;
 }
 
 @keyframes closeParagraph {

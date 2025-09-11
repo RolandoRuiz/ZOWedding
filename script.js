@@ -20,7 +20,7 @@ setTimeout(() => {
           }, 1500 * (index+1));
 
         });
-      }, 2100 * i+1);
+      }, 2200 * i+1);
       //8000 * (i+1)) starts in intervals of 8 seconds every 8 seconds;
   }); 
 }, 3000); 
