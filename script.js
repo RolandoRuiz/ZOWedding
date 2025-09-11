@@ -1,47 +1,5 @@
 console.log("connected");
 
-const getPh1 = document.querySelectorAll(".ph1");
-const getPhGlow1 = document.querySelectorAll(".ph1Glow");
-const getPh2 = document.querySelectorAll(".ph2");
-const getPhGlow2 = document.querySelectorAll(".ph2Glow");
-
-
-/*setTimeout(() => {
-  getPh1.forEach((element, index) => {
-  setTimeout(() => {
-    element.classList.add("lineMask");
-    element.style.animationDelay = `${index * 2}s`;
-  }, (index + 1));
-  });
-}, 4000);
-
-setTimeout(() => {
-  getPhGlow1.forEach((element, index) => {
-  setTimeout(() => {
-    element.classList.add("glowMask");
-    element.style.animationDelay = `${index * 2}s`;
-  }, index + 1);
-  });
-}, 4000);
-
-setTimeout(() => {
-  getPh2.forEach((element, index) => {
-  setTimeout(() => {
-    element.classList.add("lineMask");
-    element.style.animationDelay = `${index * 2}s`;
-  }, (index + 1));
-  });
-}, 16000);
-
-setTimeout(() => {
-  getPhGlow2.forEach((element, index) => {
-  setTimeout(() => {
-    element.classList.add("glowMask");
-    element.style.animationDelay = `${index * 2}s`;
-  }, index + 1);
-  });
-}, 16000);*/
-
 const getInitialParagraphs = document.querySelectorAll(".initialParagraph");
 const getParagraphLines = document.querySelectorAll(".paragraphLine");
 
@@ -49,16 +7,20 @@ const getParagraphLines = document.querySelectorAll(".paragraphLine");
 setTimeout(() => {
     getInitialParagraphs.forEach((paragraph, i) => {
       setTimeout(() => {
-        console.log(paragraph);
-        
-        getParagraphLines.forEach(paragraphLine => {
+        getParagraphLines.forEach((paragraphLine, index) => {
 
-          if (paragraph.classList.contains("One") && paragraphLine.parentElement.parentElement.classList.contains("One")) {
-            console.log(paragraphLine.parentElement.parentElement)
-          }
+          setTimeout(() => {
+            if (paragraph.classList.contains("One") && paragraphLine.parentElement.parentElement.classList.contains("One")) {            
+              paragraphLine.classList.add("lineMaskOne")
+            }
+
+            if (paragraph.classList.contains("Two") && paragraphLine.parentElement.parentElement.classList.contains("Two")) {
+              paragraphLine.classList.add("lineMaskTwo")
+            }
+          }, 1800 * (index+1));
+
         });
-
-      }, 10000 * i+1);
+      }, 2900 * i+1);
       //8000 * (i+1)) starts in intervals of 8 seconds every 8 seconds;
   }); 
 }, 3000); 

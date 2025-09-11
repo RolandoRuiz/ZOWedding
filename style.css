@@ -353,7 +353,7 @@ body{
     z-index: 150;
     padding-top: 12%;
 
-    animation: textIndex 0.2s linear forwards 30s;
+    /*animation: textIndex 0.2s linear forwards 30s;*/
 }
 
 @keyframes textIndex {
@@ -363,7 +363,6 @@ body{
         z-index: -200;
     }
 }
-
 
 .initialParagraph{
     width: 80%;
@@ -378,13 +377,11 @@ body{
 }
 
 .initialParagraph.One{
-    animation: closeParagrap 0.5s ease-in forwards 16s;
-    opacity: 1;
+    animation: closeParagraph 1s ease-in forwards 16s;
 }
 
 .initialParagraph.Two{
-    animation: closeParagrap 0.5s ease-in forwards 28s;
-    opacity: 0;
+    animation: closeParagraph 1s ease-in forwards 27.5s;
 }
 
 @keyframes closeParagraph {
@@ -403,11 +400,42 @@ body{
 
 .paragraphLine{
     width: 100%;
-    ask-image: radial-gradient(85% 400% at 100% 50% , transparent 50%, black 55%);
+    mask-image: radial-gradient(85% 400% at 100% 50% , transparent 50%, black 55%);
     mask-repeat: no-repeat;
     mask-size: 230% 100%;
     mask-position: 100%;
 }
+
+.lineMaskOne{
+    animation: lineMaskMovement 3s linear forwards;
+}
+
+.lineMaskTwo{
+    animation: lineMaskMovement 3s linear forwards;
+}
+
+@keyframes lineMaskMovement {
+    0%{
+        mask-position: 100%;
+    }100%{
+        mask-position: 0%;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .ph1Glow, .ph2Glow{
     width: 100%;
@@ -416,6 +444,7 @@ body{
     mask-size: 110% 100%;
     mask-position: 600%;
     position: absolute;
+    opacity: 0;
 }
 
 .ph1Glow, .ph2Glow{
@@ -437,22 +466,6 @@ body{
     vertical-align: middle;
     color: white;
     margin-bottom: -5%;
-}
-
-.lineMask{
-    mask-image: radial-gradient(85% 400% at 100% 50% , transparent 50%, black 55%);
-    mask-repeat: no-repeat;
-    mask-size: 240% 100%;
-    mask-position: 100%;
-    animation: lineMaskMovement 3.2s linear forwards;
-}
-
-@keyframes lineMaskMovement {
-    0%{
-        mask-position: 100%;
-    }100%{
-        mask-position: 0%;
-    }
 }
 
 .glowMask{
