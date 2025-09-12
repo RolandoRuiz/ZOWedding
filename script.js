@@ -2,6 +2,7 @@ console.log("connected");
 
 const getInitialParagraphs = document.querySelectorAll(".initialParagraph");
 const getParagraphLines = document.querySelectorAll(".paragraphLine");
+const getParagraphGlows = document.querySelectorAll(".paragraphGlow");
 
 
 setTimeout(() => {
@@ -11,17 +12,29 @@ setTimeout(() => {
 
           setTimeout(() => {
             if (paragraph.classList.contains("One") && paragraphLine.parentElement.parentElement.classList.contains("One")) {            
-              paragraphLine.classList.add("lineMaskOne")
+              paragraphLine.classList.add("lineMask")
             }
 
             if (paragraph.classList.contains("Two") && paragraphLine.parentElement.parentElement.classList.contains("Two")) {
-              paragraphLine.classList.add("lineMaskTwo")
+              paragraphLine.classList.add("lineMask")
             }
-          }, 1500 * (index+1));
-
+          }, 1900 * (index+1));
         });
-      }, 2200 * i+1);
-      //8000 * (i+1)) starts in intervals of 8 seconds every 8 seconds;
+
+        getParagraphGlows.forEach((paragraphGlow, index) => {
+          setTimeout(() => {
+            if (paragraph.classList.contains("One") && paragraphGlow.parentElement.parentElement.classList.contains("One")) {            
+              paragraphGlow.classList.add("glowMask")
+            }
+
+            if (paragraph.classList.contains("Two") && paragraphGlow.parentElement.parentElement.classList.contains("Two")) {
+              paragraphGlow.classList.add("glowMask")
+            }
+          }, 1900 * (index+1));
+        });
+
+      }, 2200 * i+1); // this way it starts imediately and then it goes every 2.2 seconds
+      //2200 * (i+1)) starts in intervals of 8 seconds every 2.2 seconds;
   }); 
 }, 3000); 
 

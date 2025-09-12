@@ -377,11 +377,11 @@ body{
 }
 
 .initialParagraph.One{
-    animation: closeParagraph 1s ease-in forwards 14s;
+    animation: closeParagraph 1s ease-in forwards 16s;
 }
 
 .initialParagraph.Two{
-    animation: closeParagraph 1s ease-in forwards 24s;
+    animation: closeParagraph 1s ease-in forwards 28s;
 }
 
 @keyframes closeParagraph {
@@ -406,12 +406,8 @@ body{
     mask-position: 100%;
 }
 
-.lineMaskOne{
-    animation: lineMaskMovement 3s cubic-bezier(.47,0,.78,1) forwards;
-}
-
-.lineMaskTwo{
-    animation: lineMaskMovement 3s cubic-bezier(.47,0,.78,1) forwards;
+.lineMask{
+    animation: lineMaskMovement 3s linear forwards;
 }
 
 @keyframes lineMaskMovement {
@@ -422,34 +418,33 @@ body{
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.ph1Glow, .ph2Glow{
+.paragraphGlow{
     width: 100%;
-    ask-image: radial-gradient(5% 200% at 50% 50%, black 40%, transparent 50%);
+    height: auto;
+    filter: drop-shadow(0px 0px 4px rgb(255, 255, 255)) drop-shadow(0px 0px 2px rgb(255, 255, 255));
+    mask-image: radial-gradient(15% 100% at 50% 50%, rgb(0, 0, 0) 30%, rgba(0, 0, 0, 0.26) 55%, transparent 95%);
     mask-repeat: no-repeat;
     mask-size: 110% 100%;
-    mask-position: 600%;
+    mask-position: 650%;
     position: absolute;
-    opacity: 0;
 }
 
-.ph1Glow, .ph2Glow{
-    filter: drop-shadow(0px 0px 5px rgb(255, 255, 255)) drop-shadow(0px 0px 5px rgb(255, 255, 255)) drop-shadow(0px 0px 5px rgba(255, 255, 255, 0.6));
+.glowMask{
+    animation: glowMaskMovement 3s linear forwards;
 }
+
+@keyframes glowMaskMovement {
+    0%{
+        mask-position: 650%;
+    }100%{
+        mask-position: -600%;
+    }
+}
+
+
+
+
+
 
 .initTxt1{
     font-family: specialText;
@@ -466,22 +461,6 @@ body{
     vertical-align: middle;
     color: white;
     margin-bottom: -5%;
-}
-
-.glowMask{
-    mask-image: radial-gradient(15% 95% at 50% 50%, black 30%, transparent 60%);
-    mask-repeat: no-repeat;
-    mask-size: 200% 100%;
-    mask-position: 130%;
-    animation: glowMaskMovement 3.2s linear forwards;
-}
-
-@keyframes glowMaskMovement {
-    0%{
-        mask-position: 130%;
-    }100%{
-        mask-position: -30%;
-    }
 }
 
 /* Overlay Components*/
