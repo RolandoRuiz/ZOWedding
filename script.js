@@ -1,5 +1,42 @@
 console.log("connected");
 
+/* Branch animation */
+
+const getUpperBranch = document.querySelector("#upperBranch");
+const getLowerBranch = document.querySelector("#lowerBranch");
+var BranchId;
+
+
+let position = 15;
+let direction = 1; // 1 for forward, -1 for backward
+const minPosition = 0;
+const maxPosition = 30; // Example boundaries
+const speed = 0.12; // How much to move per frame
+
+function branchMovement() {
+  position += direction * speed;
+  
+  if (position >= maxPosition) {
+        position = maxPosition; // Cap at max
+        direction = -1; // Reverse direction
+    } else if (position <= minPosition) {
+        position = minPosition; // Cap at min
+        direction = 1; // Reverse direction
+  }
+
+  getUpperBranch.style.transform = "rotate(" + position / 10 + "deg)";
+  getLowerBranch.style.transform = "rotate(" + position / 10 + "deg)";
+
+  BranchId = requestAnimationFrame(branchMovement);
+}
+
+BranchId = requestAnimationFrame(branchMovement);
+
+/* Leaf animation */
+
+const getBranchLeafs = document.querySelectorAll(".leaf");
+
+
 const getInitialParagraphs = document.querySelectorAll(".initialParagraph");
 const getParagraphLines = document.querySelectorAll(".paragraphLine");
 const getParagraphGlows = document.querySelectorAll(".paragraphGlow");
@@ -37,6 +74,32 @@ setTimeout(() => {
       //2200 * (i+1)) starts in intervals of 8 seconds every 2.2 seconds;
   }); 
 }, 3000); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const getLidShadow = document.querySelector(".letterLid");
 const letterSeal = document.querySelector(".sealBody");

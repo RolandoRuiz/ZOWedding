@@ -205,24 +205,24 @@ body{
     transform-origin: bottom left;
     transform: rotate(0deg);
 
-    animation: branchWindUp 4s ease-in-out alternate infinite;
+    /*animation: branchWindU 4s ease-in-out alternate infinite;*/
 }
 
-@keyframes branchWindUp {
+#lowerBranch{
+    bottom: -3svh;
+    right: -10svw;
+    transform-origin: top right;
+    transform: rotate(5deg);
+
+    /*animation: branchWindDow 4s ease-in-out alternate infinite;*/
+}
+
+/*@keyframes branchWindUp {
     0%{
         transform: rotate(0deg);
     }100%{
         transform: rotate(2deg);
     }
-}
-
-#lowerBranch{
-    bottom: -5svh;
-    right: -10svw;
-    transform-origin: top right;
-    transform: rotate(5deg);
-
-    animation: branchWindDown 4s ease-in-out alternate infinite;
 }
 
 @keyframes branchWindDown{
@@ -231,7 +231,7 @@ body{
     }100%{
         transform: rotate(7deg);
     }
-}
+}*/
 
 #upperBranch > object, #lowerBranch > object{
     color-scheme: normal;
