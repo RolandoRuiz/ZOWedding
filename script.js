@@ -34,8 +34,8 @@ BranchId = requestAnimationFrame(branchMovement);
 
 /* Leaf animation */
 
-const getBranchLeafs = document.querySelectorAll(".leaf");
 
+/* Paragraph animation */
 
 const getInitialParagraphs = document.querySelectorAll(".initialParagraph");
 const getParagraphLines = document.querySelectorAll(".paragraphLine");
