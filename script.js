@@ -10,8 +10,8 @@ var BranchId;
 let position = 15;
 let direction = 1; // 1 for forward, -1 for backward
 const minPosition = 0;
-const maxPosition = 30; // Example boundaries
-const speed = 0.12; // How much to move per frame
+const maxPosition = 40; // Example boundaries
+const speed = 0.6; // How much to move per frame
 
 function branchMovement() {
   position += direction * speed;
@@ -35,8 +35,8 @@ BranchId = requestAnimationFrame(branchMovement);
 /* Leaf animation */
 
 const leafMinPosition = 0;
-const leafMaxPosition = 30;
-const leafSpeed = 0.2;
+const leafMaxPosition = 40;
+const leafSpeed = 0.55;
 
 const getBranches = document.querySelectorAll(".branch");
 
@@ -105,39 +105,6 @@ getBranches.forEach(branch => {
 });
 
 
-/*
-
-bottomBranchObject.addEventListener('load', () =>{
-  const bottomBranchDoc = bottomBranchObject.contentDocument;
-  const leafBottomTargets = bottomBranchDoc.querySelectorAll(".leaf");
-
-  const stopBottomLeafAnimOptions = {
-  root: null,
-  rootMargin: "0px",
-  threshold: 0.5,
-  }
-
-  const stopBottomLeafAnim = (entries) => {
-    entries.forEach((entry) =>{
-      if (!entry.isIntersecting) {
-        entry.target.style.animationPlayState = "paused";
-      }else{
-        setTimeout(() => {
-          entry.target.style.animationPlayState = "running";
-        }, 4000);
-      }
-    })
-  }
-
-  const stopLeafObserver = new IntersectionObserver(stopBottomLeafAnim, stopBottomLeafAnimOptions);
-
-  leafBottomTargets.forEach(function (leafBottomTarget) {
-    //console.log(leafBottomTarget)
-    stopLeafObserver.observe(leafBottomTarget)
-  })
-
-  
-})
 
 
 

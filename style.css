@@ -208,6 +208,7 @@ body{
     right: -10svw;
     transform-origin: top right;
     transform: rotate(5deg);
+    bottom: 1%;
 }
 
 .prefix__leaf{
