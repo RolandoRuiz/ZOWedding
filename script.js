@@ -117,7 +117,7 @@ const lightSpeed = 0.01; // How much to move per frame
 
 setTimeout(() => {
   function lightOverlayMovement(){
-    position += direction * speed;
+    /*position += direction * speed;
   
     if (position >= maxPosition) {
           position = maxPosition; // Cap at max
@@ -130,7 +130,7 @@ setTimeout(() => {
     getUpperBranch.style.transform = "rotate(" + position / 10 + "deg)";
     getLowerBranch.style.transform = "rotate(" + position / 10 + "deg)" ;
 
-    lightOverlayId = requestAnimationFrame(lightOverlayMovement);
+    lightOverlayId = requestAnimationFrame(lightOverlayMovement);*/
   }
 
   branchMovement()
