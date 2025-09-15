@@ -2,8 +2,8 @@ console.log("connected");
 
 /* Branch animation */
 
-const getUpperBranch = document.querySelector("#upperBranch");
-const getLowerBranch = document.querySelector("#lowerBranch");
+const getUpperBranch = document.querySelector("#topBranch");
+const getLowerBranch = document.querySelector("#bottomBranch");
 var BranchId;
 
 
@@ -34,9 +34,138 @@ BranchId = requestAnimationFrame(branchMovement);
 
 /* Leaf animation */
 
+const leafMinPosition = 0;
+const leafMaxPosition = 30;
+const leafSpeed = 0.0015;
+
+const getBranches = document.querySelectorAll(".branch");
+
+getBranches.forEach(branch => {
+
+  branch.addEventListener('load', () =>{
+    const branchDoc = branch.contentDocument;
+    const branchDocLeafTargets = branchDoc.querySelectorAll(".prefix__leaf");
+
+    branchDocLeafTargets.forEach(leafTarget => {
+
+      let leafId;
+      let leafPosition = 0;
+      let leafDirection = 1;
+
+      const stopLeafAnimOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.5,
+      }
+
+      const stopLeafAnim = (entries) => {
+        entries.forEach((entry) =>{
+          if (entry.isIntersecting) {
+            startLeafMovement()
+          }else{
+            stopLeafMovement()
+          }
+        })  
+      }
+
+      const stopLeafObserver = new IntersectionObserver(stopLeafAnim, stopLeafAnimOptions);
+
+      stopLeafObserver.observe(leafTarget)
+        
+      function leafMovement() {
+        leafPosition += leafDirection * leafSpeed;
+
+        if (leafPosition >= leafMaxPosition) {
+          leafPosition = leafMaxPosition;
+          leafDirection = -1;
+        } else if (leafPosition <= leafMinPosition) {
+          leafPosition = leafMinPosition;
+          leafDirection = 1;
+        }
+
+        leafTarget.style.transform = "rotate(" + leafPosition + "deg)";
+        leafId = requestAnimationFrame(leafMovement);
+        }
+
+      function startLeafMovement(){
+        if (!leafId) {
+          leafMovement();
+        }
+      }  
+
+      function stopLeafMovement(){
+        if (leafId) {
+          cancelAnimationFrame(leafId);
+          leafId = null;
+        }
+      }
+
+    });
+  })
+});
+
+
+/*
+
+bottomBranchObject.addEventListener('load', () =>{
+  const bottomBranchDoc = bottomBranchObject.contentDocument;
+  const leafBottomTargets = bottomBranchDoc.querySelectorAll(".leaf");
+
+  const stopBottomLeafAnimOptions = {
+  root: null,
+  rootMargin: "0px",
+  threshold: 0.5,
+  }
+
+  const stopBottomLeafAnim = (entries) => {
+    entries.forEach((entry) =>{
+      if (!entry.isIntersecting) {
+        entry.target.style.animationPlayState = "paused";
+      }else{
+        setTimeout(() => {
+          entry.target.style.animationPlayState = "running";
+        }, 4000);
+      }
+    })
+  }
+
+  const stopLeafObserver = new IntersectionObserver(stopBottomLeafAnim, stopBottomLeafAnimOptions);
+
+  leafBottomTargets.forEach(function (leafBottomTarget) {
+    //console.log(leafBottomTarget)
+    stopLeafObserver.observe(leafBottomTarget)
+  })
+
+  
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Paragraph animation */
-
+/*
 const getInitialParagraphs = document.querySelectorAll(".initialParagraph");
 const getParagraphLines = document.querySelectorAll(".paragraphLine");
 const getParagraphGlows = document.querySelectorAll(".paragraphGlow");
@@ -171,8 +300,6 @@ function openLetter() {
   arrowBob.classList.add("arrowBobAnim");
 }
 
-const topBranchObject = document.getElementById('topBranch');
-const bottomBranchObject = document.getElementById('bottomBranch');
 
 topBranchObject.addEventListener('load', () =>{
   const topBranchDoc = topBranchObject.contentDocument;

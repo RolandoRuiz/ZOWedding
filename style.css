@@ -166,15 +166,12 @@ body{
 
 /* Background Components*/
 
-.bgrBranches{
+.branchContainer{
     width: 100svw;
     height: 100svh;
     max-width: 100svw;
     position: absolute;
     overflow: hidden;
-}
-
-.branchOne, .branchTwo{
     z-index: 100;
 }
 
@@ -195,65 +192,29 @@ body{
     height: auto;
     position: absolute;
     aspect-ratio: 1/1;
-}
-
-/* Upper Branch & Lower Branch Components*/
-
-#upperBranch{
-    top: 0svh;
-    left: -6svw;
-    transform-origin: bottom left;
-    transform: rotate(0deg);
-
-    /*animation: branchWindU 4s ease-in-out alternate infinite;*/
-}
-
-#lowerBranch{
-    bottom: -3svh;
-    right: -10svw;
-    transform-origin: top right;
-    transform: rotate(5deg);
-
-    /*animation: branchWindDow 4s ease-in-out alternate infinite;*/
-}
-
-/*@keyframes branchWindUp {
-    0%{
-        transform: rotate(0deg);
-    }100%{
-        transform: rotate(2deg);
-    }
-}
-
-@keyframes branchWindDown{
-    0%{
-        transform: rotate(5deg);
-    }100%{
-        transform: rotate(7deg);
-    }
-}*/
-
-#upperBranch > object, #lowerBranch > object{
     color-scheme: normal;
     object-fit: contain;
 }
 
-/* Flower and leafs Components*/
+#topBranch{
+    top: 0svh;
+    left: -6svw;
+    transform-origin: bottom left;
+    transform: rotate(0deg);
+}
+
+#bottomBranch{
+    bottom: -3svh;
+    right: -10svw;
+    transform-origin: top right;
+    transform: rotate(5deg);
+}
 
 .prefix__leaf{
     position: absolute;
     transform-box: fill-box;
     transform: rotate(0deg);
-    /*animation: leafWind 4s ease-in-out alternate infinite;*/
 }
-
-/*@keyframes leafWind {
-    0%{
-        transform: rotate(0deg);
-    }100%{
-        transform: rotate(20deg);
-    }
-}*/
 
 .prefix__bottomLeft{
     transform-origin: bottom left;
