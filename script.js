@@ -10,8 +10,8 @@ var BranchId;
 let position = 15;
 let direction = 1; // 1 for forward, -1 for backward
 const minPosition = 0;
-const maxPosition = 40; // Example boundaries
-const speed = 0.6; // How much to move per frame
+const maxPosition = 30; // Example boundaries
+const speed = 0.4; // How much to move per frame
 
 function branchMovement() {
   position += direction * speed;
