@@ -36,7 +36,7 @@ BranchId = requestAnimationFrame(branchMovement);
 
 const leafMinPosition = 0;
 const leafMaxPosition = 30;
-const leafSpeed = 0.0015;
+const leafSpeed = 0.2;
 
 const getBranches = document.querySelectorAll(".branch");
 
