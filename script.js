@@ -99,11 +99,42 @@ getBranches.forEach(branch => {
           leafId = null;
         }
       }
-
     });
   })
 });
 
+/* Light animation */
+
+const getLightOverlay = document.querySelector(".bgrOverlayWrapper");
+
+var lightOverlayId;
+
+let lightPosition = 0;
+let lightDirection = 1; // 1 for forward, -1 for backward
+const lightMinPosition = 0;
+const lightMaxPosition = 2; // Example boundaries
+const lightSpeed = 0.01; // How much to move per frame
+
+setTimeout(() => {
+  function lightOverlayMovement(){
+    position += direction * speed;
+  
+    if (position >= maxPosition) {
+          position = maxPosition; // Cap at max
+          direction = -1; // Reverse direction
+      } else if (position <= minPosition) {
+          position = minPosition; // Cap at min
+          direction = 1; // Reverse direction
+    }
+
+    getUpperBranch.style.transform = "rotate(" + position / 10 + "deg)";
+    getLowerBranch.style.transform = "rotate(" + position / 10 + "deg)" ;
+
+    lightOverlayId = requestAnimationFrame(lightOverlayMovement);
+  }
+
+  branchMovement()
+}, 3000);
 
 
 

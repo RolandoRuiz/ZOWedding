@@ -208,7 +208,7 @@ body{
     right: -10svw;
     transform-origin: top right;
     transform: rotate(5deg);
-    bottom: 1%;
+    bottom: -0.5%;
 }
 
 .prefix__leaf{
@@ -427,7 +427,7 @@ body{
 
 /* Overlay Components*/
 
-.baseOverlayWrapper{
+.bgrOverlayWrapper{
     width: 100%;
     height: 100%;
     position: absolute;
@@ -441,7 +441,7 @@ body{
     transform: scale(0);
 }
 
-.baseOverlayAnim{
+.bgrOverlayAnim{
     animation: showBgrOverlay 2s cubic-bezier(.71,-0.01,.68,.84) forwards 3.45s,
                 pulseOverlay 2s cubic-bezier(.18,.35,.46,1) alternate 5.45s;
     animation-iteration-count: 1, infinite;
