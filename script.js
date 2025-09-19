@@ -17,10 +17,8 @@ function branchMovement() {
   position += direction * speed;
   
   if (position >= maxPosition) {
-        position = maxPosition; // Cap at max
         direction = -1; // Reverse direction
     } else if (position <= minPosition) {
-        position = minPosition; // Cap at min
         direction = 1; // Reverse direction
   }
 
@@ -76,10 +74,8 @@ getBranches.forEach(branch => {
         leafPosition += leafDirection * leafSpeed;
 
         if (leafPosition >= leafMaxPosition) {
-          leafPosition = leafMaxPosition;
           leafDirection = -1;
         } else if (leafPosition <= leafMinPosition) {
-          leafPosition = leafMinPosition;
           leafDirection = 1;
         }
 
@@ -106,35 +102,58 @@ getBranches.forEach(branch => {
 /* Light animation */
 
 const getLightOverlay = document.querySelector(".bgrOverlayWrapper");
-
 var lightOverlayId;
+let lightOverlayStartTime;
+const delayLightOverlay = 4000; //2 Seconds
 
 let lightPosition = 0;
-let lightDirection = 1; // 1 for forward, -1 for backward
-const lightMinPosition = 0;
-const lightMaxPosition = 2; // Example boundaries
-const lightSpeed = 0.01; // How much to move per frame
+let lightDirection = 1; 
+const lightStartPosition = 0;
+const lightEndPosition = 1; 
+const lightOverPosition = 1.1;
+var lightSpeed = 0.02; 
 
-setTimeout(() => {
-  function lightOverlayMovement(){
-    /*position += direction * speed;
-  
-    if (position >= maxPosition) {
-          position = maxPosition; // Cap at max
-          direction = -1; // Reverse direction
-      } else if (position <= minPosition) {
-          position = minPosition; // Cap at min
-          direction = 1; // Reverse direction
-    }
 
-    getUpperBranch.style.transform = "rotate(" + position / 10 + "deg)";
-    getLowerBranch.style.transform = "rotate(" + position / 10 + "deg)" ;
 
-    lightOverlayId = requestAnimationFrame(lightOverlayMovement);*/
+function lightOverlayMovement(timestamp){
+
+  if(!lightOverlayStartTime){
+    lightOverlayStartTime = timestamp;
   }
 
-  branchMovement()
-}, 3000);
+  const elapsedTime = timestamp - lightOverlayStartTime;
+
+  if (elapsedTime >= delayLightOverlay) {
+    lightPosition += lightDirection * lightSpeed;
+
+    if (lightPosition >= lightOverPosition) {
+      lightDirection = -1;
+      lightSpeed = 0.002;
+    }else if (lightPosition <= lightEndPosition) {
+      lightDirection = 1;
+    }
+  
+    getLightOverlay.style.transform = "scale(" + lightPosition + ")";
+    getLightOverlay.style.opacity = lightPosition;
+    lightOverlayId = requestAnimationFrame(lightOverlayMovement);
+
+  }else{
+    lightOverlayId = requestAnimationFrame(lightOverlayMovement);
+  }
+}
+
+lightOverlayMovement()
+
+
+/* Paragraph animation */
+
+const getInitialParagraphs = document.querySelectorAll(".initialParagraph");
+const getParagraphLines = document.querySelectorAll(".paragraphLine");
+const getParagraphGlows = document.querySelectorAll(".paragraphGlow");
+
+getInitialParagraphs.forEach(paragraph => {
+  
+});
 
 
 
