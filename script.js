@@ -147,14 +147,67 @@ lightOverlayMovement()
 
 /* Paragraph animation */
 
+
+
 const getInitialParagraphs = document.querySelectorAll(".initialParagraph");
 const getParagraphLines = document.querySelectorAll(".paragraphLine");
 const getParagraphGlows = document.querySelectorAll(".paragraphGlow");
 
-getInitialParagraphs.forEach(paragraph => {
-  
-});
 
+function animateParagraph(paragraph) {
+
+  const delayPerLine = 2000; // 1s delay per line
+  const fadeDuration = 1000;  // fade-in duration
+
+  
+
+  getParagraphLines.forEach((line, i) => {
+
+    if (paragraph.classList.contains("One") && line.parentElement.parentElement.classList.contains("One")) {
+
+      setTimeout(() => {
+        requestAnimationFrame(step);
+        //console.log(delayPerLine * i)
+      }, delayPerLine * i);
+
+    }
+
+    if (paragraph.classList.contains("Two") && line.parentElement.parentElement.classList.contains("Two")) {
+      
+      setTimeout(() => {
+        requestAnimationFrame(step);
+        //console.log(delayPerLine * (i - 5))
+      }, delayPerLine * (i - 5));
+
+    }
+      
+    let startTime = null;
+
+    function step(timestamp) {
+    
+      if (!startTime) {
+        startTime = timestamp
+      };
+
+      const elapsed = timestamp - startTime;
+      const fadeElapsed = elapsed;
+      const opacity = Math.min(fadeElapsed / fadeDuration, 1);
+      line.style.opacity = opacity;
+      
+      if (opacity < 1) {
+        requestAnimationFrame(step);
+      }
+    }
+
+  })
+}
+
+// stagger start times
+getInitialParagraphs.forEach((paragraph, i) => {
+  setTimeout(() => {
+    animateParagraph(paragraph);
+  }, 12000 * i);
+});
 
 
 
@@ -189,7 +242,7 @@ const getParagraphGlows = document.querySelectorAll(".paragraphGlow");
 
 
 setTimeout(() => {
-    getInitialParagraphs.forEach((paragraph, i) => {
+  getInitialParagraphs.forEach((paragraph, i) => {
       setTimeout(() => {
         getParagraphLines.forEach((paragraphLine, index) => {
 

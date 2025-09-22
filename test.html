@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Line by Line Reveal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+      padding: 40px;
+    }
+
+    .paragraph {
+      font-size: 20px;
+      line-height: 1.6;
+    }
+
+    .line {
+      opacity: 0;       /* hidden by default */
+      display: block;   /* each line stacked */
+    }
+  </style>
+</head>
+<body>
+  <p class="paragraph">
+    <span class="line">This is the first line of text.</span>
+    <span class="line">Here comes the second line.</span>
+    <span class="line">And finally, the last line appears.</span>
+  </p>
+
+  <script>
+    const lines = document.querySelectorAll(".paragraph .line");
+    const delayPerLine = 2000;  // wait 2s before starting each line
+    const fadeDuration = 1000;  // fade-in duration (ms)
+
+    function fadeInLine(line, startDelay) {
+      let startTime = null;
+
+      function step(timestamp) {
+        if (!startTime) startTime = timestamp;
+
+        const elapsed = timestamp - startTime;
+
+        if (elapsed < startDelay) {
+          // not time yet → keep waiting
+          requestAnimationFrame(step);
+          return;
+        }
+
+        const fadeElapsed = elapsed - startDelay;
+        const opacity = Math.min(fadeElapsed / fadeDuration, 1);
+        line.style.opacity = opacity;
+
+        if (opacity < 1) {
+          requestAnimationFrame(step);
+        }
+      }
+
+      requestAnimationFrame(step);
+    }
+
+    // Animate all lines with staggered delays
+    lines.forEach((line, i) => {
+      const totalDelay = delayPerLine * i; // stagger
+      fadeInLine(line, totalDelay);
+    });
+  </script>
+</body>
+</html>
