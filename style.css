@@ -389,7 +389,6 @@ body{
     mask-size: 110% 100%;
     mask-position: 650%;
     position: absolute;
-    opacity: 0;
 }
 
 .glowMask{

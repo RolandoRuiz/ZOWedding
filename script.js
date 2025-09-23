@@ -176,20 +176,58 @@ function animateParagraph(paragraph) {
     function step(timestamp) {
     
       if (!startTime) startTime = timestamp;
-          const elapsed = timestamp - startTime;
+        const elapsed = timestamp - startTime;
 
-          // normalize progress 0 → 1
-          let progress = Math.min(elapsed / lineDuration, 1);
-          progress = Math.round(progress * 100) / 100;
+        // normalize progress 0 → 1
+        let progress = Math.min(elapsed / lineDuration, 1);
+        progress = Math.round(progress * 100) / 100;
 
-          // animate mask-position (left → right)
-          const posX = 100 - progress * 100; // 0% → 100%
-          line.style.webkitMaskPosition = `${posX}%`;
-          line.style.maskPosition = `${posX}%`;
+        // animate mask-position (left → right)
+        const posX = 100 - progress * 100; // 0% → 100%
+        line.style.webkitMaskPosition = `${posX}%`;
+        line.style.maskPosition = `${posX}%`;
 
-          if (progress < 1) {
-            requestAnimationFrame(step);
-          }
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        }
+    }
+
+  })
+
+  getParagraphGlows.forEach((lineGlow, i) => {
+
+    if (paragraph.classList.contains("One") && lineGlow.parentElement.parentElement.classList.contains("One") || 
+       paragraph.classList.contains("Two") && lineGlow.parentElement.parentElement.classList.contains("Two")){
+
+      setTimeout(() => {
+        requestAnimationFrame(step);
+        //console.log(delayPerLine * i)
+      }, delayPerLine * i);
+
+    }
+      
+    let startTime = null;
+
+    function step(timestamp) {
+    
+      if (!startTime) startTime = timestamp;
+        const elapsed = timestamp - startTime;
+
+        // normalize progress 0 → 1
+        let progress = Math.min(elapsed / lineDuration, 1);
+        progress = Math.round(progress * 100) / 100;
+
+        // animate mask-position (650% → -600%)
+        const startPos = 650;
+        const endPos = -600;
+        const posX = startPos + (endPos - startPos) * progress;
+
+        lineGlow.style.webkitMaskPosition = `${posX}%`;
+        lineGlow.style.maskPosition = `${posX}%`;
+
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        }
     }
 
   })
