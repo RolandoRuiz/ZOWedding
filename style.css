@@ -346,13 +346,13 @@ body{
     animation: closeParagraph 1s ease-in forwards 28s;
 }
 
-/*@keyframes closeParagraph {
+@keyframes closeParagraph {
     0%{
         opacity: 1;
     }100%{
         opacity: 0;
     }
-}*/
+}
 
 .paragraphLineBox{
     width: 100%;
@@ -362,7 +362,7 @@ body{
 
 .paragraphLine{
     width: 100%;
-    ask-image: radial-gradient(85% 400% at 100% 50% , transparent 50%, black 55%);
+    mask-image: radial-gradient(85% 400% at 100% 50% , transparent 50%, black 55%);
     mask-repeat: no-repeat;
     mask-size: 230% 100%;
     mask-position: 100%;
@@ -389,6 +389,7 @@ body{
     mask-size: 110% 100%;
     mask-position: 650%;
     position: absolute;
+    opacity: 0;
 }
 
 .glowMask{

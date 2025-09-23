@@ -156,14 +156,13 @@ const getParagraphGlows = document.querySelectorAll(".paragraphGlow");
 
 function animateParagraph(paragraph) {
 
-  const delayPerLine = 2000; // 1s delay per line
-  const fadeDuration = 1000;  // fade-in duration
-
-  
+  const delayPerLine = 2000;
+  const lineDuration = 2000;
 
   getParagraphLines.forEach((line, i) => {
 
-    if (paragraph.classList.contains("One") && line.parentElement.parentElement.classList.contains("One")) {
+    if (paragraph.classList.contains("One") && line.parentElement.parentElement.classList.contains("One") || 
+       paragraph.classList.contains("Two") && line.parentElement.parentElement.classList.contains("Two")){
 
       setTimeout(() => {
         requestAnimationFrame(step);
@@ -171,43 +170,58 @@ function animateParagraph(paragraph) {
       }, delayPerLine * i);
 
     }
-
-    if (paragraph.classList.contains("Two") && line.parentElement.parentElement.classList.contains("Two")) {
-      
-      setTimeout(() => {
-        requestAnimationFrame(step);
-        //console.log(delayPerLine * (i - 5))
-      }, delayPerLine * (i - 5));
-
-    }
       
     let startTime = null;
 
     function step(timestamp) {
     
-      if (!startTime) {
-        startTime = timestamp
-      };
+      if (!startTime) startTime = timestamp;
+          const elapsed = timestamp - startTime;
 
-      const elapsed = timestamp - startTime;
-      const fadeElapsed = elapsed;
-      const opacity = Math.min(fadeElapsed / fadeDuration, 1);
-      line.style.opacity = opacity;
-      
-      if (opacity < 1) {
-        requestAnimationFrame(step);
-      }
+          // normalize progress 0 → 1
+          let progress = Math.min(elapsed / lineDuration, 1);
+          progress = Math.round(progress * 100) / 100;
+
+          // animate mask-position (left → right)
+          const posX = 100 - progress * 100; // 0% → 100%
+          line.style.webkitMaskPosition = `${posX}%`;
+          line.style.maskPosition = `${posX}%`;
+
+          if (progress < 1) {
+            requestAnimationFrame(step);
+          }
     }
 
   })
 }
 
 // stagger start times
-getInitialParagraphs.forEach((paragraph, i) => {
-  setTimeout(() => {
-    animateParagraph(paragraph);
-  }, 12000 * i);
-});
+
+function staggerParagraphs() {
+  const delay = 3500; // 4s per paragraph
+  let startTime = null;
+
+  function step(timestamp) {
+    if (!startTime) startTime = timestamp;
+    const elapsed = timestamp - startTime;
+
+    getInitialParagraphs.forEach((paragraph, i) => {
+      const startAt = (i + 1) * delay;
+      if (!paragraph.started && elapsed >= startAt) {
+        paragraph.started = true;
+        animateParagraph(paragraph);
+      }
+    });
+
+    if ([...getInitialParagraphs].some(p => !p.started)) {
+      requestAnimationFrame(step);
+    }
+  }
+
+  requestAnimationFrame(step);
+}
+
+staggerParagraphs();
 
 
 
