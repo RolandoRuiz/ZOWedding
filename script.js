@@ -99,12 +99,51 @@ getBranches.forEach(branch => {
   })
 });
 
+/* Background Overlay Animation*/
+
+const backgroundOverlay = document.querySelector(".bgrMultiply");
+let overlayId;
+let bgrOverlayStartTime;
+const overlayDelay = 2000;
+const overlayDuration = 1500;        // how long the fade should last (ms)
+const overlayOpacityMax = 1;       // starting opacity
+const overlayOpacityMin = 0.9;     // minimum opacity
+
+function backgroundOverlayFade(timestamp) {
+  if (!bgrOverlayStartTime) bgrOverlayStartTime = timestamp;
+
+  const elapsed = timestamp - bgrOverlayStartTime;
+
+  if (elapsed >= overlayDelay) {
+    const fadeElapsed = elapsed - overlayDelay;
+
+    // calculate normalized progress 0 → 1
+    const progress = Math.min(fadeElapsed / overlayDuration, 1);
+
+    // interpolate opacity from max → min
+    const currentOpacity = overlayOpacityMax - (overlayOpacityMax - overlayOpacityMin) * progress;
+
+    backgroundOverlay.style.opacity = currentOpacity;
+
+    if (progress < 1) {
+    overlayId = requestAnimationFrame(backgroundOverlayFade);
+    }
+  }else{
+    overlayId = requestAnimationFrame(backgroundOverlayFade);
+  }
+}
+
+// start the fade
+overlayId = requestAnimationFrame(backgroundOverlayFade);
+
+backgroundOverlayFade()
+
 /* Light animation */
 
 const getLightOverlay = document.querySelector(".bgrOverlayWrapper");
 var lightOverlayId;
 let lightOverlayStartTime;
-const delayLightOverlay = 4000; //2 Seconds
+const delayLightOverlay = 2000; //2 Seconds
 
 let lightPosition = 0;
 let lightDirection = 1; 
@@ -113,7 +152,11 @@ const lightEndPosition = 1;
 const lightOverPosition = 1.1;
 var lightSpeed = 0.02; 
 
-
+function easeInOutCubic(t) {
+  return t < 0.5
+    ? 4 * t * t * t
+    : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
 
 function lightOverlayMovement(timestamp){
 
@@ -147,8 +190,6 @@ lightOverlayMovement()
 
 /* Paragraph animation */
 
-
-
 const getInitialParagraphs = document.querySelectorAll(".initialParagraph");
 const getParagraphLines = document.querySelectorAll(".paragraphLine");
 const getParagraphGlows = document.querySelectorAll(".paragraphGlow");
@@ -156,8 +197,8 @@ const getParagraphGlows = document.querySelectorAll(".paragraphGlow");
 
 function animateParagraph(paragraph) {
 
-  const delayPerLine = 2000;
-  const lineDuration = 2000;
+  const delayPerLine = 1500;
+  const lineDuration = 2200;
 
   getParagraphLines.forEach((line, i) => {
 
