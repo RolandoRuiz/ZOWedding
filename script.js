@@ -107,7 +107,7 @@ let bgrOverlayStartTime;
 const overlayDelay = 2000;
 const overlayDuration = 1500;        // how long the fade should last (ms)
 const overlayOpacityMax = 1;       // starting opacity
-const overlayOpacityMin = 0.9;     // minimum opacity
+const overlayOpacityMin = 0.92;     // minimum opacity
 
 function backgroundOverlayFade(timestamp) {
   if (!bgrOverlayStartTime) bgrOverlayStartTime = timestamp;
@@ -277,7 +277,7 @@ function animateParagraph(paragraph) {
 // stagger start times
 
 function staggerParagraphs() {
-  const delay = 3500; // 4s per paragraph
+  const delay = 4500; // 4s per paragraph
   let startTime = null;
 
   function step(timestamp) {
