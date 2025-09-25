@@ -5,6 +5,11 @@
     font: inherit;
 }
 
+object{
+    background: transparent;
+    color-scheme: normal;
+}
+
 :root{
     --deep-red: #510414;
     --deep-red2: #3a030e;
@@ -265,33 +270,6 @@ body{
     mix-blend-mode: multiply;
 }
 
-
-
-/*@keyframes bgrMultiplyOpacity {
-    0%{
-        opacity: 1; 
-    }10%{
-        opacity: 0.96;
-    }80%{
-        opacity: 0.96;
-    }100%{
-        opacity: 0.90;
-    }
-}
-
-.closeBgrMultiply{
-    opacity: 1;
-    animation: closeMultiplyOpacity 0.5s forwards cubic-bezier(.3,.01,.94,.62) 5.2s;
-}
-
-@keyframes closeMultiplyOpacity {
-    0%{
-        opacity: 1; 
-    }100%{
-        opacity: 0;
-    }
-}*/
-
 /* Initial Text Components*/
 
 .initialTextWrapper{
@@ -334,7 +312,7 @@ body{
 }
 
 .initialParagraph.Two{
-    animation: closeParagraph 1s ease-in forwards 24s;
+    animation: closeParagraph 1s ease-in forwards 25s;
 }
 
 @keyframes closeParagraph {
@@ -343,6 +321,7 @@ body{
     }100%{
         opacity: 0;
         display: none;
+        visibility: hidden;
     }
 }
 
@@ -468,7 +447,7 @@ body{
     overflow: hidden;
     top: 15svh;
     transform-origin: bottom;
-    mask-image: radial-gradient(95% 80% at 50% 60%, rgb(255, 255, 255) 0%, rgba(255, 255, 255, 0.7) 40%, rgba(255, 255, 255, 0.1) 50%, transparent 60%);
+    mask-image: radial-gradient(95% 80% at 50% 60%, rgb(255, 255, 255) 20%, rgba(255, 255, 255, 0.7) 40%, rgba(255, 255, 255, 0.1) 50%, transparent 60%);
 }
 
 .bgrTopOverlay{
@@ -479,22 +458,6 @@ body{
     transform-origin: bottom;
     opacity: 0;
     transform: scale(0);
-}
-
-.topOverlayAnim{
-    animation: showTopOverlay 2s forwards cubic-bezier(.71,-0.01,.68,.84) 3.5s;
-}
-
-@keyframes showTopOverlay {
-    0%{
-        opacity: 0;
-        transform: scale(0);
-    }50%{
-        opacity: 0.1;
-    }100%{
-        opacity: 1;
-        transform: scale(1);
-    }
 }
 
 .endOverlayAnim{
@@ -512,6 +475,7 @@ body{
     }100%{
         opacity: 0;
         display: none;
+        visibility: hidden;
     }
 }
 
@@ -592,6 +556,7 @@ body{
 }
 
 .sparkBox{
+
     width: 70%;
     filter: drop-shadow(0px 0px 7px white);
 }

@@ -141,6 +141,7 @@ backgroundOverlayFade()
 /* Light animation */
 
 const getLightOverlay = document.querySelector(".bgrOverlayWrapper");
+const getLightOverlay2 = document.querySelector(".bgrTopOverlay");
 var lightOverlayId;
 let lightOverlayStartTime;
 const delayLightOverlay = 2000; //2 Seconds
@@ -178,6 +179,8 @@ function lightOverlayMovement(timestamp){
   
     getLightOverlay.style.transform = "scale(" + lightPosition + ")";
     getLightOverlay.style.opacity = lightPosition;
+    getLightOverlay2.style.transform = "scale(" + lightPosition + ")";
+    getLightOverlay2.style.opacity = lightPosition;
     lightOverlayId = requestAnimationFrame(lightOverlayMovement);
 
   }else{
@@ -198,7 +201,7 @@ const getParagraphGlows = document.querySelectorAll(".paragraphGlow");
 function animateParagraph(paragraph) {
 
   const delayPerLine = 1500;
-  const lineDuration = 2200;
+  const lineDuration = 2600;
 
   getParagraphLines.forEach((line, i) => {
 
@@ -277,7 +280,7 @@ function animateParagraph(paragraph) {
 // stagger start times
 
 function staggerParagraphs() {
-  const delay = 4500; // 4s per paragraph
+  const delay = 4000; // 4s per paragraph
   let startTime = null;
 
   function step(timestamp) {
@@ -301,6 +304,21 @@ function staggerParagraphs() {
 }
 
 staggerParagraphs();
+
+const getsparkBoxes = document.querySelectorAll(".sparkBox");
+
+function RotateStars(){
+  getsparkBoxes.forEach(sparkBox => {
+    
+    const sparkBoxDoc = sparkBox.contentDocument;
+    const sparks = sparkBoxDoc.querySelectorAll(".spark");
+
+    sparks.forEach(spark => {
+    });
+  });
+}
+
+RotateStars()
 
 
 
