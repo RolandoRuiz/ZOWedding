@@ -1,57 +1,49 @@
 console.log("connected");
 
-/* Branch animation */
+/* --- Branch animation --- */
 const getUpperBranch = document.querySelector("#topBranch");
 const getLowerBranch = document.querySelector("#bottomBranch");
-
 let position = 15;
-let direction = 1; 
+let direction = 1;
 const minPosition = 0;
 const maxPosition = 30;
 const speed = 0.2;
 
-/* Leaf animation */
+/* --- Leaf animation --- */
 const leafMinPosition = 0;
 const leafMaxPosition = 40;
 const leafSpeed = 0.35;
-
 const getBranches = document.querySelectorAll(".branch");
-const leaves = []; // cache animated leaves
+const leaves = [];
 
 getBranches.forEach(branch => {
   branch.addEventListener("load", () => {
     const branchDoc = branch.contentDocument;
+    if (!branchDoc) return;
     const branchDocLeafTargets = branchDoc.querySelectorAll(".prefix__leaf");
 
     branchDocLeafTargets.forEach(leafTarget => {
-      leaves.push({
-        el: leafTarget,
-        pos: 0,
-        dir: 1,
-        active: false,
-      });
+      const leafObj = { el: leafTarget, pos: 0, dir: 1, active: false, obsDebounce: null };
+      leaves.push(leafObj);
 
-      const stopLeafAnimOptions = {
-        root: null,
-        rootMargin: "0px",
-        threshold: 0.5,
-      };
-
-      const stopLeafAnim = (entries) => {
-        entries.forEach((entry) => {
-          const leafObj = leaves.find(l => l.el === leafTarget);
-          if (!leafObj) return;
-          leafObj.active = entry.isIntersecting;
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          const l = leaves.find(leaf => leaf.el === entry.target);
+          if (!l) return;
+          if (l.obsDebounce) clearTimeout(l.obsDebounce);
+          l.obsDebounce = setTimeout(() => { l.active = entry.isIntersecting; l.obsDebounce = null; }, 60);
         });
-      };
+      }, { root: null, rootMargin: "0px", threshold: 0.5 });
 
-      const stopLeafObserver = new IntersectionObserver(stopLeafAnim, stopLeafAnimOptions);
-      stopLeafObserver.observe(leafTarget);
+      observer.observe(leafTarget);
+
+      try { leafTarget.style.willChange = "transform"; } catch(e){}
+      try { leafTarget.style.transform = "translateZ(0)"; } catch(e){}
     });
   });
 });
 
-/* Background Overlay Animation */
+/* --- Background overlay --- */
 const backgroundOverlay = document.querySelector(".bgrMultiply");
 let bgrOverlayStartTime;
 const overlayDelay = 2000;
@@ -59,110 +51,78 @@ const overlayDuration = 1500;
 const overlayOpacityMax = 1;
 const overlayOpacityMin = 0.92;
 
-/* Light animation */
+/* --- Light overlay --- */
 const getLightOverlay = document.querySelector(".bgrOverlayWrapper");
 const getLightOverlay2 = document.querySelector(".bgrTopOverlay");
 let lightOverlayStartTime;
 const delayLightOverlay = 2000;
+const lightStartScale = 0.001;
+const lightMaxScale = 1.1;
+const lightMinPulse = 1.0;
+let lightScale = lightStartScale;
+let lightPhase = "grow"; // "grow" or "pulse"
+let lightDirection = -1; // for pulse
 
-let lightPosition = 0;
-let lightDirection = 1;
-const lightStartPosition = 0;
-const lightEndPosition = 1;
-const lightOverPosition = 1.1;
-let lightSpeed = 0.02;
-
-function easeInOutCubic(t) {
-  return t < 0.5
-    ? 4 * t * t * t
-    : 1 - Math.pow(-2 * t + 2, 3) / 2;
-}
-
-/* Paragraph animation */
+/* --- Paragraph animation --- */
 const getInitialParagraphs = document.querySelectorAll(".initialParagraph");
 const getParagraphLines = document.querySelectorAll(".paragraphLine");
 const getParagraphGlows = document.querySelectorAll(".paragraphGlow");
 
-function animateParagraph(paragraph) {
+// Add will-change and set initial CSS variables
+getParagraphLines.forEach(l => { try { l.style.willChange = "mask-position,-webkit-mask-position"; l.style.setProperty('--mask-x','100%'); } catch(e){} });
+getParagraphGlows.forEach(l => { try { l.style.willChange = "mask-position,-webkit-mask-position"; l.style.setProperty('--mask-x','650%'); } catch(e){} });
+
+function animateMask(line, start, end, duration){
+  let startTime = null;
+  function step(timestamp){
+    if(!startTime) startTime = timestamp;
+    const elapsed = timestamp - startTime;
+    let progress = Math.min(elapsed / duration, 1);
+    const posX = start + (end - start) * progress;
+    line.style.setProperty('--mask-x', `${posX}%`);
+    if(progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function animateParagraph(paragraph){
   const delayPerLine = 1500;
   const lineDuration = 2600;
 
-  getParagraphLines.forEach((line, i) => {
-    if (
-      (paragraph.classList.contains("One") &&
-        line.parentElement.parentElement.classList.contains("One")) ||
-      (paragraph.classList.contains("Two") &&
-        line.parentElement.parentElement.classList.contains("Two"))
-    ) {
-      setTimeout(() => {
-        let startTime = null;
-        function step(timestamp) {
-          if (!startTime) startTime = timestamp;
-          const elapsed = timestamp - startTime;
-          let progress = Math.min(elapsed / lineDuration, 1);
-          progress = Math.round(progress * 100) / 100;
-          const posX = 100 - progress * 100;
-          line.style.webkitMaskPosition = `${posX}%`;
-          line.style.maskPosition = `${posX}%`;
-          if (progress < 1) requestAnimationFrame(step);
-        }
-        requestAnimationFrame(step);
-      }, delayPerLine * i);
+  getParagraphLines.forEach((line,i)=>{
+    if((paragraph.classList.contains("One") && line.closest(".One")) || 
+       (paragraph.classList.contains("Two") && line.closest(".Two"))){
+      setTimeout(()=>animateMask(line, 100, 0, lineDuration), i*delayPerLine);
     }
   });
 
-  getParagraphGlows.forEach((lineGlow, i) => {
-    if (
-      (paragraph.classList.contains("One") &&
-        lineGlow.parentElement.parentElement.classList.contains("One")) ||
-      (paragraph.classList.contains("Two") &&
-        lineGlow.parentElement.parentElement.classList.contains("Two"))
-    ) {
-      setTimeout(() => {
-        let startTime = null;
-        function step(timestamp) {
-          if (!startTime) startTime = timestamp;
-          const elapsed = timestamp - startTime;
-          let progress = Math.min(elapsed / lineDuration, 1);
-          progress = Math.round(progress * 100) / 100;
-          const startPos = 650;
-          const endPos = -600;
-          const posX = startPos + (endPos - startPos) * progress;
-          lineGlow.style.webkitMaskPosition = `${posX}%`;
-          lineGlow.style.maskPosition = `${posX}%`;
-          if (progress < 1) requestAnimationFrame(step);
-        }
-        requestAnimationFrame(step);
-      }, delayPerLine * i);
+  getParagraphGlows.forEach((glow,i)=>{
+    if((paragraph.classList.contains("One") && glow.closest(".One")) || 
+       (paragraph.classList.contains("Two") && glow.closest(".Two"))){
+      setTimeout(()=>animateMask(glow, 650, -600, lineDuration), i*delayPerLine);
     }
   });
 }
 
-function staggerParagraphs() {
+function staggerParagraphs(){
   const delay = 4000;
   let startTime = null;
-
-  function step(timestamp) {
-    if (!startTime) startTime = timestamp;
+  function step(timestamp){
+    if(!startTime) startTime = timestamp;
     const elapsed = timestamp - startTime;
-
-    getInitialParagraphs.forEach((paragraph, i) => {
-      const startAt = (i + 1) * delay;
-      if (!paragraph.started && elapsed >= startAt) {
+    getInitialParagraphs.forEach((paragraph,i)=>{
+      if(!paragraph.started && elapsed >= (i+1)*delay){
         paragraph.started = true;
         animateParagraph(paragraph);
       }
     });
-
-    if ([...getInitialParagraphs].some(p => !p.started)) {
-      requestAnimationFrame(step);
-    }
+    if([...getInitialParagraphs].some(p=>!p.started)) requestAnimationFrame(step);
   }
   requestAnimationFrame(step);
 }
 staggerParagraphs();
 
-/* Spark animation */
+/* --- Sparks --- */
 const getsparkBoxes = document.querySelectorAll(".sparkBox");
 const minAngle = 0;
 const maxAngle = 360;
@@ -170,82 +130,88 @@ const angleSpeed = 1;
 let sparkAngles = new WeakMap();
 const sparkCache = [];
 
-getsparkBoxes.forEach(sparkBox => {
-  sparkBox.addEventListener("load", () => {
+getsparkBoxes.forEach(sparkBox=>{
+  sparkBox.addEventListener("load", ()=>{
     const sparkBoxDoc = sparkBox.contentDocument;
-    if (!sparkBoxDoc) return;
+    if(!sparkBoxDoc) return;
     const sparks = sparkBoxDoc.querySelectorAll(".spark");
-    sparks.forEach(spark => {
-      sparkAngles.set(spark, Math.random() * maxAngle);
+    sparks.forEach(spark=>{
+      sparkAngles.set(spark, Math.random()*maxAngle);
       sparkCache.push(spark);
+      try{ spark.style.transformOrigin="center"; }catch(e){}
+      try{ spark.style.transformBox="fill-box"; }catch(e){}
+      try{ spark.style.willChange="transform"; }catch(e){}
+      try{ spark.style.transform=`rotate(${sparkAngles.get(spark)}deg) translateZ(0)`;}catch(e){}
     });
   });
 });
 
-/* MAIN RAF LOOP */
-function tick(timestamp) {
-  // Branches
-  position += direction * speed;
-  if (position >= maxPosition) direction = -1;
-  else if (position <= minPosition) direction = 1;
-  const branchRotation = "rotate(" + position / 10 + "deg)";
-  getUpperBranch.style.transform = branchRotation;
-  getLowerBranch.style.transform = branchRotation;
+/* --- MAIN RAF LOOP --- */
+function tick(timestamp){
+  /* Branches */
+  position += direction*speed;
+  if(position>=maxPosition) direction=-1;
+  else if(position<=minPosition) direction=1;
+  const branchRotation = `rotate(${position/10}deg)`;
+  if(getUpperBranch) getUpperBranch.style.transform = branchRotation;
+  if(getLowerBranch) getLowerBranch.style.transform = branchRotation;
 
-  // Leaves
-  leaves.forEach(l => {
-    if (!l.active) return;
-    l.pos += l.dir * leafSpeed;
-    if (l.pos >= leafMaxPosition) l.dir = -1;
-    else if (l.pos <= leafMinPosition) l.dir = 1;
-    l.el.style.transform = "rotate(" + l.pos + "deg)";
+  /* Leaves */
+  leaves.forEach(l=>{
+    if(!l.active) return;
+    l.pos += l.dir*leafSpeed;
+    if(l.pos>=leafMaxPosition) l.dir=-1;
+    else if(l.pos<=leafMinPosition) l.dir=1;
+    try{ l.el.style.transform=`rotate(${l.pos}deg)`;}catch(e){}
   });
 
-  // Background overlay
-  if (!bgrOverlayStartTime) bgrOverlayStartTime = timestamp;
-  const elapsed = timestamp - bgrOverlayStartTime;
-  if (elapsed >= overlayDelay) {
-    const fadeElapsed = elapsed - overlayDelay;
-    const progress = Math.min(fadeElapsed / overlayDuration, 1);
-    const currentOpacity =
-      overlayOpacityMax -
-      (overlayOpacityMax - overlayOpacityMin) * progress;
-    backgroundOverlay.style.opacity = currentOpacity;
+  /* Background Overlay */
+  if(!bgrOverlayStartTime) bgrOverlayStartTime = timestamp;
+  let overlayElapsed = timestamp - bgrOverlayStartTime;
+  if(overlayElapsed >= overlayDelay){
+    const fadeElapsed = overlayElapsed - overlayDelay;
+    const progress = Math.min(fadeElapsed/overlayDuration,1);
+    const currentOpacity = overlayOpacityMax - (overlayOpacityMax-overlayOpacityMin)*progress;
+    if(backgroundOverlay) backgroundOverlay.style.opacity = currentOpacity;
   }
 
-  // Light overlay
-  if (!lightOverlayStartTime) lightOverlayStartTime = timestamp;
-  const elapsedTime = timestamp - lightOverlayStartTime;
-  if (elapsedTime >= delayLightOverlay) {
-    lightPosition += lightDirection * lightSpeed;
-    if (lightPosition >= lightOverPosition) {
-      lightDirection = -1;
-      lightSpeed = 0.002;
-    } else if (lightPosition <= lightEndPosition) {
-      lightDirection = 1;
+  /* Light overlay */
+  if(!lightOverlayStartTime) lightOverlayStartTime = timestamp;
+  const elapsedLight = timestamp - lightOverlayStartTime;
+
+  if(elapsedLight < delayLightOverlay){
+    lightScale = lightStartScale;
+  } else {
+    if(lightPhase==="grow"){
+      lightScale += 0.02;
+      if(lightScale >= lightMaxScale){
+        lightScale = lightMaxScale;
+        lightPhase="pulse";
+      }
+    } else if(lightPhase==="pulse"){
+      lightScale += lightDirection*0.002;
+      if(lightScale >= lightMaxScale) lightDirection=-1;
+      if(lightScale <= lightMinPulse) lightDirection=1;
     }
-    const transformVal = "scale(" + lightPosition + ")";
-    getLightOverlay.style.transform = transformVal;
-    getLightOverlay.style.opacity = lightPosition;
-    getLightOverlay2.style.transform = transformVal;
-    getLightOverlay2.style.opacity = lightPosition;
   }
 
-  // Sparks
-  sparkCache.forEach(spark => {
-    let angle = sparkAngles.get(spark);
-    angle += angleSpeed;
-    if (angle > maxAngle) angle = minAngle;
-    spark.style.transformBox = "content-box";
-    spark.style.transformOrigin = "center";
-    spark.style.transform = `rotate(${angle}deg)`;
-    sparkAngles.set(spark, angle);
+  if(getLightOverlay) getLightOverlay.style.transform=`scale(${lightScale}) translateZ(0)`;
+  if(getLightOverlay2) getLightOverlay2.style.transform=`scale(${lightScale}) translateZ(0)`;
+
+  /* Sparks */
+  sparkCache.forEach(spark=>{
+    try{
+      let angle = sparkAngles.get(spark) || 0;
+      angle += angleSpeed;
+      if(angle>maxAngle) angle = minAngle + (angle-maxAngle);
+      spark.style.transform = `rotate(${angle}deg) translateZ(0)`;
+      sparkAngles.set(spark, angle);
+    }catch(e){}
   });
 
   requestAnimationFrame(tick);
 }
 requestAnimationFrame(tick);
-
 
 
 

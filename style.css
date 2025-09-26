@@ -10,6 +10,12 @@ object{
     color-scheme: normal;
 }
 
+.spark, .prefix__leaf, .bgrMultiply, .bgrOverlayWrapper, .bgrTopOverlay,
+.initialParagraph .paragraphLine, .initialParagraph .paragraphGlow {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
 :root{
     --deep-red: #510414;
     --deep-red2: #3a030e;
@@ -220,6 +226,7 @@ body{
     position: absolute;
     transform-box: fill-box;
     transform: rotate(0deg);
+    will-change: transform;
 }
 
 .prefix__bottomLeft{
@@ -336,12 +343,15 @@ body{
     mask-image: radial-gradient(85% 400% at 100% 50% , transparent 50%, black 55%);
     mask-repeat: no-repeat;
     mask-size: 230% 100%;
-    mask-position: 100%;
+    
 
     -webkit-mask-image: radial-gradient(85% 400% at 100% 50% , transparent 50%, black 55%);
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-size: 230% 100%;
-    -webkit-mask-position: 100%;
+
+  -webkit-mask-position: var(--mask-x) 0;
+  mask-position: var(--mask-x) 0;
+    
 }
 
 .paragraphGlow{
@@ -355,12 +365,13 @@ body{
     mask-image: radial-gradient(15% 100% at 50% 50%, rgb(0, 0, 0) 30%, rgba(0, 0, 0, 0.26) 55%, transparent 95%);
     mask-repeat: no-repeat;
     mask-size: 110% 100%;
-    mask-position: 650%;
 
     -webkit-mask-image: radial-gradient(15% 100% at 50% 50%, rgb(0, 0, 0) 30%, rgba(0, 0, 0, 0.26) 55%, transparent 95%);
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-size: 110% 100%;
-    -webkit-mask-position: 650%;
+
+  -webkit-mask-position: var(--mask-x) 0;
+  mask-position: var(--mask-x) 0;
 }
 
 .glowMask{
