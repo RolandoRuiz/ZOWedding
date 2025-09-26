@@ -306,6 +306,11 @@ function staggerParagraphs() {
 staggerParagraphs();
 
 const getsparkBoxes = document.querySelectorAll(".sparkBox");
+let sparkAngle = 0;
+const sparkDirection = 1;
+const minAngle = 0;
+const maxAngle = 360;
+const angleSpeed = 0.1;
 
 function RotateStars(){
   getsparkBoxes.forEach(sparkBox => {
@@ -314,7 +319,20 @@ function RotateStars(){
     const sparks = sparkBoxDoc.querySelectorAll(".spark");
 
     sparks.forEach(spark => {
+
+      let sparkId;
+
+      sparkAngle += sparkDirection * angleSpeed;
+
+      if (sparkAngle <= maxAngle) {
+        spark.style.transform = "rotate(" + sparkAngle + "deg}"
+      }if (sparkAngle > maxAngle) {
+        sparkAngle = minAngle;
+        spark.style.transform = "rotate(" + sparkAngle + "deg}"
+      }
     });
+
+    sparkId = requestAnimationFrame(RotateStars)
   });
 }
 
