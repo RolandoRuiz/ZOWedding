@@ -556,19 +556,8 @@ body{
 }
 
 .sparkBox{
-
     width: 70%;
     filter: drop-shadow(0px 0px 7px white);
-}
-
-.spark{
-    fill: white;
-    position: absolute;
-    z-index: 300;
-    transform-box: content-box;
-    transform-origin: center;
-
-    animation: rotateStar 10s linear forwards infinite 1.5s;
 }
 
 
