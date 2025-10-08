@@ -650,21 +650,6 @@ body{
     opacity: 1;
 }
 
-.stopLetterGlow{
-    animation: stopLetterGlow 1s ease-out  forwards;
-    opacity: 1;
-}
-
-@keyframes stopLetterGlow {
-    0%{
-        opacity: 1;
-        display: block;
-    }100%{
-        opacity: 0;
-        display: none;
-    }
-}
-
 /* Letter body properties*/
 
 .letterBody{
@@ -676,8 +661,12 @@ body{
     align-items: center;
     z-index: 100;
     aspect-ratio: 1 / 0.6;
+
     transform-style: preserve-3d;
     transform-origin: center;
+
+    -webkit-transform-style: preserve-3d;
+    -webkit-transform-origin: center;
 }   
 
 .letterBody::before{
@@ -686,11 +675,16 @@ body{
     height: 100%;
     position: absolute;
     background-image: radial-gradient(ellipse at top, var(--bright-red) 30%, var(--deep-red) 75%);
+    -webkit-background-image: radial-gradient(ellipse at top, var(--bright-red) 30%, var(--deep-red) 75%);
     border-radius: 0px 0px 10px 10px;
 
     transform: rotateY(180deg);
     transform-style: preserve-3d;
     backface-visibility: hidden;
+
+    -webkit-transform: rotateY(180deg);
+    -webkit-transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
 }
 
 .letterBody::after{
@@ -703,6 +697,9 @@ body{
 
     transform-style: preserve-3d;
     backface-visibility: hidden;
+
+    -webkit-transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
 }
 
 /* Letter card properties*/
@@ -720,9 +717,14 @@ body{
     border-radius: 4%;
     margin-bottom: 2%;
     filter: drop-shadow(0px 0px 0px rgb(177, 177, 177));
+
     transform: translateY(0svh);
     transform-style: preserve-3d;
     backface-visibility: hidden;
+
+    -webkit-transform: translateY(0svh);
+    -webkit-transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
 
 }
 
@@ -775,6 +777,7 @@ body{
     opacity: 1;
     will-change: transform;
     transform: scale(0);
+    -webkit-transform: scale(0);
 }
 
 .screenGlowAnim{
