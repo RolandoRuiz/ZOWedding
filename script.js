@@ -61,16 +61,19 @@ const lightMaxScale = 1.1;
 const lightMinPulse = 1.0;
 let lightScale = lightStartScale;
 let lightPhase = "grow"; // "grow" or "pulse"
-let lightDirection = -1; // for pulse
+let lightDirection = -1;
 
 /* --- Paragraph animation --- */
 const getInitialParagraphs = document.querySelectorAll(".initialParagraph");
 const getParagraphLines = document.querySelectorAll(".paragraphLine");
 const getParagraphGlows = document.querySelectorAll(".paragraphGlow");
 
-// Add will-change and set initial CSS variables
-getParagraphLines.forEach(l => { try { l.style.willChange = "mask-position,-webkit-mask-position"; l.style.setProperty('--mask-x','100%'); } catch(e){} });
-getParagraphGlows.forEach(l => { try { l.style.willChange = "mask-position,-webkit-mask-position"; l.style.setProperty('--mask-x','650%'); } catch(e){} });
+getParagraphLines.forEach(l => {
+  try { l.style.willChange = "mask-position,-webkit-mask-position"; l.style.setProperty('--mask-x','100%'); } catch(e){}
+});
+getParagraphGlows.forEach(l => {
+  try { l.style.willChange = "mask-position,-webkit-mask-position"; l.style.setProperty('--mask-x','650%'); } catch(e){}
+});
 
 function animateMask(line, start, end, duration){
   let startTime = null;
@@ -146,10 +149,38 @@ getsparkBoxes.forEach(sparkBox=>{
   });
 });
 
+/* --- Letter --- */
+const getLetter = document.querySelector(".letterBox");
+const getLetterGlow = document.querySelector(".letterGlow");
+const startY = 8;
+const startRotation = -270;
+const startScale = 0.1;
+const letterPosition = -140;
+const letterRotation = 0;
+const letterScale = 1;
+const letterDuration = 2500;
+const positionSpeed = 2;
+const rotationSpeed = 1.5;
+const scaleSpeed = 2;
+const pulseMinScale = 0.8;
+const pulseMaxScale = 1;
+const pulseDuration = 5000;
+const pulseDelay = 0;
+const letterGlowMin = 0.7;
+const letterGlowMax = 1;
+const letterGlowDuration = 5000;
+const startDelay = 25000; // ms
+
 /* --- MAIN RAF LOOP --- */
+let lastTimestamp = null;
+
 function tick(timestamp){
+  if(!lastTimestamp) lastTimestamp = timestamp;
+  const delta = (timestamp - lastTimestamp)/16.666; // ~60fps normalization
+  lastTimestamp = timestamp;
+
   /* Branches */
-  position += direction*speed;
+  position += direction*speed*delta;
   if(position>=maxPosition) direction=-1;
   else if(position<=minPosition) direction=1;
   const branchRotation = `rotate(${position/10}deg)`;
@@ -159,7 +190,7 @@ function tick(timestamp){
   /* Leaves */
   leaves.forEach(l=>{
     if(!l.active) return;
-    l.pos += l.dir*leafSpeed;
+    l.pos += l.dir*leafSpeed*delta;
     if(l.pos>=leafMaxPosition) l.dir=-1;
     else if(l.pos<=leafMinPosition) l.dir=1;
     try{ l.el.style.transform=`rotate(${l.pos}deg)`;}catch(e){}
@@ -183,13 +214,13 @@ function tick(timestamp){
     lightScale = lightStartScale;
   } else {
     if(lightPhase==="grow"){
-      lightScale += 0.02;
+      lightScale += 0.012*delta;
       if(lightScale >= lightMaxScale){
         lightScale = lightMaxScale;
         lightPhase="pulse";
       }
     } else if(lightPhase==="pulse"){
-      lightScale += lightDirection*0.002;
+      lightScale += lightDirection*0.001*delta;
       if(lightScale >= lightMaxScale) lightDirection=-1;
       if(lightScale <= lightMinPulse) lightDirection=1;
     }
@@ -202,19 +233,48 @@ function tick(timestamp){
   sparkCache.forEach(spark=>{
     try{
       let angle = sparkAngles.get(spark) || 0;
-      angle += angleSpeed;
+      angle += angleSpeed*delta;
       if(angle>maxAngle) angle = minAngle + (angle-maxAngle);
       spark.style.transform = `rotate(${angle}deg) translateZ(0)`;
       sparkAngles.set(spark, angle);
     }catch(e){}
   });
 
+  /* Letter */
+  if(getLetter){
+    let elapsedLetter = timestamp;
+    if(elapsedLetter >= startDelay){
+      const animTime = elapsedLetter - startDelay;
+      // Phase 1: Entrance
+      const progress = Math.min(animTime/letterDuration,1);
+      const easedPos = 1-Math.pow(1-Math.min(progress/positionSpeed,1),3);
+      const easedRot = 1-Math.pow(1-Math.min(progress/rotationSpeed,1),3);
+      const easedScale = 1-Math.pow(1-Math.min(progress/scaleSpeed,1),3);
+
+      const finalY = startY + (letterPosition-startY)*easedPos;
+      const finalRotation = startRotation + (letterRotation-startRotation)*easedRot;
+      let finalScale = startScale + (letterScale-startScale)*easedScale;
+
+      if(progress<1){
+        getLetter.style.transform = `translateY(${finalY}%) rotateY(${finalRotation}deg) scale(${finalScale})`;
+      } else {
+        // Pulse phase
+        const t = (animTime-letterDuration)/pulseDuration;
+        const sine = Math.sin(t*Math.PI*2);
+        const pulseScale = pulseMinScale + (pulseMaxScale-pulseMinScale)*((sine+1)/2);
+        getLetter.style.transform = `translateY(${finalY}%) rotateY(${finalRotation}deg) scale(${pulseScale})`;
+        if(getLetterGlow){
+          const glowSine = Math.sin(t*Math.PI*2*(pulseDuration/letterGlowDuration));
+          const glowScale = letterGlowMin + (letterGlowMax-letterGlowMin)*((glowSine+1)/2);
+          getLetterGlow.style.transform = `scale(${glowScale})`;
+        }
+      }
+    }
+  }
+
   requestAnimationFrame(tick);
 }
 requestAnimationFrame(tick);
-
-
-
 
 
 
