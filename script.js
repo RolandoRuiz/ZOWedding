@@ -1,5 +1,16 @@
 console.log("connected");
 
+/* --- Cancel Pulse / Click to Freeze --- */
+const openLetter = document.querySelector(".letterWrapper");
+
+/* --- Freeze control for Letter --- */
+let cancelLetterPulse = false;
+let frozenLetterScale = null;
+let frozenGlowScale = null;
+let glowFade = false;
+let glowOpacity = 1; // initial opacity
+let currentLetterScale = 1;
+
 /* --- Branch animation --- */
 const getUpperBranch = document.querySelector("#topBranch");
 const getLowerBranch = document.querySelector("#bottomBranch");
@@ -36,7 +47,6 @@ getBranches.forEach(branch => {
       }, { root: null, rootMargin: "0px", threshold: 0.5 });
 
       observer.observe(leafTarget);
-
       try { leafTarget.style.willChange = "transform"; } catch(e){}
       try { leafTarget.style.transform = "translateZ(0)"; } catch(e){}
     });
@@ -60,7 +70,7 @@ const lightStartScale = 0.001;
 const lightMaxScale = 1.1;
 const lightMinPulse = 1.0;
 let lightScale = lightStartScale;
-let lightPhase = "grow"; // "grow" or "pulse"
+let lightPhase = "grow";
 let lightDirection = -1;
 
 /* --- Paragraph animation --- */
@@ -159,24 +169,19 @@ const letterPosition = -140;
 const letterRotation = 0;
 const letterScale = 1;
 const letterDuration = 2500;
-const positionSpeed = 2;
-const rotationSpeed = 1.5;
-const scaleSpeed = 2;
-const pulseMinScale = 0.8;
-const pulseMaxScale = 1;
-const pulseDuration = 5000;
-const pulseDelay = 0;
+const pulseMaxScale = 1.1; // the only parameter you adjust
+const pulseDuration = 4000; // how fast the pulse cycles
 const letterGlowMin = 0.7;
 const letterGlowMax = 1;
 const letterGlowDuration = 5000;
-const startDelay = 25000; // ms
+const startDelay = 25000;
 
 /* --- MAIN RAF LOOP --- */
 let lastTimestamp = null;
 
 function tick(timestamp){
   if(!lastTimestamp) lastTimestamp = timestamp;
-  const delta = (timestamp - lastTimestamp)/16.666; // ~60fps normalization
+  const delta = (timestamp - lastTimestamp)/16.666;
   lastTimestamp = timestamp;
 
   /* Branches */
@@ -209,7 +214,6 @@ function tick(timestamp){
   /* Light overlay */
   if(!lightOverlayStartTime) lightOverlayStartTime = timestamp;
   const elapsedLight = timestamp - lightOverlayStartTime;
-
   if(elapsedLight < delayLightOverlay){
     lightScale = lightStartScale;
   } else {
@@ -225,7 +229,6 @@ function tick(timestamp){
       if(lightScale <= lightMinPulse) lightDirection=1;
     }
   }
-
   if(getLightOverlay) getLightOverlay.style.transform=`scale(${lightScale}) translateZ(0)`;
   if(getLightOverlay2) getLightOverlay2.style.transform=`scale(${lightScale}) translateZ(0)`;
 
@@ -240,48 +243,97 @@ function tick(timestamp){
     }catch(e){}
   });
 
-  /* Letter */
-  if(getLetter){
-    let elapsedLetter = timestamp;
-    if(elapsedLetter >= startDelay){
-      const animTime = elapsedLetter - startDelay;
-      // Phase 1: Entrance
-      const progress = Math.min(animTime/letterDuration,1);
-      const easedPos = 1-Math.pow(1-Math.min(progress/positionSpeed,1),3);
-      const easedRot = 1-Math.pow(1-Math.min(progress/rotationSpeed,1),3);
-      const easedScale = 1-Math.pow(1-Math.min(progress/scaleSpeed,1),3);
+/* --- Letter --- */
+let pulseBaselineScale = null; // stores the last scale of the entrance
 
-      const finalY = startY + (letterPosition-startY)*easedPos;
-      const finalRotation = startRotation + (letterRotation-startRotation)*easedRot;
-      let finalScale = startScale + (letterScale-startScale)*easedScale;
+if(getLetter){
+  let elapsedLetter = timestamp;
 
-      if(progress<1){
-        getLetter.style.transform = `translateY(${finalY}%) rotateY(${finalRotation}deg) scale(${finalScale})`;
-      } else {
-        // Pulse phase
-        const t = (animTime-letterDuration)/pulseDuration;
-        const sine = Math.sin(t*Math.PI*2);
-        const pulseScale = pulseMinScale + (pulseMaxScale-pulseMinScale)*((sine+1)/2);
+  if(elapsedLetter >= startDelay){
+    const animTime = elapsedLetter - startDelay;
+
+    // --- Determine entrance progress ---
+    const entranceProgress = Math.min(animTime / letterDuration, 1);
+    const easedProgress = 1 - Math.pow(1 - entranceProgress, 3); // cubic easing
+
+    const finalY = startY + (letterPosition - startY) * easedProgress;
+    const finalRotation = startRotation + (letterRotation - startRotation) * easedProgress;
+
+    // --- Entrance phase ---
+    if(entranceProgress < 1){
+      const currentScale = startScale + (letterScale - startScale) * easedProgress;
+      getLetter.style.transform = `translateY(${finalY}%) rotateY(${finalRotation}deg) scale(${currentScale})`;
+      currentLetterScale = currentScale;
+    } else {
+      // --- Capture baseline for pulse once ---
+      if(pulseBaselineScale === null){
+        pulseBaselineScale = startScale + (letterScale - startScale) * 1; // exact final entrance scale
+      }
+
+      if(!cancelLetterPulse){
+        // --- Pulse phase with sine shift to avoid jump ---
+        const pulseElapsed = animTime - letterDuration;
+        const t = pulseElapsed / pulseDuration * Math.PI * 2;
+
+        // Shift sine by -90° so it starts at 0 (baseline)
+        const sine = Math.sin(t - Math.PI / 2);
+        const pulseProgress = (sine + 1) / 2; // map -1..1 → 0..1
+
+        const pulseScale = pulseBaselineScale + (pulseMaxScale - pulseBaselineScale) * pulseProgress;
+
         getLetter.style.transform = `translateY(${finalY}%) rotateY(${finalRotation}deg) scale(${pulseScale})`;
-        if(getLetterGlow){
-          const glowSine = Math.sin(t*Math.PI*2*(pulseDuration/letterGlowDuration));
-          const glowScale = letterGlowMin + (letterGlowMax-letterGlowMin)*((glowSine+1)/2);
+        currentLetterScale = pulseScale;
+
+        // --- Glow synchronized ---
+        if(getLetterGlow && !glowFade){
+          const glowScale = letterGlowMin + ((pulseScale - pulseBaselineScale) / (pulseMaxScale - pulseBaselineScale)) * (letterGlowMax - letterGlowMin);
           getLetterGlow.style.transform = `scale(${glowScale})`;
+          getLetterGlow.style.opacity = "1";
+        }
+      } else {
+        // --- Freeze letter and fade glow ---
+        getLetter.style.transform = `translateY(${finalY}%) rotateY(${finalRotation}deg) scale(${frozenLetterScale})`;
+        if(getLetterGlow && glowFade){
+          glowOpacity -= 0.02 * delta;
+          if(glowOpacity < 0) glowOpacity = 0;
+          getLetterGlow.style.opacity = glowOpacity;
+          getLetterGlow.style.transform = `scale(${frozenGlowScale})`;
         }
       }
     }
   }
+}
+
 
   requestAnimationFrame(tick);
 }
 requestAnimationFrame(tick);
 
+/* --- Click to Freeze and Fade Glow --- */
+if(openLetter){
+  openLetter.addEventListener("click", ()=>{
+    if(!cancelLetterPulse && getLetter){
+      frozenLetterScale = currentLetterScale;
 
-
-
-
-
-
+      if(getLetterGlow){
+        const matrixGlow = getComputedStyle(getLetterGlow).transform;
+        if(matrixGlow !== "none"){
+          const matchGlow = matrixGlow.match(/matrix.*\((.+)\)/);
+          if(matchGlow){
+            const values = matchGlow[1].split(", ");
+            frozenGlowScale = (parseFloat(values[0]) + parseFloat(values[3])) / 2;
+          } else {
+            frozenGlowScale = 1;
+          }
+        } else {
+          frozenGlowScale = 1;
+        }
+      }
+    }
+    cancelLetterPulse = true;
+    glowFade = true;
+  });
+}
 
 
 
