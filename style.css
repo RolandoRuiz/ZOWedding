@@ -776,6 +776,7 @@ body{
     background: radial-gradient(circle at center, white 10%, transparent 70%);
     opacity: 1;
     will-change: transform;
+
     transform: scale(0);
     -webkit-transform: scale(0);
 }
@@ -816,6 +817,9 @@ body{
 
     transform-style: preserve-3d;
     backface-visibility: hidden;
+
+    -webkit-transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
 }
 
 .innerLetterLeft{
@@ -824,7 +828,9 @@ body{
     display: grid;
     grid-column-start: 1; grid-column-end: 2;
     grid-row-start: 1; grid-row-end: 4;
+
     filter: drop-shadow(0px -4px 1.5px #47000fc1);
+    -webkit-filter: drop-shadow(0px -4px 1.5px #47000fc1);
 }
 
 .innerLetterLeft::before{
@@ -832,6 +838,7 @@ body{
     width: 100%;
     height: 100%;
     background-image: radial-gradient(ellipse at top right, var(--bright-red) 30%, var(--deep-red) 75%);
+    -webkit-background-image: radial-gradient(ellipse at top right, var(--bright-red) 30%, var(--deep-red) 75%);
     clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
 }
 
@@ -841,7 +848,9 @@ body{
     display: grid;
     grid-column-start: 3; grid-column-end: 4;
     grid-row-start: 1; grid-row-end: 4;
+
     filter: drop-shadow(0px -4px 1.5px #47000fc1);
+    -webkit-filter: drop-shadow(0px -4px 1.5px #47000fc1);
 }
 
 .innerLetterRight::before{
@@ -849,6 +858,7 @@ body{
     width: 100%;
     height: 100%;
     background-image: radial-gradient(ellipse at top left, var(--bright-red) 30%, var(--deep-red) 75%);
+    -webkit-background-image: radial-gradient(ellipse at top left, var(--bright-red) 30%, var(--deep-red) 75%);
     clip-path: polygon(100% 0%, 0% 50%, 100% 100%);
 }
 
@@ -859,6 +869,7 @@ body{
     grid-column-start: 1; grid-column-end: 4;
     grid-row-start: 2; grid-row-end: 4;
     filter: drop-shadow(0px -4px 1px #47000fc1);
+    -webkit-filter: drop-shadow(0px -4px 1px #47000fc1);
 }
 
 .innerLetterBottom::before{
@@ -866,6 +877,7 @@ body{
     width: 100%;
     height: 100%;
     background-image: radial-gradient(ellipse at top center, var(--bright-red) 30%, var(--deep-red) 75%);
+    -webkit-background-image: radial-gradient(ellipse at top center, var(--bright-red) 30%, var(--deep-red) 75%);
     clip-path: polygon(0% 100%, 46% 3%, 47% 2% , 47.5% 1.5% ,48% 1% , 49% 0.5%, 50% 0.3%, 51% 0.5%,  52% 1%, 52.5% 1.5%, 53% 2%, 54% 3%, 100% 100%);
 }
 
@@ -883,7 +895,9 @@ body{
 
     align-items: center;
     justify-content: center;
+
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 
 }
 
@@ -900,6 +914,11 @@ body{
     transform: rotateX(0deg);
     transform-style: preserve-3d;
     transform-origin: top;
+
+    -webkit-transform: rotateX(0deg);
+    -webkit-transform-style: preserve-3d;
+    -webkit-transform-origin: top;
+
     will-change: transform;
 }
 
@@ -941,10 +960,14 @@ body{
     grid-row-start: 1; grid-row-end: 3;
     
     background-image: radial-gradient(ellipse at top center, var(--bright-red) 30%, var(--deep-red) 75%);
+    -webkit-background-image: radial-gradient(ellipse at top center, var(--bright-red) 30%, var(--deep-red) 75%);
     clip-path: polygon(0% 0%, 0% 20%, 46% 97%, 47% 98% , 47.5% 98.5% ,48% 99% , 49% 99.5%, 50% 99.7%, 51% 99.5%,  52% 99%, 52.5% 98.5%, 53% 98%, 54% 97%, 100% 20%, 100% 0%);
     
     transform-origin: center;
     backface-visibility: hidden;
+
+    -webkit-transform-origin: center;
+    -webkit-backface-visibility: hidden;
 }
 
 .letterLidShadow{
@@ -952,6 +975,7 @@ body{
     height: 100%;
     position: absolute;
     filter: drop-shadow(0px 4px 1px var(--shadow-red));
+    -webkit-filter: drop-shadow(0px 4px 1px var(--shadow-red));
 }
 
 .removeLidShadow{
@@ -990,7 +1014,7 @@ body{
     aspect-ratio: 1 / 0.6;
 
     transform-style: preserve-3d;
-    
+    -webkit-transform-style: preserve-3d;
 }
 
 .letterBranch{
@@ -998,8 +1022,10 @@ body{
     height: 95%;
     transform-origin: center;
     transform: rotate(18deg) translate( 13%, 0%);
+    -webkit-transform: rotate(18deg) translate( 13%, 0%);
 
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 /* Letter seal properties*/
@@ -1013,11 +1039,15 @@ body{
     justify-content: center;
     z-index: 1000;
     aspect-ratio: 1 / 0.6;
-    /*border: 3px dotted fuchsia;*/
+
     filter: drop-shadow(0px -1px 1px #47000fc1);
+    -webkit-filter: drop-shadow(0px -1px 1px #47000fc1);
 
     transform-style: preserve-3d;
     backface-visibility: hidden;
+
+    -webkit-transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
 
 }
 
@@ -1025,7 +1055,6 @@ body{
     width: 100%;
     height: 100%;
     position: absolute;
-    /*border: 3px dotted rgb(0, 255, 106);*/
 }
 
 .sealDrop{
@@ -1033,6 +1062,10 @@ body{
     position: absolute;
     aspect-ratio: 1 / 1;
     background: 
+    radial-gradient(30% 30% at 70% 70%, rgba(255, 247, 208, 0.689) 0%, transparent 70%),
+    radial-gradient(circle at  10% 20%, #bc7e33 30%, #d9cb8b 90%);
+
+    -webkit-background: 
     radial-gradient(30% 30% at 70% 70%, rgba(255, 247, 208, 0.689) 0%, transparent 70%),
     radial-gradient(circle at  10% 20%, #bc7e33 30%, #d9cb8b 90%);
     border-radius: 100%;
@@ -1066,23 +1099,9 @@ body{
     top: 50%;
     aspect-ratio: 1 / 1;
     background: linear-gradient(#BF6C25 20%, #EDDE9A 40%, #EDDE9A 60%, #BF6C25 80%);
+    -webkit-background: linear-gradient(#BF6C25 20%, #EDDE9A 40%, #EDDE9A 60%, #BF6C25 80%);
     border-radius: 100%;
 
-}
-
-.openSeal{
-    animation: openSeal 0.2s cubic-bezier(.64,-0.01,.68,.96) forwards 0.2s;
-}
-
-@keyframes openSeal {
-    0%{
-        opacity: 1;
-        scale: 1;
-
-    }100%{
-        opacity: 0;
-        scale: 1.02;
-    }
 }
 
 .sealRidge{
@@ -1094,6 +1113,7 @@ body{
     justify-content: center;
     aspect-ratio: 1 / 1;
     background: linear-gradient(45deg, #BF6C25 20%, #f3e39b 40%, #f3e39b 55%, #BF6C25 80%);
+    -webkit-background: linear-gradient(45deg, #BF6C25 20%, #f3e39b 40%, #f3e39b 55%, #BF6C25 80%);
     border-radius: 100%;
 }
 
@@ -1104,6 +1124,7 @@ body{
     position: absolute;
     aspect-ratio: 1 / 1;
     background: linear-gradient(45deg, #cc7f3c 15%, #7b471a 35%, #7b471a 60%, #BF6C25 85%);
+    -webkit-background: linear-gradient(45deg, #cc7f3c 15%, #7b471a 35%, #7b471a 60%, #BF6C25 85%);
     border-radius: 100%;
 }
 
@@ -1113,6 +1134,7 @@ body{
     position: absolute;
     aspect-ratio: 1 / 1;
     background: radial-gradient(circle at center, transparent 55%, rgb(60, 20, 0)), linear-gradient(#b47323 30%, #ebdc98 90%);
+    -webkit-background: radial-gradient(circle at center, transparent 55%, rgb(60, 20, 0)), linear-gradient(#b47323 30%, #ebdc98 90%);
     border-radius: 100%;
 }
 
@@ -1136,10 +1158,17 @@ body{
     align-items: center;
     justify-content: center;
     aspect-ratio: 1 / 1;
+
     background: url(Assets/svg/weddingMonogramColor.svg);
     background-size: 65%;
     background-repeat: no-repeat;
     background-position: 50% 50%;
+
+    -webkit-background: url(Assets/svg/weddingMonogramColor.svg);
+    -webkit-background-size: 65%;
+    -webkit-background-repeat: no-repeat;
+    -webkit-background-position: 50% 50%;
+
     border-radius: 100%;
 }
 
@@ -1172,11 +1201,12 @@ body{
     height: auto;
     aspect-ratio: 1 / 1;
     position: absolute;
-       background: radial-gradient(circle at center, #ffefa8 0%, #e5a628 50%);
+    background: radial-gradient(circle at center, #ffefa8 0%, #e5a628 50%);
     clip-path: polygon(50% 0, 62% 35%, 100% 50%, 62% 65%, 50% 100%, 38% 65%, 0 50%, 38% 35%);
     opacity: 0;
     transform-origin: center;
     will-change: transform;
+    opacity: 1;
 }
 
 #sealSpark1{
@@ -1199,7 +1229,7 @@ body{
      transform: translate(-550%, -150%) rotate(270deg);
 }
 
-.SealSparkGlowShow{
+/*.SealSparkGlowShow{
     animation: sealSparkGlowMovement 1.3s cubic-bezier(.32,1.15,.78,1.15) forwards;
 }
 
@@ -1232,7 +1262,7 @@ body{
     }100%{
         opacity: 0;
     }
-}
+}*/
 
 .bottomArrowBox{
     width: 18%;

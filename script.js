@@ -1,5 +1,19 @@
 console.log("connected");
 
+const sealSparkGlow = document.querySelector(".sealSparkBgrGlow");
+let sealSparkGlowFadeActive = false;
+let sealSparkGlowStart = null;
+
+const closeSeal = document.querySelector(".sealBody");
+let sealFadeActive = false;
+let sealFadeStart = null;
+
+const closeLetterBranch = document.querySelector(".letterBranchBox");
+let sealBranchFadeActive = false;
+let sealBranchStart = null;
+
+const sealDuration = 1000; // ms
+
 /* --- Cancel Pulse / Click to Freeze --- */
 const openLetter = document.querySelector(".letterWrapper");
 
@@ -211,6 +225,8 @@ function tick(timestamp){
     if(backgroundOverlay) backgroundOverlay.style.opacity = currentOpacity;
   }
 
+  
+
   /* Light overlay */
   if(!lightOverlayStartTime) lightOverlayStartTime = timestamp;
   const elapsedLight = timestamp - lightOverlayStartTime;
@@ -243,330 +259,231 @@ function tick(timestamp){
     }catch(e){}
   });
 
-/* --- Letter --- */
-let pulseBaselineScale = null; // stores the last scale of the entrance
+  /* --- Letter --- */
+  let pulseBaselineScale = null; // stores the last scale of the entrance
 
-if(getLetter){
-  let elapsedLetter = timestamp;
+  if(getLetter){
+    let elapsedLetter = timestamp;
 
-  if(elapsedLetter >= startDelay){
-    const animTime = elapsedLetter - startDelay;
+    if(elapsedLetter >= startDelay){
+      const animTime = elapsedLetter - startDelay;
 
-    // --- Determine entrance progress ---
-    const entranceProgress = Math.min(animTime / letterDuration, 1);
-    const easedProgress = 1 - Math.pow(1 - entranceProgress, 3); // cubic easing
+      // --- Determine entrance progress ---
+      const entranceProgress = Math.min(animTime / letterDuration, 1);
+      const easedProgress = 1 - Math.pow(1 - entranceProgress, 3); // cubic easing
 
-    const finalY = startY + (letterPosition - startY) * easedProgress;
-    const finalRotation = startRotation + (letterRotation - startRotation) * easedProgress;
+      const finalY = startY + (letterPosition - startY) * easedProgress;
+      const finalRotation = startRotation + (letterRotation - startRotation) * easedProgress;
 
-    // --- Entrance phase ---
-    if(entranceProgress < 1){
-      const currentScale = startScale + (letterScale - startScale) * easedProgress;
-      getLetter.style.transform = `translateY(${finalY}%) rotateY(${finalRotation}deg) scale(${currentScale})`;
-      currentLetterScale = currentScale;
-    } else {
-      // --- Capture baseline for pulse once ---
-      if(pulseBaselineScale === null){
-        pulseBaselineScale = startScale + (letterScale - startScale) * 1; // exact final entrance scale
-      }
-
-      if(!cancelLetterPulse){
-        // --- Pulse phase with sine shift to avoid jump ---
-        const pulseElapsed = animTime - letterDuration;
-        const t = pulseElapsed / pulseDuration * Math.PI * 2;
-
-        // Shift sine by -90° so it starts at 0 (baseline)
-        const sine = Math.sin(t - Math.PI / 2);
-        const pulseProgress = (sine + 1) / 2; // map -1..1 → 0..1
-
-        const pulseScale = pulseBaselineScale + (pulseMaxScale - pulseBaselineScale) * pulseProgress;
-
-        getLetter.style.transform = `translateY(${finalY}%) rotateY(${finalRotation}deg) scale(${pulseScale})`;
-        currentLetterScale = pulseScale;
-
-        // --- Glow synchronized ---
-        if(getLetterGlow && !glowFade){
-          const glowScale = letterGlowMin + ((pulseScale - pulseBaselineScale) / (pulseMaxScale - pulseBaselineScale)) * (letterGlowMax - letterGlowMin);
-          getLetterGlow.style.transform = `scale(${glowScale})`;
-          getLetterGlow.style.opacity = "1";
-        }
+      // --- Entrance phase ---
+      if(entranceProgress < 1){
+        const currentScale = startScale + (letterScale - startScale) * easedProgress;
+        getLetter.style.transform = `translateY(${finalY}%) rotateY(${finalRotation}deg) scale(${currentScale})`;
+        currentLetterScale = currentScale;
       } else {
-        // --- Freeze letter and fade glow ---
-        getLetter.style.transform = `translateY(${finalY}%) rotateY(${finalRotation}deg) scale(${frozenLetterScale})`;
-        if(getLetterGlow && glowFade){
-          glowOpacity -= 0.02 * delta;
-          if(glowOpacity < 0) glowOpacity = 0;
-          getLetterGlow.style.opacity = glowOpacity;
-          getLetterGlow.style.transform = `scale(${frozenGlowScale})`;
+        // --- Capture baseline for pulse once ---
+        if(pulseBaselineScale === null){
+          pulseBaselineScale = startScale + (letterScale - startScale) * 1; // exact final entrance scale
+        }
+
+        if(!cancelLetterPulse){
+          // --- Pulse phase with sine shift to avoid jump ---
+          const pulseElapsed = animTime - letterDuration;
+          const t = pulseElapsed / pulseDuration * Math.PI * 2;
+
+          // Shift sine by -90° so it starts at 0 (baseline)
+          const sine = Math.sin(t - Math.PI / 2);
+          const pulseProgress = (sine + 1) / 2; // map -1..1 → 0..1
+
+          const pulseScale = pulseBaselineScale + (pulseMaxScale - pulseBaselineScale) * pulseProgress;
+
+          getLetter.style.transform = `translateY(${finalY}%) rotateY(${finalRotation}deg) scale(${pulseScale})`;
+          currentLetterScale = pulseScale;
+
+          // --- Glow synchronized ---
+          if(getLetterGlow && !glowFade){
+            const glowScale = letterGlowMin + ((pulseScale - pulseBaselineScale) / (pulseMaxScale - pulseBaselineScale)) * (letterGlowMax - letterGlowMin);
+            getLetterGlow.style.transform = `scale(${glowScale})`;
+            getLetterGlow.style.opacity = "1";
+          }
+        } else {
+          // --- Freeze letter and fade glow ---
+          getLetter.style.transform = `translateY(${finalY}%) rotateY(${finalRotation}deg) scale(${frozenLetterScale})`;
+          if(getLetterGlow && glowFade){
+            glowOpacity -= 0.02 * delta;
+            if(glowOpacity < 0) glowOpacity = 0;
+            getLetterGlow.style.opacity = glowOpacity;
+            getLetterGlow.style.transform = `scale(${frozenGlowScale})`;
+          }
         }
       }
     }
   }
-}
+  
+
+  /* --- Seal fade integrated into main loop --- */
+  if (sealBranchFadeActive && closeLetterBranch) {
+    if (!sealBranchStart) sealBranchStart = timestamp;
+    const branchElapsed = timestamp - sealBranchStart;
+    const progress = Math.min(branchElapsed / sealDuration, 1);
+
+    // Ease out for smooth finish
+    const eased = 1 - Math.pow(1 - progress, 3);
+
+    // Opacity fade
+    const opacityVal = 1 - eased;
+    closeLetterBranch.style.opacity = opacityVal;
+
+    // Scale down slightly as it fades
+    const scaleVal = 1 + 0.03 * eased; // from 1 → 1.1
+    closeLetterBranch.style.transform = `scale(${scaleVal}) translateZ(0)`;
+
+    // Optional: remove interactions when done
+    if (progress >= 1) {
+      closeLetterBranch.style.opacity = 0;
+      closeLetterBranch.style.transform = `scale(0.8) translateZ(0)`;
+      closeLetterBranch.style.pointerEvents = "none";
+      sealBranchFadeActive = false;
+    }
+  }
+
+    /* --- Seal Branch fade integrated into main loop --- */
+  if (sealFadeActive && closeSeal) {
+    if (!sealFadeStart) sealFadeStart = timestamp;
+    const sealElapsed = timestamp - sealFadeStart;
+    const progress = Math.min(sealElapsed / sealDuration, 1);
+
+    // Ease out for smooth finish
+    const eased = 1 - Math.pow(1 - progress, 3);
+
+    // Opacity fade
+    const opacityVal = 1 - eased;
+    closeSeal.style.opacity = opacityVal;
+
+    // Scale down slightly as it fades
+    const scaleVal = 1 - 0.03 * eased; // from 1 → 0.8
+    closeSeal.style.transform = `scale(${scaleVal}) translateZ(0)`;
+
+    // Optional: remove interactions when done
+    if (progress >= 1) {
+      closeSeal.style.opacity = 0;
+      closeSeal.style.transform = `scale(0.8) translateZ(0)`;
+      closeSeal.style.pointerEvents = "none";
+      sealFadeActive = false;
+    }
+  }
+
+  /* --- Seal Spark Glow fade (independent continuous scale) --- */
+  if (sealSparkGlowFadeActive && sealSparkGlow) {
+    if (!sealSparkGlowStart) {
+      sealSparkGlowStart = timestamp;
+      sealSparkGlow.style.opacity = 0; // start hidden
+      sealSparkGlow.style.transform = "scale(0.8) translateZ(0)";
+    }
+
+    // Timing controls
+    const fadeInDuration = 500;     // faster fade in
+    const holdDuration = 50;       // time at full opacity
+    const fadeOutDuration = 1000;   // slower fade out
+    const totalDuration = fadeInDuration + holdDuration + fadeOutDuration;
+
+    const elapsed = timestamp - sealSparkGlowStart;
+    const progress = Math.min(elapsed / totalDuration, 1);
+
+    // --- Opacity control ---
+    let opacityVal;
+
+    if (elapsed <= fadeInDuration) {
+      // Fade in
+      const t = elapsed / fadeInDuration;
+      const eased = 1 - Math.pow(1 - t, 3);
+      opacityVal = eased; // 0 → 1
+    } else if (elapsed <= fadeInDuration + holdDuration) {
+      // Hold
+      opacityVal = 1;
+    } else {
+      // Fade out
+      const t = (elapsed - fadeInDuration - holdDuration) / fadeOutDuration;
+      const eased = 1 - Math.pow(1 - t, 3);
+      opacityVal = 1 - eased; // 1 → 0
+    }
+
+    // --- Independent scale control ---
+    // Grows continuously through the entire animation
+    const scaleGrowthSpeed = 0.0015; // adjust for faster/slower growth
+    const continuousScale = 0 + (elapsed * scaleGrowthSpeed); // keeps growing smoothly
+
+    // Apply both
+    sealSparkGlow.style.opacity = opacityVal;
+    sealSparkGlow.style.transform = `scale(${continuousScale}) translateZ(0)`;
+
+    // End animation cleanly
+    if (progress >= 1) {
+      sealSparkGlow.style.opacity = 0;
+      sealSparkGlow.style.transform = `scale(${continuousScale}) translateZ(0)`; // keeps last scale
+      sealSparkGlowFadeActive = false;
+    }
+  }
+
+
 
 
   requestAnimationFrame(tick);
 }
+  
 requestAnimationFrame(tick);
 
-/* --- Click to Freeze and Fade Glow --- */
-if(openLetter){
-  openLetter.addEventListener("click", ()=>{
-    if(!cancelLetterPulse && getLetter){
-      frozenLetterScale = currentLetterScale;
+  /* --- Click to Freeze and Fade Glow --- */
+  if(openLetter){
+    openLetter.addEventListener("click", ()=>{
+      if(!cancelLetterPulse && getLetter){
+        frozenLetterScale = currentLetterScale;
 
-      if(getLetterGlow){
-        const matrixGlow = getComputedStyle(getLetterGlow).transform;
-        if(matrixGlow !== "none"){
-          const matchGlow = matrixGlow.match(/matrix.*\((.+)\)/);
-          if(matchGlow){
-            const values = matchGlow[1].split(", ");
-            frozenGlowScale = (parseFloat(values[0]) + parseFloat(values[3])) / 2;
+        if(getLetterGlow){
+          const matrixGlow = getComputedStyle(getLetterGlow).transform;
+          if(matrixGlow !== "none"){
+            const matchGlow = matrixGlow.match(/matrix.*\((.+)\)/);
+            if(matchGlow){
+              const values = matchGlow[1].split(", ");
+              frozenGlowScale = (parseFloat(values[0]) + parseFloat(values[3])) / 2;
+            } else {
+              frozenGlowScale = 1;
+            }
           } else {
             frozenGlowScale = 1;
           }
-        } else {
-          frozenGlowScale = 1;
         }
       }
-    }
-    cancelLetterPulse = true;
-    glowFade = true;
-  });
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Paragraph animation */
-/*
-const getInitialParagraphs = document.querySelectorAll(".initialParagraph");
-const getParagraphLines = document.querySelectorAll(".paragraphLine");
-const getParagraphGlows = document.querySelectorAll(".paragraphGlow");
-
-
-setTimeout(() => {
-  getInitialParagraphs.forEach((paragraph, i) => {
-      setTimeout(() => {
-        getParagraphLines.forEach((paragraphLine, index) => {
-
-          setTimeout(() => {
-            if (paragraph.classList.contains("One") && paragraphLine.parentElement.parentElement.classList.contains("One")) {            
-              paragraphLine.classList.add("lineMask")
-            }
-
-            if (paragraph.classList.contains("Two") && paragraphLine.parentElement.parentElement.classList.contains("Two")) {
-              paragraphLine.classList.add("lineMask")
-            }
-          }, 1900 * (index+1));
-        });
-
-        getParagraphGlows.forEach((paragraphGlow, index) => {
-          setTimeout(() => {
-            if (paragraph.classList.contains("One") && paragraphGlow.parentElement.parentElement.classList.contains("One")) {            
-              paragraphGlow.classList.add("glowMask")
-            }
-
-            if (paragraph.classList.contains("Two") && paragraphGlow.parentElement.parentElement.classList.contains("Two")) {
-              paragraphGlow.classList.add("glowMask")
-            }
-          }, 1900 * (index+1));
-        });
-
-      }, 2200 * i+1); // this way it starts imediately and then it goes every 2.2 seconds
-      //2200 * (i+1)) starts in intervals of 8 seconds every 2.2 seconds;
-  }); 
-}, 3000); 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const getLidShadow = document.querySelector(".letterLid");
-const letterSeal = document.querySelector(".sealBody");
-const letterBranch = document.querySelector(".letterBranchBox");
-const sparkGlow = document.querySelector(".sealSparkBgrGlow");
-const sealSpark = document.querySelectorAll(".sealSpark");
-const stopLetterMovement = document.querySelector(".letterBox");
-const stopLetterGlow = document.querySelector(".letterGlow");
-const closeLetterGlowBox = document.querySelector(".letterGlowBox");
-const openLid = document.querySelector(".letterLid");
-const takeCard = document.querySelector(".letterCard");
-const clearSparks = document.querySelector(".sparkWrapper");
-const endSpark1 = document.querySelector(".sparkGrpStart");
-const endSpark2 = document.querySelector(".sparkGrpMiddle");
-const endSpark3 = document.querySelector(".sparkGrpEnd");
-
-const bgrClose = document.querySelector(".bgrMultiply");
-const archShadow = document.querySelector(".archShadow");
-const endOverlay = document.querySelector(".baseOverlayWrapper");
-const endTopOverlay = document.querySelector(".bgrTopOverlay");
-const letterCardGlow = document.querySelector(".letterCardGlow");
-
-const removeLidShadow = document.querySelector(".letterLidShadow");
-const moveBranchTwo = document.querySelector(".branchTwo");
-const arrowBob = document.querySelector(".bottomArrowBox");
-
-
-function openLetter() {
-
-  stopLetterMovement.style.animationPlayState = "running, paused, paused";
-  
-  closeLetterGlowBox.classList.add("stopLetterGlow");
-  stopLetterGlow.style.animationPlayState = "paused";
-
-  
-  letterSeal.classList.add("openSeal");
-  letterBranch.classList.add("openSeal");
-
-
-  sparkGlow.classList.add("SealSparkGlowShow");
-  sealSpark.forEach(sealSparkElem => {
-    sealSparkElem.classList.add("SealSparkShow");
-  });
-
-  setTimeout(() => {
-    endSpark1.style.animationPlayState = "paused";
-    endSpark2.style.animationPlayState = "paused";
-    endSpark3.style.animationPlayState = "paused";
-    endSpark1.style.display = "none";
-    endSpark2.style.display = "none";
-    endSpark3.style.display = "none";
-  }, 2600);
-  clearSparks.classList.add("endSpark");
-  
-  openLid.classList.add("openLid");
-  removeLidShadow.classList.add("removeLidShadow");
-
-  
-  takeCard.classList.add("cardMovement");
-  letterCardGlow.classList.add("screenGlowAnim");
-
-
-  endOverlay.classList.add("endOverlayAnim");
-  endTopOverlay.classList.add("endOverlayAnim");
-  bgrClose.classList.add("closeBgrMultiply");
-  archShadow.classList.add("lightenArchShadow");
-
-  moveBranchTwo.classList.add("branchTwoIndexAnim");
-  arrowBob.classList.add("arrowBobAnim");
-}
-
-
-topBranchObject.addEventListener('load', () =>{
-  const topBranchDoc = topBranchObject.contentDocument;
-  const leafTopTargets = topBranchDoc.querySelectorAll(".leaf");
-
-  const stopTopLeafAnimOptions = {
-  root: null,
-  rootMargin: "0px",
-  threshold: 0.5,
-  }
-
-  const stopTopLeafAnim = (entries) => {
-    entries.forEach((entry) =>{
-      if (!entry.isIntersecting) {
-        entry.target.style.animationPlayState = "paused";
-      }else{
-        setTimeout(() => {
-          entry.target.style.animationPlayState = "running";
-        }, 4000);
-        
+      cancelLetterPulse = true;
+      glowFade = true;
+
+      // --- Trigger Seal Fade ---
+      if (closeSeal && !sealFadeActive) {
+        sealFadeActive = true;
+        sealFadeStart = null; // reset timestamp on click
       }
-    })
-  }
 
-  const stopLeafObserver = new IntersectionObserver(stopTopLeafAnim, stopTopLeafAnimOptions);
-
-  leafTopTargets.forEach(function (leafTopTarget) {
-    //console.log(leafTopTarget)
-    stopLeafObserver.observe(leafTopTarget)
-  })
-
-  
-})
-
-bottomBranchObject.addEventListener('load', () =>{
-  const bottomBranchDoc = bottomBranchObject.contentDocument;
-  const leafBottomTargets = bottomBranchDoc.querySelectorAll(".leaf");
-
-  const stopBottomLeafAnimOptions = {
-  root: null,
-  rootMargin: "0px",
-  threshold: 0.5,
-  }
-
-  const stopBottomLeafAnim = (entries) => {
-    entries.forEach((entry) =>{
-      if (!entry.isIntersecting) {
-        entry.target.style.animationPlayState = "paused";
-      }else{
-        setTimeout(() => {
-          entry.target.style.animationPlayState = "running";
-        }, 4000);
+      if (closeLetterBranch && !sealBranchFadeActive) {
+        sealBranchFadeActive = true;
+        sealBranchStart = null; // reset timestamp on click
       }
-    })
-  }
 
-  const stopLeafObserver = new IntersectionObserver(stopBottomLeafAnim, stopBottomLeafAnimOptions);
-
-  leafBottomTargets.forEach(function (leafBottomTarget) {
-    //console.log(leafBottomTarget)
-    stopLeafObserver.observe(leafBottomTarget)
-  })
-
-  
-})
-
-/**
-
-const stopLeafAnimOptions = {
-  root: null,
-  rootMargin: "0px",
-  threshold: 1.0,
+      if (sealSparkGlow && !sealSparkGlowFadeActive) {
+        sealSparkGlowFadeActive = true;
+        sealSparkGlowStart = null; // reset timestamp
+      }
+    });
 }
 
-const stopLeafAnim = (entries) => {
-  entries.forEach((entry) =>{
-    if (entry.isIntersecting) {
-      entry.target.classList.remove("leaf")
-    }
-  })
-}
 
-const stopLeafObserver = new IntersectionObserver(stopLeafAnim, stopLeafAnimOptions);
-leafTargets.forEach(leafTarget => stopLeafObserver.observe(leafTarget));**/
+
+
+
+
+
+
+
+
+
+
+
