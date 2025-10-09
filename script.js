@@ -1,5 +1,45 @@
 console.log("connected");
 
+const sealSparks = document.querySelectorAll(".sealSpark");
+let sealSparksActive = false;
+let sealSparksStart = null;
+
+const sealSparkData = [];
+
+// Store each spark’s original transform
+sealSparks.forEach(spark => {
+  const computed = getComputedStyle(spark);
+  const matrix = computed.transform;
+  let translateX = 0, translateY = 0, rotate = 0;
+
+  if (matrix && matrix !== "none") {
+    const match = matrix.match(/matrix\(([^)]+)\)/);
+    if (match) {
+      const values = match[1].split(",").map(v => parseFloat(v.trim()));
+      // Approx extract (for simple 2D transform)
+      const a = values[0], b = values[1], c = values[2], d = values[3], e = values[4], f = values[5];
+      translateX = e;
+      translateY = f;
+      rotate = Math.atan2(b, a) * (180 / Math.PI);
+    }
+  }
+
+  // Save initial info
+  sealSparkData.push({
+    el: spark,
+    tx: translateX,
+    ty: translateY,
+    rot: rotate,
+    startTime: null,
+    opacity: 0,
+  });
+
+  // Reset to starting hidden position
+  spark.style.opacity = 0;
+  spark.style.transform = "translate(0px, 0px) rotate(0deg)";
+  spark.style.willChange = "opacity, transform";
+});
+
 const sealSparkGlow = document.querySelector(".sealSparkBgrGlow");
 let sealSparkGlowFadeActive = false;
 let sealSparkGlowStart = null;
@@ -382,9 +422,9 @@ function tick(timestamp){
     }
 
     // Timing controls
-    const fadeInDuration = 500;     // faster fade in
+    const fadeInDuration = 350;     // faster fade in
     const holdDuration = 50;       // time at full opacity
-    const fadeOutDuration = 1000;   // slower fade out
+    const fadeOutDuration = 800;   // slower fade out
     const totalDuration = fadeInDuration + holdDuration + fadeOutDuration;
 
     const elapsed = timestamp - sealSparkGlowStart;
@@ -425,7 +465,61 @@ function tick(timestamp){
     }
   }
 
+/* --- Seal Sparks animation (translate + opacity, separate durations, smooth) --- */
+if (sealSparksActive) {
+  if (!sealSparksStart) sealSparksStart = timestamp;
+  const elapsed = timestamp - sealSparksStart;
 
+  const translateDuration = 1500;      // ms for movement
+  const opacityInDuration = 300;       // ms fade in
+  const opacityHoldDuration = 100;     // ms fully visible
+  const opacityOutDuration = 600;      // ms fade out
+  const opacityTotal = opacityInDuration + opacityHoldDuration + opacityOutDuration;
+
+  let anyActive = false;
+
+  sealSparkData.forEach(sparkObj => {
+    const { el, tx, ty } = sparkObj;
+
+    // --- Translate ---
+    let transform;
+    if (elapsed < translateDuration) {
+      const t = elapsed / translateDuration;
+      const eased = 1 - Math.pow(1 - t, 3);
+      const x = tx * eased;
+      const y = ty * eased;
+      transform = `translate(${x}px, ${y}px)`;
+      anyActive = true;
+    } else {
+      transform = `translate(${tx}px, ${ty}px)`; // final position
+    }
+
+    // --- Opacity ---
+    let opacity;
+    if (elapsed < opacityInDuration) {
+      const t = elapsed / opacityInDuration;
+      opacity = Math.min(Math.max(1 - Math.pow(1 - t, 3), 0), 1);
+      anyActive = true;
+    } else if (elapsed < opacityInDuration + opacityHoldDuration) {
+      opacity = 1;
+      anyActive = true;
+    } else if (elapsed < opacityTotal) {
+      const t = (elapsed - opacityInDuration - opacityHoldDuration) / opacityOutDuration;
+      opacity = Math.min(Math.max(1 - Math.pow(t, 3), 0), 1); // ease out fade
+      anyActive = true;
+    } else {
+      opacity = 0;
+    }
+
+    try {
+      el.style.transform = transform + " translateZ(0)";
+      el.style.opacity = opacity;
+    } catch (e) {}
+  });
+
+  // Only deactivate after all sparks have fully finished their **opacity fade**
+  if (!anyActive) sealSparksActive = false;
+}
 
 
   requestAnimationFrame(tick);
@@ -471,6 +565,11 @@ requestAnimationFrame(tick);
       if (sealSparkGlow && !sealSparkGlowFadeActive) {
         sealSparkGlowFadeActive = true;
         sealSparkGlowStart = null; // reset timestamp
+      }
+
+      if (!sealSparksActive) {
+        sealSparksActive = true;
+        sealSparksStart = null;
       }
     });
 }
