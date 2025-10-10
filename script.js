@@ -1,5 +1,8 @@
 console.log("connected");
 
+const letterLid = document.querySelector(".letterLid");
+
+
 const sealSparks = document.querySelectorAll(".sealSpark");
 let sealSparksActive = false;
 let sealSparksStart = null;
@@ -54,8 +57,8 @@ let sealBranchStart = null;
 
 const sealDuration = 800; // ms
 /* --- Seal timing offsets (ms) --- */
-const sealSparkGlowOffset = 400;   // delay before glow starts
-const sealSparksOffset = 600;      // delay before sparks start
+const sealSparkGlowOffset = 200;   // delay before glow starts
+const sealSparksOffset = 200;      // delay before sparks start
 
 
 /* --- Cancel Pulse / Click to Freeze --- */
