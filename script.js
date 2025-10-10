@@ -52,7 +52,11 @@ const closeLetterBranch = document.querySelector(".letterBranchBox");
 let sealBranchFadeActive = false;
 let sealBranchStart = null;
 
-const sealDuration = 1000; // ms
+const sealDuration = 800; // ms
+/* --- Seal timing offsets (ms) --- */
+const sealSparkGlowOffset = 400;   // delay before glow starts
+const sealSparksOffset = 600;      // delay before sparks start
+
 
 /* --- Cancel Pulse / Click to Freeze --- */
 const openLetter = document.querySelector(".letterWrapper");
@@ -265,8 +269,6 @@ function tick(timestamp){
     if(backgroundOverlay) backgroundOverlay.style.opacity = currentOpacity;
   }
 
-  
-
   /* Light overlay */
   if(!lightOverlayStartTime) lightOverlayStartTime = timestamp;
   const elapsedLight = timestamp - lightOverlayStartTime;
@@ -362,32 +364,6 @@ function tick(timestamp){
   
 
   /* --- Seal fade integrated into main loop --- */
-  if (sealBranchFadeActive && closeLetterBranch) {
-    if (!sealBranchStart) sealBranchStart = timestamp;
-    const branchElapsed = timestamp - sealBranchStart;
-    const progress = Math.min(branchElapsed / sealDuration, 1);
-
-    // Ease out for smooth finish
-    const eased = 1 - Math.pow(1 - progress, 3);
-
-    // Opacity fade
-    const opacityVal = 1 - eased;
-    closeLetterBranch.style.opacity = opacityVal;
-
-    // Scale down slightly as it fades
-    const scaleVal = 1 + 0.03 * eased; // from 1 → 1.1
-    closeLetterBranch.style.transform = `scale(${scaleVal}) translateZ(0)`;
-
-    // Optional: remove interactions when done
-    if (progress >= 1) {
-      closeLetterBranch.style.opacity = 0;
-      closeLetterBranch.style.transform = `scale(0.8) translateZ(0)`;
-      closeLetterBranch.style.pointerEvents = "none";
-      sealBranchFadeActive = false;
-    }
-  }
-
-    /* --- Seal Branch fade integrated into main loop --- */
   if (sealFadeActive && closeSeal) {
     if (!sealFadeStart) sealFadeStart = timestamp;
     const sealElapsed = timestamp - sealFadeStart;
@@ -396,131 +372,177 @@ function tick(timestamp){
     // Ease out for smooth finish
     const eased = 1 - Math.pow(1 - progress, 3);
 
-    // Opacity fade
+    // Fade opacity out
     const opacityVal = 1 - eased;
     closeSeal.style.opacity = opacityVal;
 
-    // Scale down slightly as it fades
-    const scaleVal = 1 - 0.03 * eased; // from 1 → 0.8
+    // Slight scale up (from 1 → 1.05)
+    const scaleVal = 1 + 0.15 * eased;
     closeSeal.style.transform = `scale(${scaleVal}) translateZ(0)`;
 
-    // Optional: remove interactions when done
     if (progress >= 1) {
       closeSeal.style.opacity = 0;
-      closeSeal.style.transform = `scale(0.8) translateZ(0)`;
+      closeSeal.style.transform = `scale(${scaleVal}) translateZ(0)`;
       closeSeal.style.pointerEvents = "none";
       sealFadeActive = false;
     }
   }
 
-  /* --- Seal Spark Glow fade (independent continuous scale) --- */
-  if (sealSparkGlowFadeActive && sealSparkGlow) {
-    if (!sealSparkGlowStart) {
-      sealSparkGlowStart = timestamp;
-      sealSparkGlow.style.opacity = 0; // start hidden
-      sealSparkGlow.style.transform = "scale(0.8) translateZ(0)";
-    }
 
-    // Timing controls
-    const fadeInDuration = 350;     // faster fade in
-    const holdDuration = 50;       // time at full opacity
-    const fadeOutDuration = 800;   // slower fade out
-    const totalDuration = fadeInDuration + holdDuration + fadeOutDuration;
+    /* --- Seal Branch fade integrated into main loop --- */
+  if (sealBranchFadeActive && closeLetterBranch) {
+    if (!sealBranchStart) sealBranchStart = timestamp;
+    const branchElapsed = timestamp - sealBranchStart;
+    const progress = Math.min(branchElapsed / sealDuration, 1);
 
-    const elapsed = timestamp - sealSparkGlowStart;
-    const progress = Math.min(elapsed / totalDuration, 1);
+    // Ease out for smooth finish
+    const eased = 1 - Math.pow(1 - progress, 3);
 
-    // --- Opacity control ---
-    let opacityVal;
+    // Fade opacity out
+    const opacityVal = 1 - eased;
+    closeLetterBranch.style.opacity = opacityVal;
 
-    if (elapsed <= fadeInDuration) {
-      // Fade in
-      const t = elapsed / fadeInDuration;
-      const eased = 1 - Math.pow(1 - t, 3);
-      opacityVal = eased; // 0 → 1
-    } else if (elapsed <= fadeInDuration + holdDuration) {
-      // Hold
-      opacityVal = 1;
-    } else {
-      // Fade out
-      const t = (elapsed - fadeInDuration - holdDuration) / fadeOutDuration;
-      const eased = 1 - Math.pow(1 - t, 3);
-      opacityVal = 1 - eased; // 1 → 0
-    }
+    // Slight scale up (from 1 → 1.05)
+    const scaleVal = 1 + 0.15 * eased;
+    closeLetterBranch.style.transform = `scale(${scaleVal}) translateZ(0)`;
 
-    // --- Independent scale control ---
-    // Grows continuously through the entire animation
-    const scaleGrowthSpeed = 0.0015; // adjust for faster/slower growth
-    const continuousScale = 0 + (elapsed * scaleGrowthSpeed); // keeps growing smoothly
-
-    // Apply both
-    sealSparkGlow.style.opacity = opacityVal;
-    sealSparkGlow.style.transform = `scale(${continuousScale}) translateZ(0)`;
-
-    // End animation cleanly
     if (progress >= 1) {
-      sealSparkGlow.style.opacity = 0;
-      sealSparkGlow.style.transform = `scale(${continuousScale}) translateZ(0)`; // keeps last scale
-      sealSparkGlowFadeActive = false;
+      closeLetterBranch.style.opacity = 0;
+      closeLetterBranch.style.transform = `scale(${scaleVal}) translateZ(0)`;
+      closeLetterBranch.style.pointerEvents = "none";
+      sealBranchFadeActive = false;
     }
   }
 
-/* --- Seal Sparks animation (translate + opacity, separate durations, smooth) --- */
+
+ /* --- Seal Spark Glow fade (with offset, no early return) --- */
+if (sealSparkGlowFadeActive && sealSparkGlow) {
+  if (!sealSparkGlowStart) {
+    sealSparkGlowStart = timestamp;
+    sealSparkGlow.style.opacity = 0;
+    sealSparkGlow.style.transform = "scale(0.8) translateZ(0)";
+  }
+
+  const elapsed = timestamp - sealSparkGlowStart;
+
+  // still waiting for offset: keep hidden but don't break the frame
+  if (elapsed < sealSparkGlowOffset) {
+    // keep baseline state (optional: small subtle pre-scale)
+    sealSparkGlow.style.opacity = 0;
+    // leave transform as-is (or set baseline)
+    // sealSparkGlow.style.transform = "scale(0.8) translateZ(0)";
+  } else {
+    const adjustedElapsed = elapsed - sealSparkGlowOffset;
+
+    // customize timings
+    const fadeInDuration = 350;
+    const holdDuration = 50;
+    const fadeOutDuration = 800;
+    const totalDuration = fadeInDuration + holdDuration + fadeOutDuration;
+    const progress = Math.min(adjustedElapsed / totalDuration, 1);
+
+    // Opacity
+    let opacityVal;
+    if (adjustedElapsed <= fadeInDuration) {
+      const t = adjustedElapsed / fadeInDuration;
+      const eased = 1 - Math.pow(1 - t, 3);
+      opacityVal = eased; // 0 -> 1
+    } else if (adjustedElapsed <= fadeInDuration + holdDuration) {
+      opacityVal = 1;
+    } else {
+      const t = (adjustedElapsed - fadeInDuration - holdDuration) / fadeOutDuration;
+      const eased = 1 - Math.pow(1 - t, 3);
+      opacityVal = 1 - eased; // 1 -> 0
+    }
+
+    // Continuous scale (independent growth)
+    const scaleGrowthSpeed = 0.0008; // tweak to taste
+    const baseScale = 0.8;
+    const continuousScale = baseScale + adjustedElapsed * scaleGrowthSpeed;
+
+    sealSparkGlow.style.opacity = opacityVal;
+    sealSparkGlow.style.transform = `scale(${continuousScale}) translateZ(0)`;
+
+    // finish
+    if (adjustedElapsed >= totalDuration) {
+      sealSparkGlow.style.opacity = 0;
+      sealSparkGlowFadeActive = false;
+    }
+  }
+}
+
+/* --- Seal Sparks animation (with offset, no early return) --- */
 if (sealSparksActive) {
   if (!sealSparksStart) sealSparksStart = timestamp;
   const elapsed = timestamp - sealSparksStart;
 
-  const translateDuration = 1500;      // ms for movement
-  const opacityInDuration = 300;       // ms fade in
-  const opacityHoldDuration = 100;     // ms fully visible
-  const opacityOutDuration = 600;      // ms fade out
-  const opacityTotal = opacityInDuration + opacityHoldDuration + opacityOutDuration;
+  // not yet time to start sparks — keep them hidden and continue
+  if (elapsed < sealSparksOffset) {
+    // Ensure they stay hidden until offset; don't return
+    sealSparkData.forEach(sparkObj => {
+      try {
+        sparkObj.el.style.opacity = 0;
+        sparkObj.el.style.transform = "translate(0px, 0px) scale(0.8) translateZ(0)";
+      } catch (e) {}
+    });
+  } else {
+    const adjustedElapsed = elapsed - sealSparksOffset;
 
-  let anyActive = false;
+    // Per-spark global-ish timings (or keep your custom per-spark ones)
+    const translateDuration = 1500;      // ms for movement
+    const opacityInDuration = 200;       // ms fade in
+    const opacityHoldDuration = 0;       // ms fully visible
+    const opacityOutDuration = 500;      // ms fade out
+    const opacityTotal = opacityInDuration + opacityHoldDuration + opacityOutDuration;
 
-  sealSparkData.forEach(sparkObj => {
-    const { el, tx, ty } = sparkObj;
+    let anyActive = false;
 
-    // --- Translate ---
-    let transform;
-    if (elapsed < translateDuration) {
-      const t = elapsed / translateDuration;
-      const eased = 1 - Math.pow(1 - t, 3);
-      const x = tx * eased;
-      const y = ty * eased;
-      transform = `translate(${x}px, ${y}px)`;
-      anyActive = true;
-    } else {
-      transform = `translate(${tx}px, ${ty}px)`; // final position
+    sealSparkData.forEach(sparkObj => {
+      const { el, tx, ty } = sparkObj;
+
+      // Translate (use adjustedElapsed)
+      let transform;
+      if (adjustedElapsed < translateDuration) {
+        const t = adjustedElapsed / translateDuration;
+        const eased = 1 - Math.pow(1 - t, 3);
+        const x = tx * eased;
+        const y = ty * eased;
+        transform = `translate(${x}px, ${y}px)`;
+        anyActive = true;
+      } else {
+        transform = `translate(${tx}px, ${ty}px)`; // final position
+      }
+
+      // Opacity (use adjustedElapsed)
+      let opacity;
+      if (adjustedElapsed < opacityInDuration) {
+        const t = adjustedElapsed / opacityInDuration;
+        opacity = Math.min(Math.max(1 - Math.pow(1 - t, 3), 0), 1);
+        anyActive = true;
+      } else if (adjustedElapsed < opacityInDuration + opacityHoldDuration) {
+        opacity = 1;
+        anyActive = true;
+      } else if (adjustedElapsed < opacityTotal) {
+        const t = (adjustedElapsed - opacityInDuration - opacityHoldDuration) / opacityOutDuration;
+        opacity = Math.min(Math.max(1 - Math.pow(t, 3), 0), 1); // ease out fade
+        anyActive = true;
+      } else {
+        opacity = 0;
+      }
+
+      try {
+        el.style.transform = transform + " translateZ(0)";
+        el.style.opacity = opacity;
+      } catch (e) {}
+    });
+
+    // Only deactivate after all sparks finished
+    if (!anyActive) {
+      sealSparksActive = false;
+      sealSparksStart = null;
     }
-
-    // --- Opacity ---
-    let opacity;
-    if (elapsed < opacityInDuration) {
-      const t = elapsed / opacityInDuration;
-      opacity = Math.min(Math.max(1 - Math.pow(1 - t, 3), 0), 1);
-      anyActive = true;
-    } else if (elapsed < opacityInDuration + opacityHoldDuration) {
-      opacity = 1;
-      anyActive = true;
-    } else if (elapsed < opacityTotal) {
-      const t = (elapsed - opacityInDuration - opacityHoldDuration) / opacityOutDuration;
-      opacity = Math.min(Math.max(1 - Math.pow(t, 3), 0), 1); // ease out fade
-      anyActive = true;
-    } else {
-      opacity = 0;
-    }
-
-    try {
-      el.style.transform = transform + " translateZ(0)";
-      el.style.opacity = opacity;
-    } catch (e) {}
-  });
-
-  // Only deactivate after all sparks have fully finished their **opacity fade**
-  if (!anyActive) sealSparksActive = false;
+  }
 }
-
 
   requestAnimationFrame(tick);
 }
