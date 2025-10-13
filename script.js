@@ -1,6 +1,51 @@
-console.log("connected");
+/* --- Letter Card Glow --- */
+const letterCardGlow = document.querySelector(".letterCardGlow");
+let letterCardGlowActive = false;
+let letterCardGlowStart = null;
 
+// Independent Glow Timing (ms)
+const glowIndependentDelay = 2700;       // independent delay before glow starts
+const glowInDuration = 2500;          // scale 0 → 25
+const glowOutDuration = 1500;         // scale 25 → 0
+
+// Glow scale values
+const glowScaleMin = 0;
+const glowScaleMax = 25;
+
+/* --- Letter Card Animation --- */
+const letterCard = document.querySelector(".letterCard");
+let letterCardActive = false;
+let letterCardStart = null;
+
+/* --- Letter Card Z-index Timing --- */
+const cardZindexInitial = 700;
+const cardZindexFinal = 900;
+const cardZindexDelay = 2700;   // ms after letterCard starts (independent)
+let letterCardZindexChanged = false;
+
+// --- Timing (milliseconds) ---
+const cardDelay = 1550;            // wait before starting the first move
+const cardStage1Duration = 400;    // 0 → -3
+const cardStage2Duration = 400;    // -3 → 0
+const cardStage3Duration = 800;    // 0 → -35
+
+// --- Positions (use % or px) ---
+const cardPosStart = 0;
+const cardPosMid1 = -3;
+const cardPosMid2 = 0;
+const cardPosEnd = -35;
+
+/* --- Letter Lid Animation --- */
 const letterLid = document.querySelector(".letterLid");
+let lidActive = false;
+let lidStart = null;
+
+// Customizable timings
+const lidDelay = 800;          // ms before rotation starts (after click)
+const lidDuration = 1500;      // rotation animation duration
+const lidZindexDelay = 1500;   // ms after click to change z-index
+const lidStartRot = 0;
+const lidEndRot = 180;
 
 
 const sealSparks = document.querySelectorAll(".sealSpark");
@@ -474,129 +519,263 @@ if (sealSparkGlowFadeActive && sealSparkGlow) {
   }
 }
 
-/* --- Seal Sparks animation (with offset, no early return) --- */
-if (sealSparksActive) {
-  if (!sealSparksStart) sealSparksStart = timestamp;
-  const elapsed = timestamp - sealSparksStart;
+  /* --- Seal Sparks animation (with offset, no early return) --- */
+  if (sealSparksActive) {
+    if (!sealSparksStart) sealSparksStart = timestamp;
+    const elapsed = timestamp - sealSparksStart;
 
-  // not yet time to start sparks — keep them hidden and continue
-  if (elapsed < sealSparksOffset) {
-    // Ensure they stay hidden until offset; don't return
-    sealSparkData.forEach(sparkObj => {
-      try {
-        sparkObj.el.style.opacity = 0;
-        sparkObj.el.style.transform = "translate(0px, 0px) scale(0.8) translateZ(0)";
-      } catch (e) {}
-    });
-  } else {
-    const adjustedElapsed = elapsed - sealSparksOffset;
+    // not yet time to start sparks — keep them hidden and continue
+    if (elapsed < sealSparksOffset) {
+      // Ensure they stay hidden until offset; don't return
+      sealSparkData.forEach(sparkObj => {
+        try {
+          sparkObj.el.style.opacity = 0;
+          sparkObj.el.style.transform = "translate(0px, 0px) scale(0.8) translateZ(0)";
+        } catch (e) {}
+      });
+    } else {
+      const adjustedElapsed = elapsed - sealSparksOffset;
 
-    // Per-spark global-ish timings (or keep your custom per-spark ones)
-    const translateDuration = 1500;      // ms for movement
-    const opacityInDuration = 200;       // ms fade in
-    const opacityHoldDuration = 0;       // ms fully visible
-    const opacityOutDuration = 500;      // ms fade out
-    const opacityTotal = opacityInDuration + opacityHoldDuration + opacityOutDuration;
+      // Per-spark global-ish timings (or keep your custom per-spark ones)
+      const translateDuration = 1500;      // ms for movement
+      const opacityInDuration = 200;       // ms fade in
+      const opacityHoldDuration = 0;       // ms fully visible
+      const opacityOutDuration = 500;      // ms fade out
+      const opacityTotal = opacityInDuration + opacityHoldDuration + opacityOutDuration;
 
-    let anyActive = false;
+      let anyActive = false;
 
-    sealSparkData.forEach(sparkObj => {
-      const { el, tx, ty } = sparkObj;
+      sealSparkData.forEach(sparkObj => {
+        const { el, tx, ty } = sparkObj;
 
-      // Translate (use adjustedElapsed)
-      let transform;
-      if (adjustedElapsed < translateDuration) {
-        const t = adjustedElapsed / translateDuration;
-        const eased = 1 - Math.pow(1 - t, 3);
-        const x = tx * eased;
-        const y = ty * eased;
-        transform = `translate(${x}px, ${y}px)`;
-        anyActive = true;
-      } else {
-        transform = `translate(${tx}px, ${ty}px)`; // final position
+        // Translate (use adjustedElapsed)
+        let transform;
+        if (adjustedElapsed < translateDuration) {
+          const t = adjustedElapsed / translateDuration;
+          const eased = 1 - Math.pow(1 - t, 3);
+          const x = tx * eased;
+          const y = ty * eased;
+          transform = `translate(${x}px, ${y}px)`;
+          anyActive = true;
+        } else {
+          transform = `translate(${tx}px, ${ty}px)`; // final position
+        }
+
+        // Opacity (use adjustedElapsed)
+        let opacity;
+        if (adjustedElapsed < opacityInDuration) {
+          const t = adjustedElapsed / opacityInDuration;
+          opacity = Math.min(Math.max(1 - Math.pow(1 - t, 3), 0), 1);
+          anyActive = true;
+        } else if (adjustedElapsed < opacityInDuration + opacityHoldDuration) {
+          opacity = 1;
+          anyActive = true;
+        } else if (adjustedElapsed < opacityTotal) {
+          const t = (adjustedElapsed - opacityInDuration - opacityHoldDuration) / opacityOutDuration;
+          opacity = Math.min(Math.max(1 - Math.pow(t, 3), 0), 1); // ease out fade
+          anyActive = true;
+        } else {
+          opacity = 0;
+        }
+
+        try {
+          el.style.transform = transform + " translateZ(0)";
+          el.style.opacity = opacity;
+        } catch (e) {}
+      });
+
+      // Only deactivate after all sparks finished
+      if (!anyActive) {
+        sealSparksActive = false;
+        sealSparksStart = null;
       }
-
-      // Opacity (use adjustedElapsed)
-      let opacity;
-      if (adjustedElapsed < opacityInDuration) {
-        const t = adjustedElapsed / opacityInDuration;
-        opacity = Math.min(Math.max(1 - Math.pow(1 - t, 3), 0), 1);
-        anyActive = true;
-      } else if (adjustedElapsed < opacityInDuration + opacityHoldDuration) {
-        opacity = 1;
-        anyActive = true;
-      } else if (adjustedElapsed < opacityTotal) {
-        const t = (adjustedElapsed - opacityInDuration - opacityHoldDuration) / opacityOutDuration;
-        opacity = Math.min(Math.max(1 - Math.pow(t, 3), 0), 1); // ease out fade
-        anyActive = true;
-      } else {
-        opacity = 0;
-      }
-
-      try {
-        el.style.transform = transform + " translateZ(0)";
-        el.style.opacity = opacity;
-      } catch (e) {}
-    });
-
-    // Only deactivate after all sparks finished
-    if (!anyActive) {
-      sealSparksActive = false;
-      sealSparksStart = null;
     }
   }
+
+  /* --- Letter Lid Rotation --- */
+if (lidActive && letterLid) {
+  if (!lidStart) lidStart = timestamp;
+  const elapsed = timestamp - lidStart;
+
+  // Rotation (delayed start)
+  if (elapsed >= lidDelay) {
+    const rotElapsed = elapsed - lidDelay;
+    const progress = Math.min(rotElapsed / lidDuration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const currentRot = lidStartRot + (lidEndRot - lidStartRot) * eased;
+    letterLid.style.transform = `rotateX(${currentRot}deg)`;
+  }
+
+  // Independent z-index change after lidZindexDelay
+  if (elapsed >= lidZindexDelay) {
+    letterLid.style.zIndex = "600";
+  }
+
+  // End condition
+  if (elapsed >= lidDelay + lidDuration && elapsed >= lidZindexDelay) {
+    lidActive = false;
+  }
 }
+
+  /* --- Letter Card Translate Animation --- */
+  if (letterCardActive && letterCard) {
+    if (!letterCardStart) {
+      letterCardStart = timestamp;
+      letterCard.style.zIndex = cardZindexInitial; // start value
+      letterCardZindexChanged = false;
+    }
+
+    const elapsed = timestamp - letterCardStart;
+
+    // --- Independent z-index change ---
+    if (!letterCardZindexChanged && elapsed >= cardZindexDelay) {
+      letterCard.style.zIndex = cardZindexFinal;
+      letterCardZindexChanged = true;
+    }
+
+    // --- Wait for delay before starting motion ---
+    if (elapsed >= cardDelay) {
+      const t = elapsed - cardDelay;
+      let y = cardPosStart;
+
+      // Stage 1: 0 → -3
+      if (t < cardStage1Duration) {
+        const p = t / cardStage1Duration;
+        const eased = 1 - Math.pow(1 - p, 3);
+        y = cardPosStart + (cardPosMid1 - cardPosStart) * eased;
+
+      // Stage 2: -3 → 0
+      } else if (t < cardStage1Duration + cardStage2Duration) {
+        const p = (t - cardStage1Duration) / cardStage2Duration;
+        const eased = 1 - Math.pow(1 - p, 3);
+        y = cardPosMid1 + (cardPosMid2 - cardPosMid1) * eased;
+
+      // Stage 3: 0 → -35
+      } else if (t < cardStage1Duration + cardStage2Duration + cardStage3Duration) {
+        const p = (t - cardStage1Duration - cardStage2Duration) / cardStage3Duration;
+        const eased = 1 - Math.pow(1 - p, 3);
+        y = cardPosMid2 + (cardPosEnd - cardPosMid2) * eased;
+
+      // End: stay at -35
+      } else {
+        y = cardPosEnd;
+        letterCardActive = false;
+      }
+
+      letterCard.style.transform = `translateY(${y}svh)`;
+    }
+  }
+
+
+  /* --- Letter Card Glow Animation --- */
+  if (letterCardGlowActive && letterCardGlow) {
+    if (!letterCardGlowStart) letterCardGlowStart = timestamp;
+    const elapsed = timestamp - letterCardGlowStart;
+
+    // Wait for its independent delay
+    if (elapsed < glowIndependentDelay) {
+      // keep hidden before glow starts
+      letterCardGlow.style.opacity = 0;
+      letterCardGlow.style.transform = `scale(${glowScaleMin})`;
+    } else {
+      const adjustedElapsed = elapsed - glowIndependentDelay;
+      let scale = glowScaleMin;
+
+      // Stage 1: scale up
+      if (adjustedElapsed < glowInDuration) {
+        const p = adjustedElapsed / glowInDuration;
+        const eased = 1 - Math.pow(1 - p, 3);
+        scale = glowScaleMin + (glowScaleMax - glowScaleMin) * eased;
+
+      // Stage 2: scale down
+      } else if (adjustedElapsed < glowInDuration + glowOutDuration) {
+        const p = (adjustedElapsed - glowInDuration) / glowOutDuration;
+        const eased = 1 - Math.pow(1 - p, 3);
+        scale = glowScaleMax + (glowScaleMin - glowScaleMax) * eased;
+
+      // End
+      } else {
+        scale = glowScaleMin;
+        letterCardGlowActive = false;
+      }
+
+      letterCardGlow.style.transform = `scale(${scale})`;
+      letterCardGlow.style.opacity = scale > 0 ? 1 : 0;
+    }
+  }
 
   requestAnimationFrame(tick);
 }
   
 requestAnimationFrame(tick);
 
-  /* --- Click to Freeze and Fade Glow --- */
-  if(openLetter){
-    openLetter.addEventListener("click", ()=>{
-      if(!cancelLetterPulse && getLetter){
-        frozenLetterScale = currentLetterScale;
+if (openLetter) {
+  const handleOpenClick = () => {
+    if (!cancelLetterPulse && getLetter) {
+      frozenLetterScale = currentLetterScale;
 
-        if(getLetterGlow){
-          const matrixGlow = getComputedStyle(getLetterGlow).transform;
-          if(matrixGlow !== "none"){
-            const matchGlow = matrixGlow.match(/matrix.*\((.+)\)/);
-            if(matchGlow){
-              const values = matchGlow[1].split(", ");
-              frozenGlowScale = (parseFloat(values[0]) + parseFloat(values[3])) / 2;
-            } else {
-              frozenGlowScale = 1;
-            }
+      if (getLetterGlow) {
+        const matrixGlow = getComputedStyle(getLetterGlow).transform;
+        if (matrixGlow !== "none") {
+          const matchGlow = matrixGlow.match(/matrix.*\((.+)\)/);
+          if (matchGlow) {
+            const values = matchGlow[1].split(", ");
+            frozenGlowScale = (parseFloat(values[0]) + parseFloat(values[3])) / 2;
           } else {
             frozenGlowScale = 1;
           }
+        } else {
+          frozenGlowScale = 1;
         }
       }
-      cancelLetterPulse = true;
-      glowFade = true;
+    }
 
-      // --- Trigger Seal Fade ---
-      if (closeSeal && !sealFadeActive) {
-        sealFadeActive = true;
-        sealFadeStart = null; // reset timestamp on click
-      }
+    cancelLetterPulse = true;
+    glowFade = true;
 
-      if (closeLetterBranch && !sealBranchFadeActive) {
-        sealBranchFadeActive = true;
-        sealBranchStart = null; // reset timestamp on click
-      }
+    // --- Trigger Lid Animation ---
+    if (!lidActive) {
+      lidActive = true;
+      lidStart = null;
+      letterLid.style.zIndex = "900"; // reset initial z-index before animation
+    }
 
-      if (sealSparkGlow && !sealSparkGlowFadeActive) {
-        sealSparkGlowFadeActive = true;
-        sealSparkGlowStart = null; // reset timestamp
-      }
+    // --- Trigger Seal Fade ---
+    if (closeSeal && !sealFadeActive) {
+      sealFadeActive = true;
+      sealFadeStart = null;
+    }
 
-      if (!sealSparksActive) {
-        sealSparksActive = true;
-        sealSparksStart = null;
-      }
-    });
+    if (closeLetterBranch && !sealBranchFadeActive) {
+      sealBranchFadeActive = true;
+      sealBranchStart = null;
+    }
+
+    if (sealSparkGlow && !sealSparkGlowFadeActive) {
+      sealSparkGlowFadeActive = true;
+      sealSparkGlowStart = null;
+    }
+
+    if (!sealSparksActive) {
+      sealSparksActive = true;
+      sealSparksStart = null;
+    }
+
+    if (!letterCardActive && letterCard) {
+      letterCardActive = true;
+      letterCardStart = null;
+    }
+
+    if (!letterCardGlowActive && letterCardGlow) {
+      letterCardGlowActive = true;
+      letterCardGlowStart = null;
+    }
+
+    // Remove click listener after first click
+    openLetter.removeEventListener("click", handleOpenClick);
+  };
+
+  openLetter.addEventListener("click", handleOpenClick);
 }
 
 

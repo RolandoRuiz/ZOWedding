@@ -922,21 +922,6 @@ body{
     will-change: transform;
 }
 
-.openLid{
-    animation: 
-    openLidMovement 2s cubic-bezier(.2,.88,.68,1.14) forwards 1s,
-    lidIndex 2s cubic-bezier(.2,.88,.68,1.14) forwards 1s;
-    animation-composition: replace, replace;
-}
-
-@keyframes openLidMovement {
-    0%{
-        transform: rotateX(0deg);
-    }100%{
-        transform: rotateX(180deg);
-    }
-}
-
 @keyframes lidIndex {
     0%{
         z-index: 900;
