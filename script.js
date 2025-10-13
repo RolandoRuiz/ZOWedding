@@ -1,3 +1,10 @@
+/* --- Light Overlay Fade Control --- */
+let lightFadeActive = false;
+let lightFadeStartTime = null;
+const lightFadeDuration = 1000; // ms to fade out
+const lightFadeDelay = 5000; // milliseconds before overlay starts fading after click
+
+
 /* --- Letter Card Glow --- */
 const letterCardGlow = document.querySelector(".letterCardGlow");
 let letterCardGlowActive = false;
@@ -167,6 +174,9 @@ const overlayDuration = 1500;
 const overlayOpacityMax = 1;
 const overlayOpacityMin = 0.92;
 
+let bgrFadeActive = false;    // flag to start click fade
+let bgrFadeStart = null; 
+
 /* --- Light overlay --- */
 const getLightOverlay = document.querySelector(".bgrOverlayWrapper");
 const getLightOverlay2 = document.querySelector(".bgrTopOverlay");
@@ -307,36 +317,116 @@ function tick(timestamp){
     try{ l.el.style.transform=`rotate(${l.pos}deg)`;}catch(e){}
   });
 
-  /* Background Overlay */
-  if(!bgrOverlayStartTime) bgrOverlayStartTime = timestamp;
-  let overlayElapsed = timestamp - bgrOverlayStartTime;
-  if(overlayElapsed >= overlayDelay){
-    const fadeElapsed = overlayElapsed - overlayDelay;
-    const progress = Math.min(fadeElapsed/overlayDuration,1);
-    const currentOpacity = overlayOpacityMax - (overlayOpacityMax-overlayOpacityMin)*progress;
-    if(backgroundOverlay) backgroundOverlay.style.opacity = currentOpacity;
-  }
+/* --- Background Overlay --- */
+if (!bgrOverlayStartTime) bgrOverlayStartTime = timestamp;
+let overlayElapsed = timestamp - bgrOverlayStartTime;
 
-  /* Light overlay */
-  if(!lightOverlayStartTime) lightOverlayStartTime = timestamp;
-  const elapsedLight = timestamp - lightOverlayStartTime;
-  if(elapsedLight < delayLightOverlay){
-    lightScale = lightStartScale;
-  } else {
-    if(lightPhase==="grow"){
-      lightScale += 0.012*delta;
-      if(lightScale >= lightMaxScale){
-        lightScale = lightMaxScale;
-        lightPhase="pulse";
-      }
-    } else if(lightPhase==="pulse"){
-      lightScale += lightDirection*0.001*delta;
-      if(lightScale >= lightMaxScale) lightDirection=-1;
-      if(lightScale <= lightMinPulse) lightDirection=1;
+// Ensure variables exist
+if (typeof bgrFadeComplete === "undefined") bgrFadeComplete = false;
+
+// Normal background fade logic (only runs if fade-out hasn’t completed)
+if (!bgrFadeActive && !bgrFadeComplete) {
+    if (overlayElapsed >= overlayDelay) {
+        const fadeElapsed = overlayElapsed - overlayDelay;
+        const progress = Math.min(fadeElapsed / overlayDuration, 1);
+        const currentOpacity = overlayOpacityMax - (overlayOpacityMax - overlayOpacityMin) * progress;
+        if (backgroundOverlay) backgroundOverlay.style.opacity = currentOpacity;
     }
-  }
-  if(getLightOverlay) getLightOverlay.style.transform=`scale(${lightScale}) translateZ(0)`;
-  if(getLightOverlay2) getLightOverlay2.style.transform=`scale(${lightScale}) translateZ(0)`;
+}
+
+// Manual fade-out on click
+if (bgrFadeActive && backgroundOverlay && !bgrFadeComplete) {
+    if (!bgrFadeStart) bgrFadeStart = timestamp;
+
+    const elapsed = timestamp - bgrFadeStart;
+    let fadeProgress = 0;
+
+    if (elapsed >= delayLightOverlay) { // start fading after same delay as light overlay
+        const fadeElapsed = elapsed - delayLightOverlay;
+        fadeProgress = Math.min(fadeElapsed / overlayDuration, 1);
+    }
+
+    // Start fading from current opacity to 0
+    const startOpacity = backgroundOverlay.style.opacity
+        ? parseFloat(backgroundOverlay.style.opacity)
+        : overlayOpacityMax;
+    const currentOpacity = startOpacity * (1 - fadeProgress);
+
+    backgroundOverlay.style.opacity = Math.max(currentOpacity, 0);
+
+    if (fadeProgress >= 1) {
+        backgroundOverlay.style.opacity = 0; // ensure exactly zero
+        bgrFadeActive = false;
+        bgrFadeComplete = true; // lock overlay at 0
+    }
+}
+
+
+
+
+/* --- Light Overlay --- */
+if (!lightOverlayStartTime) lightOverlayStartTime = timestamp;
+const elapsedLight = timestamp - lightOverlayStartTime;
+
+// Initialize a flag to prevent restart
+if (typeof lightOverlayFrozen === "undefined") lightOverlayFrozen = false;
+
+if (!lightFadeActive && !lightOverlayFrozen) {
+    // Before the overlay delay: keep initial scale
+    if (elapsedLight < delayLightOverlay) {
+        lightScale = lightStartScale;
+    } else {
+        // Grow / Pulse phase
+        if (lightPhase === "grow") {
+            lightScale += 0.012 * delta;
+            if (lightScale >= lightMaxScale) {
+                lightScale = lightMaxScale;
+                lightPhase = "pulse";
+            }
+        } else if (lightPhase === "pulse") {
+            lightScale += lightDirection * 0.001 * delta;
+            if (lightScale >= lightMaxScale) lightDirection = -1;
+            if (lightScale <= lightMinPulse) lightDirection = 1;
+        }
+    }
+} else if (lightFadeActive) {
+    // Lock scale and prevent re-animation
+    if (!lightOverlayFrozen) {
+        frozenLightScale = lightScale; // freeze current scale
+        lightOverlayFrozen = true;
+    }
+    lightScale = frozenLightScale;
+
+    if (!lightFadeStartTime) lightFadeStartTime = timestamp;
+    const fadeElapsedTotal = timestamp - lightFadeStartTime;
+
+    let fadeProgress = 0;
+    if (fadeElapsedTotal >= lightFadeDelay) {
+        const fadeElapsed = fadeElapsedTotal - lightFadeDelay;
+        fadeProgress = Math.min(fadeElapsed / lightFadeDuration, 1);
+    }
+
+    const opacityVal = 1 - fadeProgress;
+
+    if (getLightOverlay) getLightOverlay.style.opacity = opacityVal;
+    if (getLightOverlay2) getLightOverlay2.style.opacity = opacityVal;
+
+    if (fadeProgress >= 1) {
+        lightFadeActive = false; // fade complete
+    }
+}
+
+// Always apply the current scale
+if (getLightOverlay) getLightOverlay.style.transform = `scale(${lightScale}) translateZ(0)`;
+if (getLightOverlay2) getLightOverlay2.style.transform = `scale(${lightScale}) translateZ(0)`;
+
+// For non-fade state, ensure opacity stays at 1
+if (!lightFadeActive && !lightOverlayFrozen && elapsedLight >= delayLightOverlay) {
+    if (getLightOverlay) getLightOverlay.style.opacity = 1;
+    if (getLightOverlay2) getLightOverlay2.style.opacity = 1;
+}
+
+
 
   /* Sparks */
   sparkCache.forEach(spark=>{
@@ -769,6 +859,16 @@ if (openLetter) {
     if (!letterCardGlowActive && letterCardGlow) {
       letterCardGlowActive = true;
       letterCardGlowStart = null;
+    }
+
+    if (!lightFadeActive) {
+      lightFadeActive = true;
+      lightFadeStartTime = null;
+    }
+
+    if (!bgrFadeActive) {
+      bgrFadeActive = true;
+      bgrFadeStart = null;  // will be set in tick()
     }
 
     // Remove click listener after first click
