@@ -149,6 +149,8 @@ const leafSpeed = 0.35;
 const getBranches = document.querySelectorAll(".branch");
 const leaves = [];
 
+const indexBranchTwo = document.querySelector(".branchTwo");
+
 // --- Leaf initialization (inside your existing branch load code)
 getBranches.forEach(branch => {
   branch.addEventListener("load", () => {
@@ -841,9 +843,24 @@ if (sealSparkGlowFadeActive && sealSparkGlow) {
           const easedScale = Math.pow(Math.min(p, 1), 1.2); // ease-in for scale
           y = cardPosMid3 + (cardPosEnd - cardPosMid3) * eased;
 
+          const clampedP = Math.min(p, 1);
+
           // scale from (1,1) → (2,2.1)
           scaleX = 1 + (2.0 - 1.0) * easedScale;
           scaleY = 1 + (2.1 - 1.0) * easedScale;
+
+          // Trigger zIndex at 50% progress only once
+          if (clampedP >= 0.2 && !indexBranchTwo.triggered) {
+              indexBranchTwo.style.zIndex = 200;
+              indexBranchTwo.triggered = true; // prevent repeated assignments
+          }
+
+          if (clampedP >= 0.2 && !letterCard.triggered) {
+              letterCard.style.filter = "drop-shadow(0px 0px 5px rgba(0,0,0,0.4))";
+              letterCard.style.transform = `translateY(${y}svh) scale(2, 3)`;
+              letterCard.triggered = true; // prevent repeated assignments
+          }
+
         }
         
 
