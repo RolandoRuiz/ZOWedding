@@ -134,30 +134,6 @@ body{
     opacity: 0.6;
     bottom: 0%;
 
-    animation: ArchShadow 1s ease-out forwards 4s;
-}
-
-@keyframes ArchShadow {
-    0%{
-        opacity: 0.6;
-    }
-    100%{
-        opacity: 0.45;
-    }
-}
-
-.lightenArchShadow{
-    opacity: 0.4;
-
-    animation: lightenArch 0.5s forwards cubic-bezier(.3,.01,.94,.62) 5.2s;
-}
-
-@keyframes lightenArch {
-    0%{
-        opacity: 0.45; 
-    }100%{
-        opacity: 0.2;
-    }
 }
 
 /* Wall Component*/

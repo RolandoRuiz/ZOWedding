@@ -1,3 +1,9 @@
+const letterlidShadow = document.querySelector(".letterLidShadow");
+const archShadow = document.querySelector(".bgrArchShadow");
+
+const letterBody = document.querySelector(".letterBody");
+const letterComponents = document.querySelector(".letterComponents");
+const letterLidBox = document.querySelector(".letterLidBox");
 
 
 /* --- Light Overlay Fade Control --- */
@@ -13,7 +19,7 @@ let letterCardGlowStart = null;
 // Independent Glow Timing (ms)
 const glowIndependentDelay = 2700;       // independent delay before glow starts
 const glowInDuration = 2000;          // scale 0 → 25
-const glowOutDuration = 1000;         // scale 25 → 0
+const glowOutDuration = 1500;         // scale 25 → 0
 
 // Glow scale values
 const glowScaleMin = 0;
@@ -41,6 +47,16 @@ const cardPosStart = 0;
 const cardPosMid1 = -3;
 const cardPosMid2 = 0;
 const cardPosEnd = -35;
+
+// --- Independent LetterCard reposition ---
+const letterCardRepositionDelay = 2000; // delay after previous animation (ms)
+const letterCardRepositionDuration = 1500; // duration of move
+const letterCardRepositionTargetY = 52; // svh
+const letterCardRepositionTargetScale = 2.1; // final scale
+const letterCardRepositionMidZ = 400; // z-index at halfway
+let letterCardRepositionActive = false;
+let letterCardRepositionStart = null;
+let letterCardRepositionZChanged = false;
 
 /* --- Letter Lid Animation --- */
 const letterLid = document.querySelector(".letterLid");
@@ -402,33 +418,44 @@ function tick(timestamp){
     }
   } 
   else if (lightFadeActive) {
-    // Freeze scale once fade starts
-    if (!lightOverlayFrozen) {
-      frozenLightScale = lightScale;
-      lightOverlayFrozen = true;
-    }
-    lightScale = frozenLightScale;
-
-    if (!lightFadeStartTime) lightFadeStartTime = timestamp;
-    const fadeElapsedTotal = timestamp - lightFadeStartTime;
-
-    let fadeProgress = 0;
-    if (fadeElapsedTotal >= bgrFadeDelay) {
-      const fadeElapsed = fadeElapsedTotal - bgrFadeDelay;
-      fadeProgress = Math.min(fadeElapsed / bgrFadeDuration, 1);
-    }
-
-    // Smooth ease
-    const eased = 1 - Math.pow(1 - fadeProgress, 3);
-    const opacityVal = 1 - eased;
-
-    if (getLightOverlay) getLightOverlay.style.opacity = opacityVal;
-    if (getLightOverlay2) getLightOverlay2.style.opacity = opacityVal;
-
-    if (fadeProgress >= 1) {
-      lightFadeActive = false;
-    }
+  // Freeze scale once fade starts
+  if (!lightOverlayFrozen) {
+    frozenLightScale = lightScale;
+    lightOverlayFrozen = true;
   }
+  lightScale = frozenLightScale;
+
+  if (!lightFadeStartTime) lightFadeStartTime = timestamp;
+  const fadeElapsedTotal = timestamp - lightFadeStartTime;
+
+  let fadeProgress = 0;
+  if (fadeElapsedTotal >= bgrFadeDelay) {
+    const fadeElapsed = fadeElapsedTotal - bgrFadeDelay;
+    fadeProgress = Math.min(fadeElapsed / bgrFadeDuration, 1);
+  }
+
+  // Smooth ease-out curve
+  const eased = 1 - Math.pow(1 - fadeProgress, 3);
+
+  // --- Light Overlays opacity (1 → 0) ---
+  const opacityVal = 1 - eased;
+  if (getLightOverlay) getLightOverlay.style.opacity = opacityVal;
+  if (getLightOverlay2) getLightOverlay2.style.opacity = opacityVal;
+
+  // --- Arch Shadow opacity (current → 0.4) ---
+  if (archShadow) {
+    const current = parseFloat(getComputedStyle(archShadow).opacity) || 1;
+    const target = 0.2;
+    const archOpacity = current + (target - current) * eased;
+    archShadow.style.opacity = archOpacity;
+  }
+
+  // --- End of fade ---
+  if (fadeProgress >= 1) {
+    lightFadeActive = false;
+  }
+}
+
 
   // Always apply scale
   if (getLightOverlay) getLightOverlay.style.transform = `scale(${lightScale}) translateZ(0)`;
@@ -697,29 +724,41 @@ if (sealSparkGlowFadeActive && sealSparkGlow) {
   }
 
   /* --- Letter Lid Rotation --- */
-if (lidActive && letterLid) {
-  if (!lidStart) lidStart = timestamp;
-  const elapsed = timestamp - lidStart;
+  if (lidActive && letterLid) {
+    if (!lidStart) lidStart = timestamp;
+    const elapsed = timestamp - lidStart;
 
-  // Rotation (delayed start)
-  if (elapsed >= lidDelay) {
-    const rotElapsed = elapsed - lidDelay;
-    const progress = Math.min(rotElapsed / lidDuration, 1);
-    const eased = 1 - Math.pow(1 - progress, 3);
-    const currentRot = lidStartRot + (lidEndRot - lidStartRot) * eased;
-    letterLid.style.transform = `rotateX(${currentRot}deg)`;
+    // Rotation (delayed start)
+    if (elapsed >= lidDelay) {
+      const rotElapsed = elapsed - lidDelay;
+      const progress = Math.min(rotElapsed / lidDuration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const currentRot = lidStartRot + (lidEndRot - lidStartRot) * eased;
+      letterLid.style.transform = `rotateX(${currentRot}deg)`;
+
+      /* --- Letter Lid Shadow: remove filter at 50% rotation --- */
+      if (letterlidShadow) {
+        if (progress < 0.5) {
+          // Keep filter active before halfway
+          letterlidShadow.style.filter = "brightness(0.8)"; // or whatever you were using
+        } else {
+          // Remove filter at halfway point
+          letterlidShadow.style.filter = "none";
+        }
+      }
+    }
+
+    // Independent z-index change after lidZindexDelay
+    if (elapsed >= lidZindexDelay) {
+      letterLid.style.zIndex = "600";
+    }
+
+    // End condition
+    if (elapsed >= lidDelay + lidDuration && elapsed >= lidZindexDelay) {
+      lidActive = false;
+    }
   }
 
-  // Independent z-index change after lidZindexDelay
-  if (elapsed >= lidZindexDelay) {
-    letterLid.style.zIndex = "600";
-  }
-
-  // End condition
-  if (elapsed >= lidDelay + lidDuration && elapsed >= lidZindexDelay) {
-    lidActive = false;
-  }
-}
 
   /* --- Letter Card Translate Animation --- */
   if (letterCardActive && letterCard) {
@@ -778,33 +817,41 @@ if (lidActive && letterLid) {
 
     // Wait for its independent delay
     if (elapsed < glowIndependentDelay) {
-      // keep hidden before glow starts
+      // Keep hidden before glow starts
       letterCardGlow.style.opacity = 0;
       letterCardGlow.style.transform = `scale(${glowScaleMin})`;
     } else {
       const adjustedElapsed = elapsed - glowIndependentDelay;
       let scale = glowScaleMin;
+      let opacity = 1;
 
-      // Stage 1: scale up
+      // --- Stage 1: scale up ---
       if (adjustedElapsed < glowInDuration) {
         const p = adjustedElapsed / glowInDuration;
         const eased = 1 - Math.pow(1 - p, 3);
         scale = glowScaleMin + (glowScaleMax - glowScaleMin) * eased;
+        opacity = 1; // fully visible during grow
 
-      // Stage 2: scale down
+      // --- Stage 2: scale down (fade out) ---
       } else if (adjustedElapsed < glowInDuration + glowOutDuration) {
         const p = (adjustedElapsed - glowInDuration) / glowOutDuration;
         const eased = 1 - Math.pow(1 - p, 3);
         scale = glowScaleMax + (glowScaleMin - glowScaleMax) * eased;
+        opacity = 1 - eased; // fade opacity 1 → 0 alongside scale
+        letterBody.style.opacity = 0;
+        letterComponents.style.opacity = 0;
+        letterLidBox.style.opacity = 0;
 
-      // End
+      // --- End ---
       } else {
         scale = glowScaleMin;
+        opacity = 0;
         letterCardGlowActive = false;
       }
 
+      // Apply transformations
       letterCardGlow.style.transform = `scale(${scale})`;
-      letterCardGlow.style.opacity = scale > 0 ? 1 : 0;
+      letterCardGlow.style.opacity = opacity;
     }
   }
 
@@ -884,6 +931,7 @@ if (openLetter) {
       bgrFadeActive = true;
       bgrFadeStart = null;
     }
+    
 
     // Remove click listener after first click
     openLetter.removeEventListener("click", handleOpenClick);
