@@ -41,22 +41,14 @@ const cardDelay = 1550;            // wait before starting the first move
 const cardStage1Duration = 400;    // 0 → -3
 const cardStage2Duration = 400;    // -3 → 0
 const cardStage3Duration = 800;    // 0 → -35
+const cardStage4Duration = 3400;
 
 // --- Positions (use % or px) ---
 const cardPosStart = 0;
 const cardPosMid1 = -3;
 const cardPosMid2 = 0;
-const cardPosEnd = -35;
-
-// --- Independent LetterCard reposition ---
-const letterCardRepositionDelay = 2000; // delay after previous animation (ms)
-const letterCardRepositionDuration = 1500; // duration of move
-const letterCardRepositionTargetY = 52; // svh
-const letterCardRepositionTargetScale = 2.1; // final scale
-const letterCardRepositionMidZ = 400; // z-index at halfway
-let letterCardRepositionActive = false;
-let letterCardRepositionStart = null;
-let letterCardRepositionZChanged = false;
+const cardPosMid3 = -35;
+const cardPosEnd = 46;
 
 /* --- Letter Lid Animation --- */
 const letterLid = document.querySelector(".letterLid");
@@ -153,12 +145,11 @@ const branchSpeed = 0.2;
 let branchLastTime = null;
 
 /* --- Leaf animation --- */
-const leafMinPosition = 0;
-const leafMaxPosition = 40;
 const leafSpeed = 0.35;
 const getBranches = document.querySelectorAll(".branch");
 const leaves = [];
 
+// --- Leaf initialization (inside your existing branch load code)
 getBranches.forEach(branch => {
   branch.addEventListener("load", () => {
     const branchDoc = branch.contentDocument;
@@ -166,24 +157,40 @@ getBranches.forEach(branch => {
     const branchDocLeafTargets = branchDoc.querySelectorAll(".prefix__leaf");
 
     branchDocLeafTargets.forEach(leafTarget => {
-      const leafObj = { el: leafTarget, pos: 0, dir: 1, active: false, obsDebounce: null };
+      const leafObj = {
+        el: leafTarget,
+        active: false,
+        obsDebounce: null,
+        pos: Math.random() * 20 - 10, // random initial rotation
+        dir: Math.random() < 0.5 ? 1 : -1, // random direction
+        speed: 0.1 + Math.random() * 0.25, // random speed
+        maxAngle: 10 + Math.random() * 30 // max rotation amplitude
+      };
       leaves.push(leafObj);
 
+      // Intersection Observer
       const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
           const l = leaves.find(leaf => leaf.el === entry.target);
           if (!l) return;
+
           if (l.obsDebounce) clearTimeout(l.obsDebounce);
-          l.obsDebounce = setTimeout(() => { l.active = entry.isIntersecting; l.obsDebounce = null; }, 60);
+          l.obsDebounce = setTimeout(() => {
+            l.active = entry.isIntersecting; // resume/pause animation
+            l.obsDebounce = null;
+          }, 60);
         });
       }, { root: null, rootMargin: "0px", threshold: 0.5 });
 
       observer.observe(leafTarget);
+
+      // Initial transform
       try { leafTarget.style.willChange = "transform"; } catch(e){}
-      try { leafTarget.style.transform = "translateZ(0)"; } catch(e){}
+      try { leafTarget.style.transform = `rotate(${leafObj.pos}deg) translateZ(0)`; } catch(e){}
     });
   });
 });
+
 
 /* --- Background overlay --- */
 const backgroundOverlay = document.querySelector(".bgrMultiply");
@@ -346,6 +353,22 @@ function tick(timestamp){
   const branchRotation = `rotate(${branchPosition / 10}deg)`;
   if (getUpperBranch) getUpperBranch.style.transform = branchRotation;
   if (getLowerBranch) getLowerBranch.style.transform = branchRotation;
+
+  /* --- Leaf sway inside main tick --- */
+  leaves.forEach(leaf => {
+    if (!leaf.active) return;
+
+    leaf.pos += leaf.dir * leaf.speed * safeDelta;
+    if (Math.abs(leaf.pos) > leaf.maxAngle) {
+      leaf.dir *= -1;
+      leaf.pos = Math.sign(leaf.pos) * leaf.maxAngle;
+    }
+
+    try {
+      leaf.el.style.transform = `rotate(${leaf.pos}deg) translateZ(0)`;
+    } catch (e) {}
+  });
+
 
   /* --- Background Overlay --- */
   if (!bgrOverlayStartTime) bgrOverlayStartTime = timestamp;
@@ -780,6 +803,10 @@ if (sealSparkGlowFadeActive && sealSparkGlow) {
     if (elapsed >= cardDelay) {
       const t = elapsed - cardDelay;
       let y = cardPosStart;
+      let scaleX = 1;
+      let scaleY = 1;
+
+    const stage4Delay = 1800; // ← add your desired delay before stage 4 starts (ms)
 
       // Stage 1: 0 → -3
       if (t < cardStage1Duration) {
@@ -797,15 +824,38 @@ if (sealSparkGlowFadeActive && sealSparkGlow) {
       } else if (t < cardStage1Duration + cardStage2Duration + cardStage3Duration) {
         const p = (t - cardStage1Duration - cardStage2Duration) / cardStage3Duration;
         const eased = 1 - Math.pow(1 - p, 3);
-        y = cardPosMid2 + (cardPosEnd - cardPosMid2) * eased;
+        y = cardPosMid2 + (cardPosMid3 - cardPosMid2) * eased;
 
-      // End: stay at -35
-      } else {
+      // Stage 4: -35 → 52
+      }else if (t < cardStage1Duration + cardStage2Duration + cardStage3Duration + cardStage4Duration + stage4Delay) {
+        const t4 = t - (cardStage1Duration + cardStage2Duration + cardStage3Duration);
+
+        if (t4 < stage4Delay) {
+          // wait delay before moving
+          y = cardPosMid3;
+          scaleX = 1;
+          scaleY = 1;
+        } else {
+          const p = (t4 - stage4Delay) / cardStage4Duration;
+          const eased = 1 - Math.pow(1 - Math.min(p, 1), 3);
+          const easedScale = Math.pow(Math.min(p, 1), 1.2); // ease-in for scale
+          y = cardPosMid3 + (cardPosEnd - cardPosMid3) * eased;
+
+          // scale from (1,1) → (2,2.1)
+          scaleX = 1 + (2.0 - 1.0) * easedScale;
+          scaleY = 1 + (2.1 - 1.0) * easedScale;
+        }
+        
+
+      // End: stay at 52
+      }else {
         y = cardPosEnd;
+        scaleX = 2;
+        scaleY = 2.1;
         letterCardActive = false;
       }
 
-      letterCard.style.transform = `translateY(${y}svh)`;
+      letterCard.style.transform = `translateY(${y}svh) scale(${scaleX}, ${scaleY})`;
     }
   }
 
