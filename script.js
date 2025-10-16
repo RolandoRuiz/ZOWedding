@@ -149,37 +149,50 @@ const leafSpeed = 0.35;
 const getBranches = document.querySelectorAll(".branch");
 const leaves = [];
 
+let leafFrameCounter = 0;
+const leafFrameThrottle = 3; // update every 3 frames
+
 const indexBranchTwo = document.querySelector(".branchTwo");
+
+// Maintain a cached array of active leaves for optimized updates
+let activeLeaves = [];
+
+// IntersectionObserver callback should call this whenever leaf.active changes
+function updateActiveLeaves() {
+  activeLeaves = leaves.filter(l => l.active);
+  // Initialize previous position for threshold checking
+  activeLeaves.forEach(l => l.prevPos = l.pos);
+}
 
 // --- Leaf initialization (inside your existing branch load code)
 getBranches.forEach(branch => {
   branch.addEventListener("load", () => {
     const branchDoc = branch.contentDocument;
     if (!branchDoc) return;
-    const branchDocLeafTargets = branchDoc.querySelectorAll(".prefix__leaf");
 
-    branchDocLeafTargets.forEach(leafTarget => {
+    const branchLeafTargets = branchDoc.querySelectorAll(".prefix__leaf");
+
+    branchLeafTargets.forEach(leafTarget => {
       const leafObj = {
         el: leafTarget,
         active: false,
         obsDebounce: null,
         pos: Math.random() * 20 - 10, // random initial rotation
         dir: Math.random() < 0.5 ? 1 : -1, // random direction
-        speed: 0.1 + Math.random() * 0.25, // random speed
-        maxAngle: 10 + Math.random() * 30 // max rotation amplitude
+        speed: 1 + Math.random() * 1.5, // random speed
+        maxAngle: 10 + Math.random() * 25 // max rotation amplitude
       };
       leaves.push(leafObj);
 
-      // Intersection Observer
+      // Intersection Observer per branch
       const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
-          const l = leaves.find(leaf => leaf.el === entry.target);
-          if (!l) return;
-
-          if (l.obsDebounce) clearTimeout(l.obsDebounce);
-          l.obsDebounce = setTimeout(() => {
-            l.active = entry.isIntersecting; // resume/pause animation
-            l.obsDebounce = null;
+          leafObj.active = entry.isIntersecting;
+          if (leafObj.obsDebounce) clearTimeout(leafObj.obsDebounce);
+          leafObj.obsDebounce = setTimeout(() => {
+            leafObj.active = entry.isIntersecting;
+            leafObj.obsDebounce = null;
+            updateActiveLeaves(); // update cached active leaves
           }, 60);
         });
       }, { root: null, rootMargin: "0px", threshold: 0.5 });
@@ -190,8 +203,53 @@ getBranches.forEach(branch => {
       try { leafTarget.style.willChange = "transform"; } catch(e){}
       try { leafTarget.style.transform = `rotate(${leafObj.pos}deg) translateZ(0)`; } catch(e){}
     });
+
+    // Initialize activeLeaves after all leaves in this branch are loaded
+    updateActiveLeaves();
   });
 });
+
+/* --- Leaf sway with throttling + batching --- */
+const batchCount = 3; // number of batches to split leaves into
+let currentBatch = 0;
+let leafThrottleCounter = 0;
+const leafThrottleRate = 2; // update every 2 frames (adjust for performance)
+
+function updateLeaves(delta) {
+  // Only update every `leafThrottleRate` frames
+  leafThrottleCounter++;
+  if (leafThrottleCounter < leafThrottleRate) return;
+  leafThrottleCounter = 0;
+
+  const activeLeaves = leaves.filter(l => l.active);
+  if (activeLeaves.length === 0) return;
+
+  // Determine batch to update
+  const batchSize = Math.ceil(activeLeaves.length / batchCount);
+  const start = currentBatch * batchSize;
+  const end = start + batchSize;
+  const batchLeaves = activeLeaves.slice(start, end);
+
+  batchLeaves.forEach(leaf => {
+    // Update position
+    leaf.pos += leaf.dir * leaf.speed * delta;
+
+    // Clamp and reverse direction
+    if (Math.abs(leaf.pos) > leaf.maxAngle) {
+      leaf.dir *= -1;
+      leaf.pos = Math.sign(leaf.pos) * leaf.maxAngle;
+    }
+
+    // Apply transform only if rotation changed significantly
+    if (Math.abs(leaf.pos - (leaf.prevPos || leaf.pos)) >= 0.1) {
+      leaf.el.style.transform = `rotate(${leaf.pos}deg) translateZ(0)`;
+      leaf.prevPos = leaf.pos;
+    }
+  });
+
+  // Move to next batch for next update
+  currentBatch = (currentBatch + 1) % batchCount;
+}
 
 
 /* --- Background overlay --- */
@@ -356,21 +414,7 @@ function tick(timestamp){
   if (getUpperBranch) getUpperBranch.style.transform = branchRotation;
   if (getLowerBranch) getLowerBranch.style.transform = branchRotation;
 
-  /* --- Leaf sway inside main tick --- */
-  leaves.forEach(leaf => {
-    if (!leaf.active) return;
-
-    leaf.pos += leaf.dir * leaf.speed * safeDelta;
-    if (Math.abs(leaf.pos) > leaf.maxAngle) {
-      leaf.dir *= -1;
-      leaf.pos = Math.sign(leaf.pos) * leaf.maxAngle;
-    }
-
-    try {
-      leaf.el.style.transform = `rotate(${leaf.pos}deg) translateZ(0)`;
-    } catch (e) {}
-  });
-
+  updateLeaves(safeDelta);
 
   /* --- Background Overlay --- */
   if (!bgrOverlayStartTime) bgrOverlayStartTime = timestamp;
