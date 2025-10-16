@@ -240,42 +240,62 @@ function initLeavesForBranch(branchWrapper) {
   const leafTargets = branchWrapper.querySelectorAll(leafSelectors.join(","));
   if (!leafTargets.length) return;
 
-  // One observer per branch
-  const observer = new IntersectionObserver(entries => {
-    let changed = false;
-    entries.forEach(entry => {
-      const leafObj = leafMap.get(entry.target);
-      if (!leafObj) return;
-      if (leafObj.obsDebounce) clearTimeout(leafObj.obsDebounce);
-      leafObj.obsDebounce = setTimeout(() => {
-        leafObj.active = entry.isIntersecting;
-        leafObj.obsDebounce = null;
-        changed = true;
-      }, 60);
-    });
-    Promise.resolve().then(() => changed && updateActiveLeaves());
-  }, { root: null, rootMargin: "0px", threshold: 0.5 });
+  // Create per-branch leaves array for local reference
+  const branchLeaves = [];
 
+  // Prepare transform style optimizations
   leafTargets.forEach(leafTarget => {
     const leafObj = {
       el: leafTarget,
-      active: false,
+      active: true, // always start active
       obsDebounce: null,
       pos: Math.random() * 6 - 3,
-      dir: Math.random()<0.5 ? 1 : -1,
-      speed: 2 + Math.random()*4,
-      maxAngle: 10 + Math.random()*35,
+      dir: Math.random() < 0.5 ? 1 : -1,
+      speed: 2 + Math.random() * 4,
+      maxAngle: 10 + Math.random() * 35,
       prevPos: null
     };
-    leafObj.active = true; // start active
+
     leaves.push(leafObj);
     leafMap.set(leafTarget, leafObj);
-    observer.observe(leafTarget);
+    branchLeaves.push(leafObj);
 
-    try { leafTarget.style.willChange = "transform"; } catch(e){}
-    try { leafTarget.style.transform = `rotate(${leafObj.pos}deg) translateZ(0)`; } catch(e){}
+    // Style optimizations
+    try {
+      leafTarget.style.willChange = "transform";
+      leafTarget.style.transformBox = "fill-box";
+      leafTarget.style.transform = `rotate(${leafObj.pos}deg) translateZ(0)`;
+    } catch (e) {}
   });
+
+  // Attach leaves to this branch for quick toggling
+  branchWrapper.leaves = branchLeaves;
+
+  // --- One observer per branch ---
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      const isVisible = entry.isIntersecting;
+
+      // Toggle visibility for all leaves in this branch
+      if (branchWrapper.leaves) {
+        branchWrapper.leaves.forEach(l => {
+          l.active = isVisible;
+        });
+      }
+    });
+
+    // Schedule async update once per frame
+    Promise.resolve().then(updateActiveLeaves);
+  }, {
+    root: null,
+    rootMargin: "100px 0px", // looser margin to prevent flicker on scroll
+    threshold: 0.1
+  });
+
+  // Observe the branch container, not individual leaves
+  observer.observe(branchWrapper);
 }
+
 
 /* Rebuild cached visible list once (not per frame) */
 function updateActiveLeaves() {

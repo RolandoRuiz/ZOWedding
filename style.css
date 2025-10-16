@@ -5,9 +5,10 @@
     font: inherit;
 }
 
-object{
-    background: transparent;
-    color-scheme: normal;
+
+
+svg{
+    contain: layout paint;
 }
 
 .spark, .prefix__leaf, .bgrMultiply, .bgrOverlayWrapper, .bgrTopOverlay,
@@ -181,6 +182,8 @@ body{
     aspect-ratio: 1/1;
     color-scheme: normal;
     object-fit: contain;
+    will-change: transform;
+    transform: translateZ(0);
 }
 
 #topBranch{
