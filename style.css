@@ -189,10 +189,7 @@ body{
     backface-visibility: hidden;
 }
 
-.bgrOverlayWrapper,
-.bgrMultiply {
-  pointer-events: none;
-}
+
 
 #topBranch{
     top: 0svh;
