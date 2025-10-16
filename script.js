@@ -192,10 +192,6 @@ let sealSparkGlowStart  = null;
 let sealSparksActive = false;
 let sealSparksStart  = null;
 
-/* Sparks (inside sparkBoxes) */
-let sparkAngles = new WeakMap();
-const sparkCache = [];
-
 /* Seal sparks (DOM, not in sparkBoxes) */
 const sealSparkData = [];
 
@@ -406,21 +402,118 @@ staggerParagraphs();
 /**********************************************************
  * SPINNING SPARKS (sparkBoxes)
  **********************************************************/
-getsparkBoxes.forEach(sparkBox=>{
-  sparkBox.addEventListener("load", ()=>{
-    const sparkBoxDoc = sparkBox.contentDocument;
-    if(!sparkBoxDoc) return;
-    const sparks = sparkBoxDoc.querySelectorAll(".spark");
-    sparks.forEach(spark=>{
-      sparkAngles.set(spark, Math.random()*maxAngle);
-      sparkCache.push(spark);
-      try{ spark.style.transformOrigin="center"; }catch(e){}
-      try{ spark.style.transformBox="fill-box"; }catch(e){}
-      try{ spark.style.willChange="transform"; }catch(e){}
-      try{ spark.style.transform=`rotate(${sparkAngles.get(spark)}deg) translateZ(0)`;}catch(e){}
-    });
+
+/* --- Spark Animation System (Optimized & Inline) --- */
+
+// SVG sources mapped to their containers
+const sparkTemplates = [
+  { src: "Assets/svg/backgroundSparksStart.svg", container: ".sparkGrpStart" },
+  { src: "Assets/svg/backgroundSparkMiddle.svg", container: ".sparkGrpMiddle" },
+  { src: "Assets/svg/backgroundSparkEnd.svg", container: ".sparkGrpEnd" }
+];
+
+const sparkBoxes = [];
+const sparkCache = [];
+const sparkBatchCount = 4;
+let sparkCurrentBatch = 0;
+let sparkFrameThrottle = 0;
+const sparkThrottleRate = 2; // update every 2 frames (for mobile perf)
+
+/* Load and mount all sparks once */
+async function loadAndMountSparks() {
+  for (const { src, container } of sparkTemplates) {
+    const target = document.querySelector(container);
+    if (!target) continue;
+
+    try {
+      const svgText = await fetch(src).then(r => r.text());
+      const parser = new DOMParser();
+      const svgDoc = parser.parseFromString(svgText, "image/svg+xml");
+      const svgEl = svgDoc.documentElement;
+
+      // Wrap SVG for style consistency
+      const wrapper = document.createElement("div");
+      wrapper.className = "sparkBox";
+      wrapper.appendChild(svgEl);
+      target.appendChild(wrapper);
+
+      initSparksForBox(wrapper);
+    } catch (err) {
+      console.warn("Failed to load spark SVG:", src, err);
+    }
+  }
+
+  observeSparkBoxes();
+}
+
+/* Initialize spark elements within each loaded SVG */
+function initSparksForBox(wrapper) {
+  const sparks = wrapper.querySelectorAll(".spark");
+  if (!sparks.length) return;
+
+  const boxData = {
+    el: wrapper,
+    sparks: [],
+    active: true
+  };
+
+  sparks.forEach(spark => {
+    const sparkObj = {
+      el: spark,
+      angle: Math.random() * 360,
+      speed: 3 + Math.random() * 4
+    };
+
+    spark.style.transformOrigin = "center";
+    spark.style.transformBox = "fill-box";
+    spark.style.willChange = "transform";
+    spark.style.transform = `rotate(${sparkObj.angle}deg) translateZ(0)`;
+
+    boxData.sparks.push(sparkObj);
+    sparkCache.push(sparkObj);
   });
-});
+
+  sparkBoxes.push(boxData);
+}
+
+/* Observe visibility per spark group */
+const sparkObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    const box = sparkBoxes.find(b => b.el === entry.target);
+    if (box) box.active = entry.isIntersecting;
+  });
+}, { root: null, rootMargin: "200px 0px", threshold: 0.05 });
+
+function observeSparkBoxes() {
+  sparkBoxes.forEach(box => sparkObserver.observe(box.el));
+}
+
+/* --- Spark rotation update (called inside tick) --- */
+function updateSparks(delta) {
+  sparkFrameThrottle++;
+  if (sparkFrameThrottle < sparkThrottleRate) return;
+  sparkFrameThrottle = 0;
+
+  const batchSize = Math.ceil(sparkCache.length / sparkBatchCount);
+  const start = sparkCurrentBatch * batchSize;
+  const end = start + batchSize;
+  const batch = sparkCache.slice(start, end);
+
+  batch.forEach(sparkObj => {
+    const parentBox = sparkBoxes.find(b => b.sparks.includes(sparkObj));
+    if (!parentBox || !parentBox.active) return;
+
+    sparkObj.angle += sparkObj.speed * delta;
+    if (sparkObj.angle > 360) sparkObj.angle -= 360;
+    sparkObj.el.style.transform = `rotate(${sparkObj.angle}deg) translateZ(0)`;
+  });
+
+  sparkCurrentBatch = (sparkCurrentBatch + 1) % sparkBatchCount;
+}
+
+/* Initialize sparks once */
+loadAndMountSparks();
+
 
 /**********************************************************
  * SEAL SPARKS (plain DOM elements)
@@ -476,6 +569,7 @@ function tick(timestamp){
 
   /* --- Leaf sway (throttled + batched) --- */
   updateLeaves(delta);
+  updateSparks(delta);
 
   /* --- Background overlay auto fade --- */
   if (!bgrOverlayStartTime) bgrOverlayStartTime = timestamp;
@@ -573,16 +667,6 @@ function tick(timestamp){
     if (getLightOverlay2) getLightOverlay2.style.opacity = 1;
   }
 
-  /* --- sparkBoxes rotation --- */
-  sparkCache.forEach(spark=>{
-    try{
-      let angle = sparkAngles.get(spark) || 0;
-      angle += angleSpeed*delta;
-      if(angle>maxAngle) angle = minAngle + (angle-maxAngle);
-      spark.style.transform = `rotate(${angle}deg) translateZ(0)`;
-      sparkAngles.set(spark, angle);
-    }catch(e){}
-  });
 
   /* --- Letter entrance + pulse --- */
   let pulseBaselineScale = null;
