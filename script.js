@@ -179,7 +179,7 @@ getBranches.forEach(branch => {
         obsDebounce: null,
         pos: Math.random() * 20 - 10, // random initial rotation
         dir: Math.random() < 0.5 ? 1 : -1, // random direction
-        speed: 1 + Math.random() * 1.5, // random speed
+        speed: 1 + Math.random() * 1.2, // random speed
         maxAngle: 10 + Math.random() * 25 // max rotation amplitude
       };
       leaves.push(leafObj);
