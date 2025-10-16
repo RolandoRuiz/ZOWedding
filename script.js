@@ -140,7 +140,7 @@ let branchPosition = 15;
 let branchDirection = 1;
 const branchMin = 0;
 const branchMax = 30;
-const branchSpeed = 0.2;
+const branchSpeed = 0.15;
 
 let branchLastTime = null;
 
@@ -177,10 +177,10 @@ getBranches.forEach(branch => {
         el: leafTarget,
         active: false,
         obsDebounce: null,
-        pos: Math.random() * 20 - 10, // random initial rotation
+        pos: Math.random() * 10 - 10, // random initial rotation
         dir: Math.random() < 0.5 ? 1 : -1, // random direction
-        speed: 0.8 + Math.random() * 1, // random speed
-        maxAngle: 10 + Math.random() * 25 // max rotation amplitude
+        speed: 2.5 + Math.random() * 3, // random speed
+        maxAngle: 10 + Math.random() * 45 // max rotation amplitude
       };
       leaves.push(leafObj);
 
@@ -210,10 +210,10 @@ getBranches.forEach(branch => {
 });
 
 /* --- Leaf sway with throttling + batching --- */
-const batchCount = 3; // number of batches to split leaves into
+const batchCount = 6; // number of batches to split leaves into
 let currentBatch = 0;
 let leafThrottleCounter = 0;
-const leafThrottleRate = 2; // update every 2 frames (adjust for performance)
+const leafThrottleRate = 3; // update every 2 frames (adjust for performance)
 
 function updateLeaves(delta) {
   // Only update every `leafThrottleRate` frames
