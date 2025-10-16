@@ -1,287 +1,325 @@
-const letterlidShadow = document.querySelector(".letterLidShadow");
-const archShadow = document.querySelector(".bgrArchShadow");
+/**********************************************************
+ * DOM REFERENCES
+ **********************************************************/
+const letterlidShadow   = document.querySelector(".letterLidShadow");
+const archShadow        = document.querySelector(".bgrArchShadow");
 
-const letterBody = document.querySelector(".letterBody");
-const letterComponents = document.querySelector(".letterComponents");
-const letterLidBox = document.querySelector(".letterLidBox");
+const letterBody        = document.querySelector(".letterBody");
+const letterComponents  = document.querySelector(".letterComponents");
+const letterLidBox      = document.querySelector(".letterLidBox");
 
+const letterCard        = document.querySelector(".letterCard");
+const letterCardGlow    = document.querySelector(".letterCardGlow");
+const letterLid         = document.querySelector(".letterLid");
 
-/* --- Light Overlay Fade Control --- */
-let lightFadeActive = false;
-let lightFadeStartTime = null;
-const lightFadeDuration = 1000; // ms to fade out
-
-/* --- Letter Card Glow --- */
-const letterCardGlow = document.querySelector(".letterCardGlow");
-let letterCardGlowActive = false;
-let letterCardGlowStart = null;
-
-// Independent Glow Timing (ms)
-const glowIndependentDelay = 2700;       // independent delay before glow starts
-const glowInDuration = 2000;          // scale 0 → 25
-const glowOutDuration = 1500;         // scale 25 → 0
-
-// Glow scale values
-const glowScaleMin = 0;
-const glowScaleMax = 25;
-
-/* --- Letter Card Animation --- */
-const letterCard = document.querySelector(".letterCard");
-let letterCardActive = false;
-let letterCardStart = null;
-
-/* --- Letter Card Z-index Timing --- */
-const cardZindexInitial = 700;
-const cardZindexFinal = 900;
-const cardZindexDelay = 2700;   // ms after letterCard starts (independent)
-let letterCardZindexChanged = false;
-
-// --- Timing (milliseconds) ---
-const cardDelay = 1550;            // wait before starting the first move
-const cardStage1Duration = 400;    // 0 → -3
-const cardStage2Duration = 400;    // -3 → 0
-const cardStage3Duration = 800;    // 0 → -35
-const cardStage4Duration = 3400;
-
-// --- Positions (use % or px) ---
-const cardPosStart = 0;
-const cardPosMid1 = -3;
-const cardPosMid2 = 0;
-const cardPosMid3 = -35;
-const cardPosEnd = 46;
-
-/* --- Letter Lid Animation --- */
-const letterLid = document.querySelector(".letterLid");
-let lidActive = false;
-let lidStart = null;
-
-// Customizable timings
-const lidDelay = 800;          // ms before rotation starts (after click)
-const lidDuration = 1500;      // rotation animation duration
-const lidZindexDelay = 1500;   // ms after click to change z-index
-const lidStartRot = 0;
-const lidEndRot = 180;
-
-
-const sealSparks = document.querySelectorAll(".sealSpark");
-let sealSparksActive = false;
-let sealSparksStart = null;
-
-const sealSparkData = [];
-
-// Store each spark’s original transform
-sealSparks.forEach(spark => {
-  const computed = getComputedStyle(spark);
-  const matrix = computed.transform;
-  let translateX = 0, translateY = 0, rotate = 0;
-
-  if (matrix && matrix !== "none") {
-    const match = matrix.match(/matrix\(([^)]+)\)/);
-    if (match) {
-      const values = match[1].split(",").map(v => parseFloat(v.trim()));
-      // Approx extract (for simple 2D transform)
-      const a = values[0], b = values[1], c = values[2], d = values[3], e = values[4], f = values[5];
-      translateX = e;
-      translateY = f;
-      rotate = Math.atan2(b, a) * (180 / Math.PI);
-    }
-  }
-
-  // Save initial info
-  sealSparkData.push({
-    el: spark,
-    tx: translateX,
-    ty: translateY,
-    rot: rotate,
-    startTime: null,
-    opacity: 0,
-  });
-
-  // Reset to starting hidden position
-  spark.style.opacity = 0;
-  spark.style.transform = "translate(0px, 0px) rotate(0deg)";
-  spark.style.willChange = "opacity, transform";
-});
-
-const sealSparkGlow = document.querySelector(".sealSparkBgrGlow");
-let sealSparkGlowFadeActive = false;
-let sealSparkGlowStart = null;
-
-const closeSeal = document.querySelector(".sealBody");
-let sealFadeActive = false;
-let sealFadeStart = null;
-
+const closeSeal         = document.querySelector(".sealBody");
 const closeLetterBranch = document.querySelector(".letterBranchBox");
-let sealBranchFadeActive = false;
-let sealBranchStart = null;
+const sealSparks        = document.querySelectorAll(".sealSpark");
+const sealSparkGlow     = document.querySelector(".sealSparkBgrGlow");
 
-const sealDuration = 800; // ms
-/* --- Seal timing offsets (ms) --- */
-const sealSparkGlowOffset = 200;   // delay before glow starts
-const sealSparksOffset = 200;      // delay before sparks start
+const backgroundOverlay = document.querySelector(".bgrMultiply");
+const getLightOverlay   = document.querySelector(".bgrOverlayWrapper");
+const getLightOverlay2  = document.querySelector(".bgrTopOverlay");
 
+const openLetter        = document.querySelector(".letterWrapper");
+const getLetter         = document.querySelector(".letterBox");
+const getLetterGlow     = document.querySelector(".letterGlow");
 
-/* --- Cancel Pulse / Click to Freeze --- */
-const openLetter = document.querySelector(".letterWrapper");
+const getsparkBoxes     = document.querySelectorAll(".sparkBox");
+const getInitialParagraphs = document.querySelectorAll(".initialParagraph");
+const getParagraphLines    = document.querySelectorAll(".paragraphLine");
+const getParagraphGlows    = document.querySelectorAll(".paragraphGlow");
 
-/* --- Freeze control for Letter --- */
-let cancelLetterPulse = false;
-let frozenLetterScale = null;
-let frozenGlowScale = null;
-let glowFade = false;
-let glowOpacity = 1; // initial opacity
-let currentLetterScale = 1;
+const indexBranchTwo    = document.querySelector(".branchTwo");
 
-/* --- Branch animation --- */
-const getUpperBranch = document.querySelector("#topBranch");
-const getLowerBranch = document.querySelector("#bottomBranch");
+/* Containers to mount cloned SVG branches */
+const TOP_BRANCH_CONTAINER    = ".topBranchContainer";
+const BOTTOM_BRANCH_CONTAINER = ".bottomBranchContainer";
 
-let branchPosition = 15;
-let branchDirection = 1;
+/**********************************************************
+ * CONFIGURATION
+ **********************************************************/
+const svgTemplates = [
+  { src: "Assets/svg/topBranchGraphicNew.min.svg",    container: TOP_BRANCH_CONTAINER,    assignId: "topBranch" },
+  { src: "Assets/svg/bottomBranchGraphicNew.min.svg", container: BOTTOM_BRANCH_CONTAINER, assignId: "bottomBranch" }
+];
+
+/* Leaf selectors inside your SVGs */
+const leafSelectors = [".prefix__leaf"];
+
+/* Branch rotation (sway) */
 const branchMin = 0;
 const branchMax = 30;
 const branchSpeed = 0.15;
 
+/* Leaf animation (throttled + batched) */
+const leafBatchCount   = 4;   // split visible leaves into this many batches
+const leafThrottleRate = 3;   // update leaves every N frames
+
+/* Letter Card Glow timings */
+const glowIndependentDelay = 2700;
+const glowInDuration  = 2000;
+const glowOutDuration = 1500;
+const glowScaleMin = 0;
+const glowScaleMax = 25;
+
+/* Letter Card translate timings */
+const cardDelay           = 1550;
+const cardStage1Duration  = 400;
+const cardStage2Duration  = 400;
+const cardStage3Duration  = 800;
+const cardStage4Duration  = 3400;
+
+const cardPosStart = 0;
+const cardPosMid1  = -3;
+const cardPosMid2  = 0;
+const cardPosMid3  = -35;
+const cardPosEnd   = 46;
+
+const cardZindexInitial = 700;
+const cardZindexFinal   = 900;
+const cardZindexDelay   = 2700;
+
+/* Letter Lid rotation */
+const lidDelay      = 800;
+const lidDuration   = 1500;
+const lidZindexDelay= 1500;
+const lidStartRot   = 0;
+const lidEndRot     = 180;
+
+/* Seal timings */
+const sealDuration        = 800;
+const sealSparkGlowOffset = 200;
+const sealSparksOffset    = 200;
+
+/* Background overlay */
+const overlayDelay      = 2000;
+const overlayDuration   = 1500;
+const overlayOpacityMax = 1;
+const overlayOpacityMin = 0.92;
+
+const bgrFadeDuration = 1000;
+const bgrFadeDelay    = 4000;
+
+/* Light overlay pulse/fade */
+const delayLightOverlay = 2000;
+const lightStartScale   = 0.001;
+const lightMaxScale     = 1.1;
+const lightMinPulse     = 1.0;
+
+/* Letter entrance/pulse */
+const startY         = 8;
+const startRotation  = -270;
+const startScale     = 0.1;
+const letterPosition = -140;
+const letterRotation = 0;
+const letterScale    = 1;
+const letterDuration = 2500;
+const pulseMaxScale  = 1.1;
+const pulseDuration  = 4000;
+const letterGlowMin  = 0.7;
+const letterGlowMax  = 1;
+const startDelay     = 25000;
+
+/* Spinning sparks (inside sparkBoxes) */
+const minAngle   = 0;
+const maxAngle   = 360;
+const angleSpeed = 1;
+
+/**********************************************************
+ * STATE
+ **********************************************************/
+let lastTimestamp = null;
+
+/* Branch sway state */
+let branchPosition = 15;
+let branchDirection = 1;
 let branchLastTime = null;
 
-/* --- Leaf animation --- */
-const leafSpeed = 0.35;
-const getBranches = document.querySelectorAll(".branch");
-const leaves = [];
-
-let leafFrameCounter = 0;
-const leafFrameThrottle = 3; // update every 3 frames
-
-const indexBranchTwo = document.querySelector(".branchTwo");
-
-// Maintain a cached array of active leaves for optimized updates
+/* Leaves state */
+let leaves = [];
 let activeLeaves = [];
-
-// IntersectionObserver callback should call this whenever leaf.active changes
-function updateActiveLeaves() {
-  activeLeaves = leaves.filter(l => l.active);
-  // Initialize previous position for threshold checking
-  activeLeaves.forEach(l => l.prevPos = l.pos);
-}
-
-// --- Leaf initialization (inside your existing branch load code)
-getBranches.forEach(branch => {
-  branch.addEventListener("load", () => {
-    const branchDoc = branch.contentDocument;
-    if (!branchDoc) return;
-
-    const branchLeafTargets = branchDoc.querySelectorAll(".prefix__leaf");
-
-    branchLeafTargets.forEach(leafTarget => {
-      const leafObj = {
-        el: leafTarget,
-        active: false,
-        obsDebounce: null,
-        pos: Math.random() * 10 - 10, // random initial rotation
-        dir: Math.random() < 0.5 ? 1 : -1, // random direction
-        speed: 2.5 + Math.random() * 3, // random speed
-        maxAngle: 10 + Math.random() * 45 // max rotation amplitude
-      };
-      leaves.push(leafObj);
-
-      // Intersection Observer per branch
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          leafObj.active = entry.isIntersecting;
-          if (leafObj.obsDebounce) clearTimeout(leafObj.obsDebounce);
-          leafObj.obsDebounce = setTimeout(() => {
-            leafObj.active = entry.isIntersecting;
-            leafObj.obsDebounce = null;
-            updateActiveLeaves(); // update cached active leaves
-          }, 60);
-        });
-      }, { root: null, rootMargin: "0px", threshold: 0.5 });
-
-      observer.observe(leafTarget);
-
-      // Initial transform
-      try { leafTarget.style.willChange = "transform"; } catch(e){}
-      try { leafTarget.style.transform = `rotate(${leafObj.pos}deg) translateZ(0)`; } catch(e){}
-    });
-
-    // Initialize activeLeaves after all leaves in this branch are loaded
-    updateActiveLeaves();
-  });
-});
-
-/* --- Leaf sway with throttling + batching --- */
-const batchCount = 6; // number of batches to split leaves into
+const leafMap = new WeakMap(); // element -> leaf
 let currentBatch = 0;
 let leafThrottleCounter = 0;
-const leafThrottleRate = 3; // update every 2 frames (adjust for performance)
 
+/* Light overlay */
+let lightFadeActive = false;
+let lightFadeStartTime = null;
+let lightOverlayStartTime = null;
+let lightScale = lightStartScale;
+let lightPhase = "grow";
+let lightDirection = -1;
+let lightOverlayFrozen = false;
+let frozenLightScale = lightStartScale;
+
+/* Background overlay fade */
+let bgrOverlayStartTime;
+let bgrFadeActive = false;
+let bgrFadeStart  = null;
+let bgrFadeComplete = false;
+
+/* Letter card / glow */
+let letterCardActive = false;
+let letterCardStart  = null;
+let letterCardZindexChanged = false;
+
+let letterCardGlowActive = false;
+let letterCardGlowStart  = null;
+
+/* Lid */
+let lidActive = false;
+let lidStart  = null;
+
+/* Letter pulse freeze */
+let cancelLetterPulse = false;
+let frozenLetterScale = null;
+let frozenGlowScale   = null;
+let glowFade = false;
+let glowOpacity = 1;
+let currentLetterScale = 1;
+
+/* Seal fades */
+let sealFadeActive = false;
+let sealFadeStart  = null;
+
+let sealBranchFadeActive = false;
+let sealBranchStart  = null;
+
+let sealSparkGlowFadeActive = false;
+let sealSparkGlowStart  = null;
+
+let sealSparksActive = false;
+let sealSparksStart  = null;
+
+/* Sparks (inside sparkBoxes) */
+let sparkAngles = new WeakMap();
+const sparkCache = [];
+
+/* Seal sparks (DOM, not in sparkBoxes) */
+const sealSparkData = [];
+
+/**********************************************************
+ * UTILITIES
+ **********************************************************/
+function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
+
+/**********************************************************
+ * SVG CLONING (TOP & BOTTOM BRANCHES)
+ **********************************************************/
+async function loadAndMountBranches() {
+  for (const { src, container, assignId } of svgTemplates) {
+    const target = document.querySelector(container);
+    if (!target) continue;
+
+    try {
+      const svgText = await fetch(src).then(r => r.text());
+      const parser  = new DOMParser();
+      const svgDoc  = parser.parseFromString(svgText, "image/svg+xml");
+      const svgEl   = svgDoc.documentElement;
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "branch";
+      if (assignId) wrapper.id = assignId;
+
+      wrapper.appendChild(svgEl);
+      target.appendChild(wrapper);
+
+      // Ensure SVG is in DOM before initializing leaves
+      await new Promise(r => setTimeout(r, 0));
+      initLeavesForBranch(wrapper);
+    } catch(e) {}
+  }
+
+  updateActiveLeaves();
+}
+
+
+/* Initialize leaves in a single mounted branch wrapper */
+function initLeavesForBranch(branchWrapper) {
+  const leafTargets = branchWrapper.querySelectorAll(leafSelectors.join(","));
+  if (!leafTargets.length) return;
+
+  // One observer per branch
+  const observer = new IntersectionObserver(entries => {
+    let changed = false;
+    entries.forEach(entry => {
+      const leafObj = leafMap.get(entry.target);
+      if (!leafObj) return;
+      if (leafObj.obsDebounce) clearTimeout(leafObj.obsDebounce);
+      leafObj.obsDebounce = setTimeout(() => {
+        leafObj.active = entry.isIntersecting;
+        leafObj.obsDebounce = null;
+        changed = true;
+      }, 60);
+    });
+    Promise.resolve().then(() => changed && updateActiveLeaves());
+  }, { root: null, rootMargin: "0px", threshold: 0.5 });
+
+  leafTargets.forEach(leafTarget => {
+    const leafObj = {
+      el: leafTarget,
+      active: false,
+      obsDebounce: null,
+      pos: Math.random() * 6 - 3,
+      dir: Math.random()<0.5 ? 1 : -1,
+      speed: 2 + Math.random()*4,
+      maxAngle: 10 + Math.random()*35,
+      prevPos: null
+    };
+    leafObj.active = true; // start active
+    leaves.push(leafObj);
+    leafMap.set(leafTarget, leafObj);
+    observer.observe(leafTarget);
+
+    try { leafTarget.style.willChange = "transform"; } catch(e){}
+    try { leafTarget.style.transform = `rotate(${leafObj.pos}deg) translateZ(0)`; } catch(e){}
+  });
+}
+
+/* Rebuild cached visible list once (not per frame) */
+function updateActiveLeaves() {
+  activeLeaves = leaves.filter(l => l.active);
+  activeLeaves.forEach(l => (l.prevPos = l.pos));
+}
+
+/**********************************************************
+ * LEAF SWAY (THROTTLED + BATCHED)
+ **********************************************************/
 function updateLeaves(delta) {
-  // Only update every `leafThrottleRate` frames
   leafThrottleCounter++;
   if (leafThrottleCounter < leafThrottleRate) return;
   leafThrottleCounter = 0;
 
-  const activeLeaves = leaves.filter(l => l.active);
-  if (activeLeaves.length === 0) return;
+  if (!activeLeaves.length) return;
 
-  // Determine batch to update
-  const batchSize = Math.ceil(activeLeaves.length / batchCount);
+  const batchSize = Math.ceil(activeLeaves.length / leafBatchCount);
   const start = currentBatch * batchSize;
-  const end = start + batchSize;
+  const end   = start + batchSize;
   const batchLeaves = activeLeaves.slice(start, end);
 
-  batchLeaves.forEach(leaf => {
-    // Update position
+  for (let i = 0; i < batchLeaves.length; i++) {
+    const leaf = batchLeaves[i];
+
     leaf.pos += leaf.dir * leaf.speed * delta;
 
-    // Clamp and reverse direction
     if (Math.abs(leaf.pos) > leaf.maxAngle) {
       leaf.dir *= -1;
       leaf.pos = Math.sign(leaf.pos) * leaf.maxAngle;
     }
 
-    // Apply transform only if rotation changed significantly
-    if (Math.abs(leaf.pos - (leaf.prevPos || leaf.pos)) >= 0.1) {
+    if (Math.abs(leaf.pos - (leaf.prevPos ?? leaf.pos)) >= 0.1) {
       leaf.el.style.transform = `rotate(${leaf.pos}deg) translateZ(0)`;
       leaf.prevPos = leaf.pos;
     }
-  });
+  }
 
-  // Move to next batch for next update
-  currentBatch = (currentBatch + 1) % batchCount;
+  currentBatch = (currentBatch + 1) % leafBatchCount;
 }
 
-
-/* --- Background overlay --- */
-const backgroundOverlay = document.querySelector(".bgrMultiply");
-let bgrOverlayStartTime;
-const overlayDelay = 2000;
-const overlayDuration = 1500;
-const overlayOpacityMax = 1;
-const overlayOpacityMin = 0.92;
-
-let bgrFadeActive = false;    // flag to start click fade
-let bgrFadeStart = null; 
-const bgrFadeDuration = 1000;
-const bgrFadeDelay = 4000; // or whatever you prefer
-
-/* --- Light overlay --- */
-const getLightOverlay = document.querySelector(".bgrOverlayWrapper");
-const getLightOverlay2 = document.querySelector(".bgrTopOverlay");
-let lightOverlayStartTime;
-const delayLightOverlay = 2000;
-const lightStartScale = 0.001;
-const lightMaxScale = 1.1;
-const lightMinPulse = 1.0;
-let lightScale = lightStartScale;
-let lightPhase = "grow";
-let lightDirection = -1;
-
-/* --- Paragraph animation --- */
-const getInitialParagraphs = document.querySelectorAll(".initialParagraph");
-const getParagraphLines = document.querySelectorAll(".paragraphLine");
-const getParagraphGlows = document.querySelectorAll(".paragraphGlow");
-
+/**********************************************************
+ * PARAGRAPH MASKS
+ **********************************************************/
 getParagraphLines.forEach(l => {
   try { l.style.willChange = "mask-position,-webkit-mask-position"; l.style.setProperty('--mask-x','100%'); } catch(e){}
 });
@@ -291,10 +329,10 @@ getParagraphGlows.forEach(l => {
 
 function animateMask(line, start, end, duration){
   let startTime = null;
-  function step(timestamp){
-    if(!startTime) startTime = timestamp;
-    const elapsed = timestamp - startTime;
-    let progress = Math.min(elapsed / duration, 1);
+  function step(ts){
+    if(!startTime) startTime = ts;
+    const elapsed = ts - startTime;
+    const progress = Math.min(elapsed / duration, 1);
     const posX = start + (end - start) * progress;
     line.style.setProperty('--mask-x', `${posX}%`);
     if(progress < 1) requestAnimationFrame(step);
@@ -324,9 +362,9 @@ function animateParagraph(paragraph){
 function staggerParagraphs(){
   const delay = 4000;
   let startTime = null;
-  function step(timestamp){
-    if(!startTime) startTime = timestamp;
-    const elapsed = timestamp - startTime;
+  function step(ts){
+    if(!startTime) startTime = ts;
+    const elapsed = ts - startTime;
     getInitialParagraphs.forEach((paragraph,i)=>{
       if(!paragraph.started && elapsed >= (i+1)*delay){
         paragraph.started = true;
@@ -339,14 +377,9 @@ function staggerParagraphs(){
 }
 staggerParagraphs();
 
-/* --- Sparks --- */
-const getsparkBoxes = document.querySelectorAll(".sparkBox");
-const minAngle = 0;
-const maxAngle = 360;
-const angleSpeed = 1;
-let sparkAngles = new WeakMap();
-const sparkCache = [];
-
+/**********************************************************
+ * SPINNING SPARKS (sparkBoxes)
+ **********************************************************/
 getsparkBoxes.forEach(sparkBox=>{
   sparkBox.addEventListener("load", ()=>{
     const sparkBoxDoc = sparkBox.contentDocument;
@@ -363,67 +396,65 @@ getsparkBoxes.forEach(sparkBox=>{
   });
 });
 
-/* --- Letter --- */
-const getLetter = document.querySelector(".letterBox");
-const getLetterGlow = document.querySelector(".letterGlow");
-const startY = 8;
-const startRotation = -270;
-const startScale = 0.1;
-const letterPosition = -140;
-const letterRotation = 0;
-const letterScale = 1;
-const letterDuration = 2500;
-const pulseMaxScale = 1.1; // the only parameter you adjust
-const pulseDuration = 4000; // how fast the pulse cycles
-const letterGlowMin = 0.7;
-const letterGlowMax = 1;
-const letterGlowDuration = 5000;
-const startDelay = 25000;
+/**********************************************************
+ * SEAL SPARKS (plain DOM elements)
+ **********************************************************/
+sealSparks.forEach(spark => {
+  const computed = getComputedStyle(spark);
+  const matrix = computed.transform;
+  let tx = 0, ty = 0, rot = 0;
+  if (matrix && matrix !== "none") {
+    const match = matrix.match(/matrix\(([^)]+)\)/);
+    if (match) {
+      const values = match[1].split(",").map(v => parseFloat(v.trim()));
+      const a = values[0], b = values[1], e = values[4], f = values[5];
+      tx = e; ty = f; rot = Math.atan2(b, a) * (180 / Math.PI);
+    }
+  }
+  sealSparkData.push({ el: spark, tx, ty, rot, startTime: null, opacity: 0 });
+  spark.style.opacity = 0;
+  spark.style.transform = "translate(0px,0px) rotate(0deg)";
+  spark.style.willChange = "opacity, transform";
+});
 
-/* --- MAIN RAF LOOP --- */
-let lastTimestamp = null;
+/**********************************************************
+ * LETTER / LIGHT / OVERLAY / CARD / LID HELPERS
+ **********************************************************/
+function alwaysApplyLightScale(){
+  if (getLightOverlay)  getLightOverlay.style.transform  = `scale(${lightScale}) translateZ(0)`;
+  if (getLightOverlay2) getLightOverlay2.style.transform = `scale(${lightScale}) translateZ(0)`;
+}
 
+/**********************************************************
+ * MAIN RAF LOOP
+ **********************************************************/
 function tick(timestamp){
   if(!lastTimestamp) lastTimestamp = timestamp;
-    const delta = (timestamp - lastTimestamp) / 16.666;
-    lastTimestamp = timestamp;
+  const delta = Math.min((timestamp - lastTimestamp) / 16.666, 5);
+  lastTimestamp = timestamp;
 
-    // Clamp delta to avoid huge jumps after tab inactivity
-    const safeDelta = Math.min(delta, 5);
-
-  if (!branchLastTime) branchLastTime = timestamp;
-
-  // Independent delta for branches
-  let branchDelta = (timestamp - branchLastTime) / 16.666; // normalize to 60fps
+  /* --- Branch sway --- */
+  if(!branchLastTime) branchLastTime = timestamp;
+  let branchDelta = Math.min((timestamp - branchLastTime) / 16.666, 5);
   branchLastTime = timestamp;
 
-  // Clamp large delta jumps (e.g., tab inactive)
-  if (branchDelta > 5) branchDelta = 1;
-
   branchPosition += branchDirection * branchSpeed * branchDelta;
-
-  if (branchPosition >= branchMax) {
-    branchPosition = branchMax;
-    branchDirection = -1;
-  } else if (branchPosition <= branchMin) {
-    branchPosition = branchMin;
-    branchDirection = 1;
-  }
+  if (branchPosition >= branchMax) { branchPosition = branchMax; branchDirection = -1; }
+  else if (branchPosition <= branchMin) { branchPosition = branchMin; branchDirection = 1; }
 
   const branchRotation = `rotate(${branchPosition / 10}deg)`;
+  const getUpperBranch = document.querySelector("#topBranch");
+  const getLowerBranch = document.querySelector("#bottomBranch");
   if (getUpperBranch) getUpperBranch.style.transform = branchRotation;
   if (getLowerBranch) getLowerBranch.style.transform = branchRotation;
 
-  updateLeaves(safeDelta);
+  /* --- Leaf sway (throttled + batched) --- */
+  updateLeaves(delta);
 
-  /* --- Background Overlay --- */
+  /* --- Background overlay auto fade --- */
   if (!bgrOverlayStartTime) bgrOverlayStartTime = timestamp;
-  let overlayElapsed = timestamp - bgrOverlayStartTime;
+  const overlayElapsed = timestamp - bgrOverlayStartTime;
 
-  // Ensure fade control flags exist
-  if (typeof bgrFadeComplete === "undefined") bgrFadeComplete = false;
-
-  // Normal background animation (if any)
   if (!bgrFadeActive && !bgrFadeComplete) {
     if (overlayElapsed >= overlayDelay) {
       const fadeElapsed = overlayElapsed - overlayDelay;
@@ -433,7 +464,7 @@ function tick(timestamp){
     }
   }
 
-  // Manual fade-out on click (independent delay)
+  /* --- Background overlay manual fade --- */
   if (bgrFadeActive && backgroundOverlay && !bgrFadeComplete) {
     if (!bgrFadeStart) bgrFadeStart = timestamp;
 
@@ -445,10 +476,7 @@ function tick(timestamp){
       fadeProgress = Math.min(fadeElapsed / bgrFadeDuration, 1);
     }
 
-    // Smooth ease
-    const eased = 1 - Math.pow(1 - fadeProgress, 3);
-
-    // Fade opacity from current to 0
+    const eased = easeOutCubic(fadeProgress);
     const startOpacity = overlayOpacityMin;
     const currentOpacity = startOpacity * (1 - eased);
     backgroundOverlay.style.opacity = Math.max(currentOpacity, 0);
@@ -460,85 +488,66 @@ function tick(timestamp){
     }
   }
 
-  /* --- Light Overlay --- */
+  /* --- Light overlay pulse/fade --- */
   if (!lightOverlayStartTime) lightOverlayStartTime = timestamp;
   const elapsedLight = timestamp - lightOverlayStartTime;
 
-  // Initialize flags
-  if (typeof lightOverlayFrozen === "undefined") lightOverlayFrozen = false;
-  if (typeof frozenLightScale === "undefined") frozenLightScale = lightStartScale;
-
-  // Animate scale normally until fade starts
   if (!lightFadeActive && !lightOverlayFrozen) {
     if (elapsedLight < delayLightOverlay) {
       lightScale = lightStartScale;
     } else {
       if (lightPhase === "grow") {
-        lightScale += 0.012 * safeDelta;
+        lightScale += 0.012 * delta;
         if (lightScale >= lightMaxScale) {
           lightScale = lightMaxScale;
           lightPhase = "pulse";
         }
       } else if (lightPhase === "pulse") {
-        lightScale += lightDirection * 0.001 * safeDelta;
+        lightScale += lightDirection * 0.001 * delta;
         if (lightScale >= lightMaxScale) lightDirection = -1;
         if (lightScale <= lightMinPulse) lightDirection = 1;
       }
     }
-  } 
-  else if (lightFadeActive) {
-  // Freeze scale once fade starts
-  if (!lightOverlayFrozen) {
-    frozenLightScale = lightScale;
-    lightOverlayFrozen = true;
+  } else if (lightFadeActive) {
+    if (!lightOverlayFrozen) {
+      frozenLightScale = lightScale;
+      lightOverlayFrozen = true;
+    }
+    lightScale = frozenLightScale;
+
+    if (!lightFadeStartTime) lightFadeStartTime = timestamp;
+    const fadeElapsedTotal = timestamp - lightFadeStartTime;
+
+    let fadeProgress = 0;
+    if (fadeElapsedTotal >= bgrFadeDelay) {
+      const fadeElapsed = fadeElapsedTotal - bgrFadeDelay;
+      fadeProgress = Math.min(fadeElapsed / bgrFadeDuration, 1);
+    }
+
+    const eased = easeOutCubic(fadeProgress);
+    const opacityVal = 1 - eased;
+    if (getLightOverlay)  getLightOverlay.style.opacity  = opacityVal;
+    if (getLightOverlay2) getLightOverlay2.style.opacity = opacityVal;
+
+    if (archShadow) {
+      const current = parseFloat(getComputedStyle(archShadow).opacity) || 1;
+      const target = 0.2;
+      const archOpacity = current + (target - current) * eased;
+      archShadow.style.opacity = archOpacity;
+    }
+
+    if (fadeProgress >= 1) {
+      lightFadeActive = false;
+    }
   }
-  lightScale = frozenLightScale;
 
-  if (!lightFadeStartTime) lightFadeStartTime = timestamp;
-  const fadeElapsedTotal = timestamp - lightFadeStartTime;
-
-  let fadeProgress = 0;
-  if (fadeElapsedTotal >= bgrFadeDelay) {
-    const fadeElapsed = fadeElapsedTotal - bgrFadeDelay;
-    fadeProgress = Math.min(fadeElapsed / bgrFadeDuration, 1);
-  }
-
-  // Smooth ease-out curve
-  const eased = 1 - Math.pow(1 - fadeProgress, 3);
-
-  // --- Light Overlays opacity (1 → 0) ---
-  const opacityVal = 1 - eased;
-  if (getLightOverlay) getLightOverlay.style.opacity = opacityVal;
-  if (getLightOverlay2) getLightOverlay2.style.opacity = opacityVal;
-
-  // --- Arch Shadow opacity (current → 0.4) ---
-  if (archShadow) {
-    const current = parseFloat(getComputedStyle(archShadow).opacity) || 1;
-    const target = 0.2;
-    const archOpacity = current + (target - current) * eased;
-    archShadow.style.opacity = archOpacity;
-  }
-
-  // --- End of fade ---
-  if (fadeProgress >= 1) {
-    lightFadeActive = false;
-  }
-}
-
-
-  // Always apply scale
-  if (getLightOverlay) getLightOverlay.style.transform = `scale(${lightScale}) translateZ(0)`;
-  if (getLightOverlay2) getLightOverlay2.style.transform = `scale(${lightScale}) translateZ(0)`;
-
-  // Keep opacity 1 until fading
+  alwaysApplyLightScale();
   if (!lightFadeActive && !lightOverlayFrozen) {
-    if (getLightOverlay) getLightOverlay.style.opacity = 1;
+    if (getLightOverlay)  getLightOverlay.style.opacity  = 1;
     if (getLightOverlay2) getLightOverlay2.style.opacity = 1;
   }
 
-
-
-  /* Sparks */
+  /* --- sparkBoxes rotation --- */
   sparkCache.forEach(spark=>{
     try{
       let angle = sparkAngles.get(spark) || 0;
@@ -549,55 +558,46 @@ function tick(timestamp){
     }catch(e){}
   });
 
-  /* --- Letter --- */
-  let pulseBaselineScale = null; // stores the last scale of the entrance
-
+  /* --- Letter entrance + pulse --- */
+  let pulseBaselineScale = null;
   if(getLetter){
     let elapsedLetter = timestamp;
 
     if(elapsedLetter >= startDelay){
       const animTime = elapsedLetter - startDelay;
 
-      // --- Determine entrance progress ---
       const entranceProgress = Math.min(animTime / letterDuration, 1);
-      const easedProgress = 1 - Math.pow(1 - entranceProgress, 3); // cubic easing
+      const easedProgress = easeOutCubic(entranceProgress);
 
       const finalY = startY + (letterPosition - startY) * easedProgress;
       const finalRotation = startRotation + (letterRotation - startRotation) * easedProgress;
 
-      // --- Entrance phase ---
       if(entranceProgress < 1){
         const currentScale = startScale + (letterScale - startScale) * easedProgress;
         getLetter.style.transform = `translateY(${finalY}%) rotateY(${finalRotation}deg) scale(${currentScale})`;
         currentLetterScale = currentScale;
       } else {
-        // --- Capture baseline for pulse once ---
         if(pulseBaselineScale === null){
-          pulseBaselineScale = startScale + (letterScale - startScale) * 1; // exact final entrance scale
+          pulseBaselineScale = startScale + (letterScale - startScale) * 1;
         }
 
         if(!cancelLetterPulse){
-          // --- Pulse phase with sine shift to avoid jump ---
           const pulseElapsed = animTime - letterDuration;
           const t = pulseElapsed / pulseDuration * Math.PI * 2;
-
-          // Shift sine by -90° so it starts at 0 (baseline)
           const sine = Math.sin(t - Math.PI / 2);
-          const pulseProgress = (sine + 1) / 2; // map -1..1 → 0..1
+          const pulseProgress = (sine + 1) / 2;
 
           const pulseScale = pulseBaselineScale + (pulseMaxScale - pulseBaselineScale) * pulseProgress;
 
           getLetter.style.transform = `translateY(${finalY}%) rotateY(${finalRotation}deg) scale(${pulseScale})`;
           currentLetterScale = pulseScale;
 
-          // --- Glow synchronized ---
           if(getLetterGlow && !glowFade){
             const glowScale = letterGlowMin + ((pulseScale - pulseBaselineScale) / (pulseMaxScale - pulseBaselineScale)) * (letterGlowMax - letterGlowMin);
             getLetterGlow.style.transform = `scale(${glowScale})`;
             getLetterGlow.style.opacity = "1";
           }
         } else {
-          // --- Freeze letter and fade glow ---
           getLetter.style.transform = `translateY(${finalY}%) rotateY(${finalRotation}deg) scale(${frozenLetterScale})`;
           if(getLetterGlow && glowFade){
             glowOpacity -= 0.02 * delta;
@@ -609,25 +609,17 @@ function tick(timestamp){
       }
     }
   }
-  
 
-  /* --- Seal fade integrated into main loop --- */
+  /* --- Seal fade --- */
   if (sealFadeActive && closeSeal) {
     if (!sealFadeStart) sealFadeStart = timestamp;
     const sealElapsed = timestamp - sealFadeStart;
     const progress = Math.min(sealElapsed / sealDuration, 1);
-
-    // Ease out for smooth finish
-    const eased = 1 - Math.pow(1 - progress, 3);
-
-    // Fade opacity out
+    const eased = easeOutCubic(progress);
     const opacityVal = 1 - eased;
     closeSeal.style.opacity = opacityVal;
-
-    // Slight scale up (from 1 → 1.05)
     const scaleVal = 1 + 0.15 * eased;
     closeSeal.style.transform = `scale(${scaleVal}) translateZ(0)`;
-
     if (progress >= 1) {
       closeSeal.style.opacity = 0;
       closeSeal.style.transform = `scale(${scaleVal}) translateZ(0)`;
@@ -636,24 +628,16 @@ function tick(timestamp){
     }
   }
 
-
-    /* --- Seal Branch fade integrated into main loop --- */
+  /* --- Seal Branch fade --- */
   if (sealBranchFadeActive && closeLetterBranch) {
     if (!sealBranchStart) sealBranchStart = timestamp;
     const branchElapsed = timestamp - sealBranchStart;
     const progress = Math.min(branchElapsed / sealDuration, 1);
-
-    // Ease out for smooth finish
-    const eased = 1 - Math.pow(1 - progress, 3);
-
-    // Fade opacity out
+    const eased = easeOutCubic(progress);
     const opacityVal = 1 - eased;
     closeLetterBranch.style.opacity = opacityVal;
-
-    // Slight scale up (from 1 → 1.05)
     const scaleVal = 1 + 0.15 * eased;
     closeLetterBranch.style.transform = `scale(${scaleVal}) translateZ(0)`;
-
     if (progress >= 1) {
       closeLetterBranch.style.opacity = 0;
       closeLetterBranch.style.transform = `scale(${scaleVal}) translateZ(0)`;
@@ -662,71 +646,57 @@ function tick(timestamp){
     }
   }
 
-
- /* --- Seal Spark Glow fade (with offset, no early return) --- */
-if (sealSparkGlowFadeActive && sealSparkGlow) {
-  if (!sealSparkGlowStart) {
-    sealSparkGlowStart = timestamp;
-    sealSparkGlow.style.opacity = 0;
-    sealSparkGlow.style.transform = "scale(0.8) translateZ(0)";
-  }
-
-  const elapsed = timestamp - sealSparkGlowStart;
-
-  // still waiting for offset: keep hidden but don't break the frame
-  if (elapsed < sealSparkGlowOffset) {
-    // keep baseline state (optional: small subtle pre-scale)
-    sealSparkGlow.style.opacity = 0;
-    // leave transform as-is (or set baseline)
-    // sealSparkGlow.style.transform = "scale(0.8) translateZ(0)";
-  } else {
-    const adjustedElapsed = elapsed - sealSparkGlowOffset;
-
-    // customize timings
-    const fadeInDuration = 350;
-    const holdDuration = 50;
-    const fadeOutDuration = 800;
-    const totalDuration = fadeInDuration + holdDuration + fadeOutDuration;
-    const progress = Math.min(adjustedElapsed / totalDuration, 1);
-
-    // Opacity
-    let opacityVal;
-    if (adjustedElapsed <= fadeInDuration) {
-      const t = adjustedElapsed / fadeInDuration;
-      const eased = 1 - Math.pow(1 - t, 3);
-      opacityVal = eased; // 0 -> 1
-    } else if (adjustedElapsed <= fadeInDuration + holdDuration) {
-      opacityVal = 1;
-    } else {
-      const t = (adjustedElapsed - fadeInDuration - holdDuration) / fadeOutDuration;
-      const eased = 1 - Math.pow(1 - t, 3);
-      opacityVal = 1 - eased; // 1 -> 0
-    }
-
-    // Continuous scale (independent growth)
-    const scaleGrowthSpeed = 0.0008; // tweak to taste
-    const baseScale = 0.8;
-    const continuousScale = baseScale + adjustedElapsed * scaleGrowthSpeed;
-
-    sealSparkGlow.style.opacity = opacityVal;
-    sealSparkGlow.style.transform = `scale(${continuousScale}) translateZ(0)`;
-
-    // finish
-    if (adjustedElapsed >= totalDuration) {
+  /* --- Seal Spark Glow --- */
+  if (sealSparkGlowFadeActive && sealSparkGlow) {
+    if (!sealSparkGlowStart) {
+      sealSparkGlowStart = timestamp;
       sealSparkGlow.style.opacity = 0;
-      sealSparkGlowFadeActive = false;
+      sealSparkGlow.style.transform = "scale(0.8) translateZ(0)";
+    }
+
+    const elapsed = timestamp - sealSparkGlowStart;
+
+    if (elapsed < sealSparkGlowOffset) {
+      sealSparkGlow.style.opacity = 0;
+    } else {
+      const adjustedElapsed = elapsed - sealSparkGlowOffset;
+      const fadeInDuration = 350;
+      const holdDuration   = 50;
+      const fadeOutDuration= 800;
+      const totalDuration  = fadeInDuration + holdDuration + fadeOutDuration;
+      const progress = Math.min(adjustedElapsed / totalDuration, 1);
+
+      let opacityVal;
+      if (adjustedElapsed <= fadeInDuration) {
+        const t = adjustedElapsed / fadeInDuration;
+        opacityVal = easeOutCubic(t);
+      } else if (adjustedElapsed <= fadeInDuration + holdDuration) {
+        opacityVal = 1;
+      } else {
+        const t = (adjustedElapsed - fadeInDuration - holdDuration) / fadeOutDuration;
+        opacityVal = 1 - easeOutCubic(t);
+      }
+
+      const scaleGrowthSpeed = 0.0008;
+      const baseScale = 0.8;
+      const continuousScale = baseScale + adjustedElapsed * scaleGrowthSpeed;
+
+      sealSparkGlow.style.opacity = opacityVal;
+      sealSparkGlow.style.transform = `scale(${continuousScale}) translateZ(0)`;
+
+      if (adjustedElapsed >= totalDuration) {
+        sealSparkGlow.style.opacity = 0;
+        sealSparkGlowFadeActive = false;
+      }
     }
   }
-}
 
-  /* --- Seal Sparks animation (with offset, no early return) --- */
+  /* --- Seal Sparks (DOM elements) --- */
   if (sealSparksActive) {
     if (!sealSparksStart) sealSparksStart = timestamp;
     const elapsed = timestamp - sealSparksStart;
 
-    // not yet time to start sparks — keep them hidden and continue
     if (elapsed < sealSparksOffset) {
-      // Ensure they stay hidden until offset; don't return
       sealSparkData.forEach(sparkObj => {
         try {
           sparkObj.el.style.opacity = 0;
@@ -736,11 +706,10 @@ if (sealSparkGlowFadeActive && sealSparkGlow) {
     } else {
       const adjustedElapsed = elapsed - sealSparksOffset;
 
-      // Per-spark global-ish timings (or keep your custom per-spark ones)
-      const translateDuration = 1500;      // ms for movement
-      const opacityInDuration = 200;       // ms fade in
-      const opacityHoldDuration = 0;       // ms fully visible
-      const opacityOutDuration = 500;      // ms fade out
+      const translateDuration   = 1500;
+      const opacityInDuration   = 200;
+      const opacityHoldDuration = 0;
+      const opacityOutDuration  = 500;
       const opacityTotal = opacityInDuration + opacityHoldDuration + opacityOutDuration;
 
       let anyActive = false;
@@ -748,31 +717,29 @@ if (sealSparkGlowFadeActive && sealSparkGlow) {
       sealSparkData.forEach(sparkObj => {
         const { el, tx, ty } = sparkObj;
 
-        // Translate (use adjustedElapsed)
         let transform;
         if (adjustedElapsed < translateDuration) {
           const t = adjustedElapsed / translateDuration;
-          const eased = 1 - Math.pow(1 - t, 3);
+          const eased = easeOutCubic(t);
           const x = tx * eased;
           const y = ty * eased;
           transform = `translate(${x}px, ${y}px)`;
           anyActive = true;
         } else {
-          transform = `translate(${tx}px, ${ty}px)`; // final position
+          transform = `translate(${tx}px, ${ty}px)`;
         }
 
-        // Opacity (use adjustedElapsed)
         let opacity;
         if (adjustedElapsed < opacityInDuration) {
           const t = adjustedElapsed / opacityInDuration;
-          opacity = Math.min(Math.max(1 - Math.pow(1 - t, 3), 0), 1);
+          opacity = Math.min(Math.max(easeOutCubic(t), 0), 1);
           anyActive = true;
         } else if (adjustedElapsed < opacityInDuration + opacityHoldDuration) {
           opacity = 1;
           anyActive = true;
         } else if (adjustedElapsed < opacityTotal) {
           const t = (adjustedElapsed - opacityInDuration - opacityHoldDuration) / opacityOutDuration;
-          opacity = Math.min(Math.max(1 - Math.pow(t, 3), 0), 1); // ease out fade
+          opacity = Math.min(Math.max(1 - Math.pow(t, 3), 0), 1);
           anyActive = true;
         } else {
           opacity = 0;
@@ -784,7 +751,6 @@ if (sealSparkGlowFadeActive && sealSparkGlow) {
         } catch (e) {}
       });
 
-      // Only deactivate after all sparks finished
       if (!anyActive) {
         sealSparksActive = false;
         sealSparksStart = null;
@@ -792,124 +758,104 @@ if (sealSparkGlowFadeActive && sealSparkGlow) {
     }
   }
 
-  /* --- Letter Lid Rotation --- */
+  /* --- Letter Lid rotation --- */
   if (lidActive && letterLid) {
     if (!lidStart) lidStart = timestamp;
     const elapsed = timestamp - lidStart;
 
-    // Rotation (delayed start)
     if (elapsed >= lidDelay) {
       const rotElapsed = elapsed - lidDelay;
       const progress = Math.min(rotElapsed / lidDuration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
+      const eased = easeOutCubic(progress);
       const currentRot = lidStartRot + (lidEndRot - lidStartRot) * eased;
       letterLid.style.transform = `rotateX(${currentRot}deg)`;
 
-      /* --- Letter Lid Shadow: remove filter at 50% rotation --- */
       if (letterlidShadow) {
         if (progress < 0.5) {
-          // Keep filter active before halfway
-          letterlidShadow.style.filter = "brightness(0.8)"; // or whatever you were using
+          letterlidShadow.style.filter = "brightness(0.8)";
         } else {
-          // Remove filter at halfway point
           letterlidShadow.style.filter = "none";
         }
       }
     }
 
-    // Independent z-index change after lidZindexDelay
     if (elapsed >= lidZindexDelay) {
       letterLid.style.zIndex = "600";
     }
 
-    // End condition
     if (elapsed >= lidDelay + lidDuration && elapsed >= lidZindexDelay) {
       lidActive = false;
     }
   }
 
-
-  /* --- Letter Card Translate Animation --- */
+  /* --- Letter Card translate --- */
   if (letterCardActive && letterCard) {
     if (!letterCardStart) {
       letterCardStart = timestamp;
-      letterCard.style.zIndex = cardZindexInitial; // start value
+      letterCard.style.zIndex = cardZindexInitial;
       letterCardZindexChanged = false;
     }
 
     const elapsed = timestamp - letterCardStart;
 
-    // --- Independent z-index change ---
     if (!letterCardZindexChanged && elapsed >= cardZindexDelay) {
       letterCard.style.zIndex = cardZindexFinal;
       letterCardZindexChanged = true;
     }
 
-    // --- Wait for delay before starting motion ---
     if (elapsed >= cardDelay) {
       const t = elapsed - cardDelay;
       let y = cardPosStart;
       let scaleX = 1;
       let scaleY = 1;
 
-    const stage4Delay = 1800; // ← add your desired delay before stage 4 starts (ms)
+      const stage4Delay = 1800;
 
-      // Stage 1: 0 → -3
       if (t < cardStage1Duration) {
         const p = t / cardStage1Duration;
-        const eased = 1 - Math.pow(1 - p, 3);
+        const eased = easeOutCubic(p);
         y = cardPosStart + (cardPosMid1 - cardPosStart) * eased;
 
-      // Stage 2: -3 → 0
       } else if (t < cardStage1Duration + cardStage2Duration) {
         const p = (t - cardStage1Duration) / cardStage2Duration;
-        const eased = 1 - Math.pow(1 - p, 3);
+        const eased = easeOutCubic(p);
         y = cardPosMid1 + (cardPosMid2 - cardPosMid1) * eased;
 
-      // Stage 3: 0 → -35
       } else if (t < cardStage1Duration + cardStage2Duration + cardStage3Duration) {
         const p = (t - cardStage1Duration - cardStage2Duration) / cardStage3Duration;
-        const eased = 1 - Math.pow(1 - p, 3);
+        const eased = easeOutCubic(p);
         y = cardPosMid2 + (cardPosMid3 - cardPosMid2) * eased;
 
-      // Stage 4: -35 → 52
-      }else if (t < cardStage1Duration + cardStage2Duration + cardStage3Duration + cardStage4Duration + stage4Delay) {
+      } else if (t < cardStage1Duration + cardStage2Duration + cardStage3Duration + cardStage4Duration + stage4Delay) {
         const t4 = t - (cardStage1Duration + cardStage2Duration + cardStage3Duration);
 
         if (t4 < stage4Delay) {
-          // wait delay before moving
           y = cardPosMid3;
           scaleX = 1;
           scaleY = 1;
         } else {
           const p = (t4 - stage4Delay) / cardStage4Duration;
-          const eased = 1 - Math.pow(1 - Math.min(p, 1), 3);
-          const easedScale = Math.pow(Math.min(p, 1), 1.2); // ease-in for scale
+          const eased = easeOutCubic(Math.min(p, 1));
+          const easedScale = Math.pow(Math.min(p, 1), 1.2);
           y = cardPosMid3 + (cardPosEnd - cardPosMid3) * eased;
 
           const clampedP = Math.min(p, 1);
-
-          // scale from (1,1) → (2,2.1)
           scaleX = 1 + (2.0 - 1.0) * easedScale;
           scaleY = 1 + (2.1 - 1.0) * easedScale;
 
-          // Trigger zIndex at 50% progress only once
-          if (clampedP >= 0.2 && !indexBranchTwo.triggered) {
-              indexBranchTwo.style.zIndex = 200;
-              indexBranchTwo.triggered = true; // prevent repeated assignments
+          if (clampedP >= 0.2 && indexBranchTwo && !indexBranchTwo.triggered) {
+            indexBranchTwo.style.zIndex = 200;
+            indexBranchTwo.triggered = true;
           }
 
-          if (clampedP >= 0.2 && !letterCard.triggered) {
-              letterCard.style.filter = "drop-shadow(0px 0px 5px rgba(0,0,0,0.4))";
-              letterCard.style.transform = `translateY(${y}svh) scale(2, 3)`;
-              letterCard.triggered = true; // prevent repeated assignments
+          if (clampedP >= 0.2 && letterCard && !letterCard.triggered) {
+            letterCard.style.filter = "drop-shadow(0px 0px 5px rgba(0,0,0,0.4))";
+            letterCard.style.transform = `translateY(${y}svh) scale(2, 3)`;
+            letterCard.triggered = true;
           }
-
         }
-        
 
-      // End: stay at 52
-      }else {
+      } else {
         y = cardPosEnd;
         scaleX = 2;
         scaleY = 2.1;
@@ -920,15 +866,12 @@ if (sealSparkGlowFadeActive && sealSparkGlow) {
     }
   }
 
-
-  /* --- Letter Card Glow Animation --- */
+  /* --- Letter Card Glow --- */
   if (letterCardGlowActive && letterCardGlow) {
     if (!letterCardGlowStart) letterCardGlowStart = timestamp;
     const elapsed = timestamp - letterCardGlowStart;
 
-    // Wait for its independent delay
     if (elapsed < glowIndependentDelay) {
-      // Keep hidden before glow starts
       letterCardGlow.style.opacity = 0;
       letterCardGlow.style.transform = `scale(${glowScaleMin})`;
     } else {
@@ -936,31 +879,27 @@ if (sealSparkGlowFadeActive && sealSparkGlow) {
       let scale = glowScaleMin;
       let opacity = 1;
 
-      // --- Stage 1: scale up ---
       if (adjustedElapsed < glowInDuration) {
         const p = adjustedElapsed / glowInDuration;
-        const eased = 1 - Math.pow(1 - p, 3);
+        const eased = easeOutCubic(p);
         scale = glowScaleMin + (glowScaleMax - glowScaleMin) * eased;
-        opacity = 1; // fully visible during grow
+        opacity = 1;
 
-      // --- Stage 2: scale down (fade out) ---
       } else if (adjustedElapsed < glowInDuration + glowOutDuration) {
         const p = (adjustedElapsed - glowInDuration) / glowOutDuration;
-        const eased = 1 - Math.pow(1 - p, 3);
+        const eased = easeOutCubic(p);
         scale = glowScaleMax + (glowScaleMin - glowScaleMax) * eased;
-        opacity = 1 - eased; // fade opacity 1 → 0 alongside scale
+        opacity = 1 - eased;
         letterBody.style.opacity = 0;
         letterComponents.style.opacity = 0;
         letterLidBox.style.opacity = 0;
 
-      // --- End ---
       } else {
         scale = glowScaleMin;
         opacity = 0;
         letterCardGlowActive = false;
       }
 
-      // Apply transformations
       letterCardGlow.style.transform = `scale(${scale})`;
       letterCardGlow.style.opacity = opacity;
     }
@@ -968,9 +907,10 @@ if (sealSparkGlowFadeActive && sealSparkGlow) {
 
   requestAnimationFrame(tick);
 }
-  
-requestAnimationFrame(tick);
 
+/**********************************************************
+ * CLICK HANDLER
+ **********************************************************/
 if (openLetter) {
   const handleOpenClick = () => {
     if (!cancelLetterPulse && getLetter) {
@@ -995,14 +935,12 @@ if (openLetter) {
     cancelLetterPulse = true;
     glowFade = true;
 
-    // --- Trigger Lid Animation ---
     if (!lidActive) {
       lidActive = true;
       lidStart = null;
-      letterLid.style.zIndex = "900"; // reset initial z-index before animation
+      letterLid.style.zIndex = "900";
     }
 
-    // --- Trigger Seal Fade ---
     if (closeSeal && !sealFadeActive) {
       sealFadeActive = true;
       sealFadeStart = null;
@@ -1042,24 +980,15 @@ if (openLetter) {
       bgrFadeActive = true;
       bgrFadeStart = null;
     }
-    
 
-    // Remove click listener after first click
     openLetter.removeEventListener("click", handleOpenClick);
   };
 
   openLetter.addEventListener("click", handleOpenClick);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
+/**********************************************************
+ * STARTUP
+ **********************************************************/
+loadAndMountBranches();     // clone & mount the two SVG branches and init leaves
+requestAnimationFrame(tick); // kick off RAF loop
