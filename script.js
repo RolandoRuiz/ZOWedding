@@ -294,6 +294,12 @@ function initLeavesForBranch(branchWrapper) {
 
   // Observe the branch container, not individual leaves
   observer.observe(branchWrapper);
+
+  let visibilityTick = 0;
+  setInterval(() => {
+    visibilityTick = (visibilityTick + 1) % 2;
+    branchWrapper.style.willChange = visibilityTick ? "transform" : "opacity";
+  }, 3000);
 }
 
 

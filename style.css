@@ -182,8 +182,16 @@ body{
     aspect-ratio: 1/1;
     color-scheme: normal;
     object-fit: contain;
-    will-change: transform;
+    
+    will-change: transform, opacity;
     transform: translateZ(0);
+    contain: layout paint;
+    backface-visibility: hidden;
+}
+
+.bgrOverlayWrapper,
+.bgrMultiply {
+  pointer-events: none;
 }
 
 #topBranch{
