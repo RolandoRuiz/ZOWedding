@@ -381,30 +381,18 @@ body{
 
 /* Overlay Components*/
 
-.bgrMultiply,
-.bgrOverlayWrapper,
-.bgrTopOverlay {
-  pointer-events: none;
-  contain: layout paint;            /* stronger containment */
-  backface-visibility: hidden;
-  transform-style: flat;            /* avoid 3D flattening issues */
-  will-change: transform, opacity;
-}
-
 .bgrMultiply {
   width: 100svw;
   height: 100svh;
   max-height: 100svh;
   position: absolute;
   top: 0;
+  left: 0;
   z-index: 100;
-  opacity: 1;
   background-color: rgb(0, 0, 0);
-  overflow: hidden;
   mix-blend-mode: multiply;
-
-  /* prevent layer destruction when opacity → 0 */
-  background-image: linear-gradient(rgba(0,0,0,0.001), rgba(0,0,0,0.001));
+  overflow: hidden;
+  opacity: 1;
 }
 
 .bgrOverlayWrapper {
@@ -414,17 +402,12 @@ body{
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 100;
   transform-origin: bottom;
-
-  opacity: 1;                        /* keep constant opacity */
-  transform: scale(0) translateZ(0);
-
-  /* invisible background “anchor” to stop flashes */
-  background-color: rgba(255, 255, 255, 0.001);
-  contain: layout paint;  
-  transform-style: flat;
-  backface-visibility: hidden;
+  transform: scale(0.01);
+  mix-blend-mode: overlay;
+  z-index: 100;
+  pointer-events: none;
+  will-change: transform;
 }
 
 .bgrOverlay{
@@ -473,35 +456,33 @@ body{
   width: 100%;
   height: 100%;
   position: absolute;
-  z-index: 200;
-  transform-origin: bottom;
-  opacity: 0;
-  transform: scale(0) translateZ(0);
-
-  background-color: rgba(255, 255, 255, 0.001);
   background-image: radial-gradient(
     70% 45% at 50% 100%,
-    rgba(255, 255, 255, 1) 20%,
+    rgb(255, 255, 255) 20%,
     rgba(255, 255, 255, 0.7) 25%,
     transparent 60%
   );
-
-   contain: layout paint;
-   backface-visibility: hidden;
-   transform-style: flat;
-   will-change: transform, opacity;
+  transform-origin: bottom;
+  transform: scale(0.01);
+  opacity: 1;
+  mix-blend-mode: normal;
+  z-index: 200;
+  will-change: transform;
+  pointer-events: none;
+  backface-visibility: hidden;
 }
 
 .overlayStableLayer {
   position: absolute;
   inset: 0;
-  contain: layout paint;
-  backface-visibility: hidden;
-  will-change: transform, opacity;
+  contain: paint;
   isolation: isolate;
+  backface-visibility: hidden;
   transform-style: flat;
+  will-change: transform, opacity;
   pointer-events: none;
-  background-color: rgba(255,255,255,0.002);
+  z-index: 100;
+  background-color: rgba(255, 255, 255, 0.002); /* tiny static base avoids rebuilds */
 }
 
 .sparkWrapper{
@@ -509,6 +490,14 @@ body{
     height: 100%;
     position: absolute;
 }
+
+.bgrOverlayWrapper,
+.bgrMultiply,
+.bgrTopOverlay {
+  contain: paint;
+  backface-visibility: hidden;
+}
+
 
 
 /* Spark Group Components*/
