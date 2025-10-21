@@ -30,7 +30,7 @@ const getInitialParagraphs = document.querySelectorAll(".initialParagraph");
 const getParagraphLines    = document.querySelectorAll(".paragraphLine");
 const getParagraphGlows    = document.querySelectorAll(".paragraphGlow");
 
-const indexBranchTwo    = document.querySelector(".branchTwo");
+const indexBranchTwo    = document.querySelector(".bottomBranchContainer");
 
 /* Containers to mount cloned SVG branches */
 const TOP_BRANCH_CONTAINER    = ".topBranchContainer";
@@ -74,7 +74,7 @@ const cardPosStart = 0;
 const cardPosMid1  = -3;
 const cardPosMid2  = 0;
 const cardPosMid3  = -35;
-const cardPosEnd   = 46;
+const cardPosEnd   = 48;
 
 const cardZindexInitial = 700;
 const cardZindexFinal   = 900;
@@ -950,8 +950,8 @@ function tick(timestamp){
           y = cardPosMid3 + (cardPosEnd - cardPosMid3) * eased;
 
           const clampedP = Math.min(p, 1);
-          scaleX = 1 + (2.0 - 1.0) * easedScale;
-          scaleY = 1 + (2.1 - 1.0) * easedScale;
+          scaleX = 1 + (1.9 - 1.0) * easedScale;
+          scaleY = 1 + (2.0 - 1.0) * easedScale;
 
           if (clampedP >= 0.2 && indexBranchTwo && !indexBranchTwo.triggered) {
             indexBranchTwo.style.zIndex = 200;
@@ -959,16 +959,15 @@ function tick(timestamp){
           }
 
           if (clampedP >= 0.2 && letterCard && !letterCard.triggered) {
-            letterCard.style.filter = "drop-shadow(0px 0px 5px rgba(0,0,0,0.4))";
-            letterCard.style.transform = `translateY(${y}svh) scale(2, 3)`;
+            letterCard.style.filter = "drop-shadow(0px 0px 3px rgba(0,0,0,0.3))";
             letterCard.triggered = true;
           }
         }
 
       } else {
         y = cardPosEnd;
-        scaleX = 2;
-        scaleY = 2.1;
+        scaleX = 1.9;
+        scaleY = 2.0;
         letterCardActive = false;
       }
 

@@ -114,7 +114,7 @@ body{
     max-width: 100%;
     max-height: 115%;
     position: absolute;
-    background-image: radial-gradient(100% 56% at 50% 44%, transparent 40%, white 100%);;
+    background-image: radial-gradient(150% 55% at 50% 50%, transparent 60%, rgb(255, 255, 255) 92%);
     top: 0px;
     right: 0px;
     bottom: 0px;
@@ -1284,7 +1284,7 @@ body{
 
 #firstSection{
     width: 100svw;
-    height: 60svh;
+    height: 70svh;
     position: absolute;
     z-index: 300;
     top: 115svh;
@@ -1316,6 +1316,7 @@ body{
     display: grid;
     overflow-x: hidden;
     padding-top: 5%;
+    padding-bottom: 5%;
 
     grid-template-columns: 1.2fr 1fr;
     grid-template-rows: 1fr;
