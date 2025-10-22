@@ -76,7 +76,7 @@ body{
 
 #invitationIntro-Section{
     width: 100svw;
-    height: 115svh;
+    height: 110svh;
     position: relative;
     
     display: flex;
@@ -1280,14 +1280,39 @@ body{
     text-align: center;
 }
 
+.h1TextNormal{
+    color: var(--medium-black);
+    font-family: normalText;
+    font-size: 1.5rem;
+    text-align: center;
+    letter-spacing: 0.05rem;
+    font-weight: bold;
+}
+
+.h2TextNormal{
+    color: var(--medium-black);
+    font-family: normalText;
+    font-size: 1.4rem;
+    text-align: center;
+    letter-spacing: 0.05rem;
+    font-weight: bold;
+}
+
+.h1TextCursive{
+    color: var(--medium-black);
+    font-family: titleText;
+    font-size: 3rem;
+    text-align: center;
+}
+
 /*First Section Components*/
 
 #firstSection{
     width: 100svw;
-    height: 70svh;
+    height: 80svh;
     position: absolute;
     z-index: 300;
-    top: 115svh;
+    top: 110svh;
     display: grid;
     background-color: var(--pure-white);
     border: solid 2px white;
@@ -1295,18 +1320,22 @@ body{
     grid-template-rows: 1fr 6fr;
 }
 
-.textBlock.fs1{
+.textBlock{
     width: 100%;
     height: 100%;
     position: absolute;
-    top: -13svh;
-    grid-column-start: 1; grid-column-end: 3;
-    grid-row-start: 1; grid-row-end: 2;
     text-align: center;
 }
 
-.fs1 > .normalTextCursive{
+.parentTitle{
+    top: -10svh;
+    grid-column-start: 1; grid-column-end: 3;
+    grid-row-start: 1; grid-row-end: 2;
+}
+
+.textBlock .h1TextCursive{
     color: var(--soft-gold);
+    font-size: 3.2rem;
 }
 
 .firstSectionBox{
@@ -1315,8 +1344,8 @@ body{
     position: absolute;
     display: grid;
     overflow-x: hidden;
-    padding-top: 5%;
-    padding-bottom: 5%;
+    padding-top: 10%;
+    padding-bottom: 20%;
 
     grid-template-columns: 1.2fr 1fr;
     grid-template-rows: 1fr;
@@ -1340,33 +1369,48 @@ body{
     grid-row-start: 1; grid-row-end: 2;
 }
 
-#fatherText1{
+.parentNamesBox > :nth-child(1){
     grid-column-start: 1; grid-column-end: 2;
     grid-row-start: 2; grid-row-end: 3;
 }
 
-#motherText1{
+.parentNamesBox > :nth-child(2){
+    grid-column-start: 1; grid-column-end: 2;
+    grid-row-start: 3; grid-row-end: 4;
+}
+
+.parentNamesBox > :nth-child(3){
     grid-column-start: 1; grid-column-end: 2;
     grid-row-start: 4; grid-row-end: 5;
 }
 
-#fatherText2{
+.parentNamesBox > :nth-child(4){
     grid-column-start: 1; grid-column-end: 2;
     grid-row-start: 6; grid-row-end: 7;
 }
 
-#motherText2{
+.parentNamesBox > :nth-child(5){
+    grid-column-start: 1; grid-column-end: 2;
+    grid-row-start: 7; grid-row-end: 8;
+}
+
+.parentNamesBox > :nth-child(6){
     grid-column-start: 1; grid-column-end: 2;
     grid-row-start: 8; grid-row-end: 9;
 }
 
 .textDivider{
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content:center;
     align-items: center;
-    letter-spacing: -0.2rem;
-    font-size: 0.7rem;
+}
+
+.textDivider.h2TextNormal{
+    font-size: 1rem;
     color: var(--soft-gold);
+
 }
 
 .textDivider span{
@@ -1376,29 +1420,19 @@ body{
 .textDivider::before, .textDivider::after{
     content: "";
     width: 30%;
-    height: 5%;
+    height: 6%;
     margin-bottom: 2%;
     background-color: var(--soft-gold);
 }
 
-.textDiv1{
-    grid-column-start: 1; grid-column-end: 2;
-    grid-row-start: 3; grid-row-end: 4;
-}
-
-.textDiv2{
-    grid-column-start: 1; grid-column-end: 2;
-    grid-row-start: 7; grid-row-end: 8;
-}
-
 .partnerImgSection1{
     width: 150%;
-    height: 100%;
+    height: 95%;
     position: absolute;
     display: grid;
-
     grid-column-start: 2; grid-column-end: 3;
     grid-row-start: 1; grid-row-end: 2;
+    top: 0%;
 }
 
 .partnerImgSectionBgr1{
@@ -1408,8 +1442,7 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
-
-    mask-image: radial-gradient(58% 58% at 30% 55%, rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0) 90%);
+    mask-image: radial-gradient(58% 70% at 30% 60%, rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0) 95%);
     mask-position: left;
 }
 
@@ -1425,61 +1458,70 @@ body{
 .partnerImgSectionBgr1::after{
     content: "";
     width: 92%;
-    height: 94%;
+    height: 95%;
     position: absolute;
     border-radius: 1500px 1500px 0px 0px;
     background-image: url(Assets/svg/backgroundTexture.min.svg);
     background-repeat: repeat;
     background-size: 50svw;
-    opacity: 0.4;
-    box-shadow: inset 0px 0px 25px rgb(0, 0, 0);
-    mix-blend-mode: normal;
+    opacity: 0.35;
+    box-shadow: inset 0px 0px 20px rgb(0, 0, 0);
 }
 
-.decorativeMouldingBox1{
-    width: 150%;
-    height: 10%;
+.decorativeMouldBox{
     position: absolute;
+}
+
+.sectionMould1{
+    width: 115%;
+    height: 10%;
+    grid-column-start: 2; grid-column-end: 3;
+    grid-row-start: 1; grid-row-end: 2;
+    bottom: 0%;
+    justify-self: center;
+    transform-origin: center;
+}
+
+.decorativeMouldingInner{
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    grid-column-start: 2; grid-column-end: 3;
-    grid-row-start: 1; grid-row-end: 2;
-    bottom: 0%;
 }
 
-.decorativeMouldingPart1{
-    width: 110%;
+.decorativeMouldingInner > div{
+        box-shadow: 0px 2px 5px rgb(181, 181, 181);
+}
+
+.dMPart1{
+    width: 100%;
     height: 15%;
     background-color: rgb(255, 255, 255);
-    box-shadow: 0px 2px 5px rgb(170, 170, 170);
     z-index: 200;
 }
 
-.decorativeMouldingPart2{
-    width: 105%;
+.dMPart2{
+    width: 95%;
     height: 12%;
     position: relative;
     background: rgb(255, 255, 255);
-    box-shadow: 0px 2px 5px rgb(170, 170, 170);
     z-index: 100;
 }
 
-.decorativeMouldingPart3{
-    width: 100%;
+.dMPart3{
+    width: 90%;
     height: 30%;
     position: relative;
     background: rgb(255, 255, 255);
-    box-shadow: 0px 2px 5px rgb(170, 170, 170);
 }
 
-.decorativeMouldingPart4{
-    width: 105%;
+.dMPart4{
+    width: 98%;
     height: 12%;
     position: relative;
     background-color: rgb(255, 255, 255);
-    box-shadow: 0px 2px 5px rgb(170, 170, 170);
     z-index: 200;
     
 }

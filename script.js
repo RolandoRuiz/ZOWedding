@@ -950,7 +950,7 @@ function tick(timestamp){
           y = cardPosMid3 + (cardPosEnd - cardPosMid3) * eased;
 
           const clampedP = Math.min(p, 1);
-          scaleX = 1 + (1.9 - 1.0) * easedScale;
+          scaleX = 1 + (2.0 - 1.0) * easedScale;
           scaleY = 1 + (2.0 - 1.0) * easedScale;
 
           if (clampedP >= 0.2 && indexBranchTwo && !indexBranchTwo.triggered) {
@@ -966,7 +966,7 @@ function tick(timestamp){
 
       } else {
         y = cardPosEnd;
-        scaleX = 1.9;
+        scaleX = 2.0;
         scaleY = 2.0;
         letterCardActive = false;
       }
