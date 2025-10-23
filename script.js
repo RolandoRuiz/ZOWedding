@@ -1,6 +1,20 @@
 /**********************************************************
  * DOM REFERENCES
  **********************************************************/
+
+/* --- Stop Motion Frame Animation --- */
+const frameImage = document.querySelector(".frameImage img");
+const frameWidth = 61;       // px per frame
+const totalFrames = 8;       // number of frames to alternate between
+const frameInterval = 210;   // ms between frame changes
+const endPause = 2500;      // pause at ends
+let frameIndex = 0;
+let frameDirection = 1;
+let lastFrameSwitch = 0;
+const scaleUp = 1.1;        // how much to scale up on frame change
+const scaleNormal = 1.0;    // normal resting scale
+const scaleDuration = 200;
+
 const letterlidShadow   = document.querySelector(".letterLidShadow");
 const archShadow        = document.querySelector(".bgrArchShadow");
 
@@ -36,9 +50,6 @@ const indexBranchTwo    = document.querySelector(".bottomBranchContainer");
 const TOP_BRANCH_CONTAINER    = ".topBranchContainer";
 const BOTTOM_BRANCH_CONTAINER = ".bottomBranchContainer";
 
-/**********************************************************
- * CONFIGURATION
- **********************************************************/
 const svgTemplates = [
   { src: "Assets/svg/topBranchGraphicNew.min.svg",    container: TOP_BRANCH_CONTAINER,    assignId: "topBranch" },
   { src: "Assets/svg/bottomBranchGraphicNew.min.svg", container: BOTTOM_BRANCH_CONTAINER, assignId: "bottomBranch" }
@@ -1011,6 +1022,39 @@ function tick(timestamp){
 
       letterCardGlow.style.transform = `scale(${scale})`;
       letterCardGlow.style.opacity = opacity;
+    }
+  }
+
+  /* --- Stop Motion Frame Animation (pause at ends, fixed) --- */
+  if (frameImage) {
+    const elapsedSinceSwitch = timestamp - lastFrameSwitch;
+
+    // Regular frame interval and pause duration
+    const endPause = 1200;
+    const isAtEnd =
+      (frameIndex === 0 && frameDirection === -1) ||
+      (frameIndex === totalFrames - 1 && frameDirection === 1);
+
+    // Decide whether we’re waiting longer at an end
+    const currentInterval = isAtEnd ? endPause : frameInterval;
+
+    if (elapsedSinceSwitch >= currentInterval) {
+      // Only reverse direction *after* we’ve completed the pause
+      if (isAtEnd) frameDirection *= -1;
+
+      // Move to next frame in the current direction
+      frameIndex += frameDirection;
+
+      // Wrap safety (if totalFrames = 2, index toggles 0↔1)
+      if (frameIndex < 0) frameIndex = 0;
+      if (frameIndex > totalFrames - 1) frameIndex = totalFrames - 1;
+
+      // Update the frame transform
+      const translateX = -frameIndex * frameWidth;
+      frameImage.style.transform = `translateX(${translateX}px)`;
+
+      // Reset timer for the next switch
+      lastFrameSwitch = timestamp;
     }
   }
 

@@ -2096,182 +2096,39 @@ body{
     position: absolute;
     display: flex;
     align-items: flex-end;
+    justify-content: center;
+
+    grid-row-start: 1; grid-row-end: 3;
+    overflow: hidden;
     mix-blend-mode: multiply;
     z-index: 300;
     opacity: 1;
-    overflow: hidden;
+
+
 }
 
-.frame{
-    width: 100%;
-    height: 100%;
+.frameImage{
+    width: 61px;
+    height: 100px;
     position: absolute;
-    background-repeat: no-repeat;
-    background-size: auto 65%;
-    background-position: 50% 100%;
-    transform-origin: center center;
-    will-change: transform;
-    opacity: 0;
+    object-fit: contain;
+    overflow: hidden;
+    scale: 5.8;
+    left: 48%;
+    transform-origin: bottom;
 }
 
-.frame#frameOne{
-    background-image: url(Assets/svg/stopMotionFrames/frameOne.svg);
-    margin-left: 6%;
-    animation: frameOne 5s linear infinite forwards;
-    opacity: 1;
+.frameImage img{
+    height: 100%;
+    width: auto;
+    transform-origin: top;
+    filter: brightness(0.97);
 }
 
-@keyframes frameOne {
-    0%{
-        transform: scale(1);
-        opacity: 1;
-        display: block;
-    }20%{
-        transform: scale(1.1) ;
-        opacity: 1;
-        display: none;
-    }100%{
-        transform: scale(1.1) ;
-        opacity: 1;
-        display: none;
-    }
-    
-}
-
-.frame#frameTwo{
-    background-image: url(Assets/svg/stopMotionFrames/frameTwo.svg);
-    margin-left: 8%;
-
-    animation: frameTwo 5s linear infinite forwards 1s;
-}
-
-@keyframes frameTwo {
-    0%{
-        transform: scale(1.1);
-        opacity: 1;
-        display: block;
-    }10%{
-        transform: scale(1.15);
-        opacity: 1;
-        display: none;
-    }100%{
-        transform: scale(1.15);
-        opacity: 1;
-        display: none;
-    }
-    
-}
-
-.frame#frameThree{
-    background-image: url(Assets/svg/stopMotionFrames/frameThree.svg);
-    margin-left: 6%;
 
 
-    animation: frameThree 5s linear infinite forwards 1.5s;
-}
 
-@keyframes frameThree {
-    0%{
-        transform: scale(1.15);
-        opacity: 1;
-        display: block;
-    }5%{
-        transform: scale(1.18);
-        display: none;
-    }100%{
-        transform: scale(1.18);
-        display: none;
-    }
-    
-}
 
-.frame#frameFour{
-    background-image: url(Assets/svg/stopMotionFrames/frameFour.svg);
-    margin-left: 7%;
-
-    animation: frameFour 5s linear infinite forwards 1.75s;
-}
-
-@keyframes frameFour {
-    0%{
-        transform: scale(1.18);
-        opacity: 1;
-        display: block;
-    }5%{
-        transform: scale(1.2);
-        display: none;
-    }100%{
-        transform: scale(1.2);
-        display: none;
-    }
-    
-}
-
-.frame#frameFive{
-    background-image: url(Assets/svg/stopMotionFrames/frameFive.svg);
-    margin-left: 7%;
-
-    animation: frameFive 5s linear infinite forwards 2s;
-}
-
-@keyframes frameFive {
-    0%{
-        transform: scale(1.2);
-        opacity: 1;
-        display: block;
-    }5%{
-        transform: scale(1.22);
-        display: none;
-    }100%{
-        transform: scale(1.22);
-        display: none;
-    }
-    
-}
-
-.frame#frameSix{
-    background-image: url(Assets/svg/stopMotionFrames/frameSix.svg);
-    margin-left: 7%;
-
-    animation: frameSix 5s linear infinite forwards 2.25s;
-}
-
-@keyframes frameSix {
-    0%{
-        transform: scale(1.22);
-        opacity: 1;
-        display: block;
-    }15%{
-        transform: scale(1.24);
-        display: none;
-    }100%{
-        transform: scale(1.24);
-        display: none;
-    }
-    
-}
-
-.frame#frameSeven{
-    background-image: url(Assets/svg/stopMotionFrames/frameSeven.svg);
-    margin-left: 0%;
-
-    animation: frameSeven 5s linear infinite forwards 3s;
-}
-
-@keyframes frameSeven {
-    0%{
-        transform: scale(1.24);
-        opacity: 1;
-        display: block;
-    }30%{
-        transform: scale(1.26);
-        display: none;
-    }100%{
-        transform: scale(1.26);
-        display: none;
-    }
-    
-}
 
 
 /*LOCATION COMPONENTS*/
