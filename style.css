@@ -1766,7 +1766,7 @@ body{
 
 .thirdSection{
     width: 100svw;
-    height: 90svh;
+    height: 115lvh;
     position: absolute;
     background-color: var(--pure-white);
     top: 280svh;
@@ -1779,7 +1779,7 @@ body{
     position: absolute;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 0.7fr 1fr;
+    grid-template-rows: 0.6fr 1fr;
     align-items: center;
     justify-items: center;
     transform-origin: bottom;
@@ -1820,7 +1820,7 @@ body{
 
 .locationArchBox{
     width: 100%;
-    height: 90%;
+    height: 60%;
     position: absolute;
     display: grid;
     align-self: flex-start;
@@ -1861,7 +1861,7 @@ body{
 /* Clock components*/
 
 .clockWrapper{
-    height: 95%;
+    height: 75%;
     width: auto;
     aspect-ratio: 1 / 1;
     position: absolute;
@@ -1869,26 +1869,20 @@ body{
     align-items: center;
     justify-content: center;
     z-index: 300;
-    top: 52%;
+    top: 35%;
 
     grid-row-start: 1; grid-row-end: 2;
     background-color: var(--soft-gold);
-    filter: brightness(0.9);
     border-radius: 100%;
-}
-
-.clockWrapper.innerClock{
-    background-color: var(--soft-gold);
-    opacity: 1;
-    top: 49%;
-    box-shadow: 0px 0px 0px rgb(233, 233, 233);
-    filter: brightness(1);
 }
 
 .clockWrapperInner1{
     width: 95%;
     height: 95%;
     position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: var(--soft-gold);
     border-radius: 100%;
     filter: brightness(1.1);
@@ -1901,16 +1895,37 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
-    bottom: 3%;
-    background: rgb(255, 253, 247);
+    background: rgb(255, 248, 238);
     border-radius: 100%;
+}
+
+.clockWrapperInner2::after{
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-image: linear-gradient(45deg,
+        rgb(255, 255, 255) 0%, rgb(251, 251, 251) 18%, 
+        rgba(255, 255, 255, 0) 25%, rgba(255, 255, 255, 0) 28%, 
+        rgb(255, 255, 255) 35%, rgb(255, 255, 255) 40%, 
+        rgba(255, 255, 255, 0) 47%, rgba(255, 255, 255, 0) 48%,
+        rgb(255, 255, 255) 55%, rgb(255, 255, 255) 57%,
+        rgba(255, 255, 255, 0) 62%, rgba(255, 255, 255, 0) 63%,
+        rgb(255, 255, 255) 67%, rgb(255, 255, 255) 67.5%,
+        rgba(255, 255, 255, 0) 71%, rgba(255, 255, 255, 0) 73%,
+        rgb(255, 255, 255) 82%, rgb(255, 255, 255) 100%);
+    mix-blend-mode: plus-lighter;
+    opacity: 0.1;
+    border-radius: 100%;
+    z-index: 500;
+
 }
 
 .clockWrapperInner3{
     width: 90%;
     height: 90%;
     position: absolute;
-    border: solid 1.5px rgb(205, 192, 184);
+    border: solid 1.8px rgb(234, 219, 207);
     border-radius: 100%;
 }
 
@@ -1918,8 +1933,8 @@ body{
     width: 85%;
     height: 85%;
     position: absolute;
-    background-image: repeating-conic-gradient(transparent 10%, transparent 14.6%, rgb(205, 192, 184) 14.6%, rgb(205, 192, 184) 15%);
-    mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0) 48%, black 75%);
+    background-image: repeating-conic-gradient(transparent 0%, transparent 5%, rgb(205, 192, 184) 5%, rgb(205, 192, 184) 5.56%);
+    mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0) 45%, black 75%);
     border: solid 2px rgb(205, 192, 184);
     border-radius: 100%;
 }
@@ -1928,7 +1943,7 @@ body{
     width: 54%;
     height: 54%;
     position: absolute;
-    border: solid 1.5px rgb(205, 192, 184);
+    border: solid 1.8px rgb(205, 192, 184);
     border-radius: 100%;
     opacity: 0.5;
 }
@@ -1970,7 +1985,7 @@ body{
     will-change: transform, background-image;
     opacity: 1;
 
-    background-image: conic-gradient(rgb(248, 241, 233) 0%, rgb(248, 241, 233) var(--clockTime), transparent var(--clockTime));
+    background-image: conic-gradient(rgb(245, 233, 219) 0%, rgb(245, 233, 219) var(--clockTime), transparent var(--clockTime));
     animation: conic-gradient 8s linear 0s infinite none running;
 }
 
@@ -1981,64 +1996,6 @@ body{
         --clockTime: 100%;
     }
 }
-
-/*.dateBox{
-    width: 80%;
-    height: 80%;
-    position: absolute;
-    display: grid;
-    justify-items: center;
-    align-items: center;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 0.4fr 0.4fr;
-    border-radius: 100%;
-
-}
-
-.dateBox > .numberText.day{
-    position: absolute;
-    grid-column: 1 / 2;
-    grid-row: 1 / 2;
-    font-size: 6rem;
-    z-index: 200;
-    text-box-trim: trim-both;
-    text-box-edge: cap alphabetic;
-}
-
-.dateBox > .normalText.month{
-    position: absolute;
-    grid-column: 1 / 2;
-    grid-row: 2 / 3;
-    font-size: 2rem;
-    z-index: 200;
-    text-box-trim: trim-both;
-    text-box-edge: cap alphabetic;
-}
-
-.dateBox > .numberText.year{
-    position: absolute;
-    grid-column: 1 / 2;
-    grid-row: 3 / 4;
-    font-size: 2rem;
-    z-index: 200;
-    text-box-trim: trim-both;
-    text-box-edge: cap alphabetic;
-}*/
-
-/*
-.monthYearBox  {
-    width: 80%;
-    height: 50%;
-    position: absolute;
-    display: grid;
-    align-items: center;
-    justify-items: center;
-    grid-template-columns: 1fr;
-    grid-template-rows: 0.8fr 1fr;
-    grid-column: 1 / 2;
-    grid-row: 1 / 4;
-    border-left: 3px solid rgb(205, 192, 184);
-}*/
 
 .dateBox{
     width: 80%;
@@ -2095,7 +2052,7 @@ body{
     width: 40%;
     height: 100%;
     position: absolute;
-    border-top: 2px solid rgb(205, 192, 184);
+    border-top: 3px solid var(--soft-gold);
     left: 0%;
 }
 
@@ -2103,7 +2060,7 @@ body{
     width: 19%;
     height: 100%;
     position: absolute;
-    border-top: 2px solid rgb(205, 192, 184);
+    border-top: 3px solid var(--soft-gold);
     right: 0%;
 }
 
