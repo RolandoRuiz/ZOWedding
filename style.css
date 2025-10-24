@@ -2113,8 +2113,9 @@ body{
     position: absolute;
     object-fit: contain;
     overflow: hidden;
-    scale: 5.8;
-    left: 48%;
+    scale: 6;
+    left: 46%;
+    bottom: -10%;
     transform-origin: bottom;
 }
 
@@ -2122,76 +2123,48 @@ body{
     height: 100%;
     width: auto;
     transform-origin: top;
-    filter: brightness(0.97);
 }
-
-
-
-
-
-
 
 /*LOCATION COMPONENTS*/
 
 .locationWrapper{
     width: 100%;
-    height: 50%;
+    height: 100%;
     position: absolute;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    bottom: 5%;
+    grid-row-start: 2; grid-row-end: 3;
+    padding-top: 10%; padding-bottom: 5%;
     z-index: 500;
 }
 
 .locationBox{
     width: 100%;
-    height: 80%;
+    height: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .locationInfo{
-    width: 70%;
+    width: 80%;
     height: 80%;
     display: grid;
     align-items: center;
     justify-content: center;
     grid-template-columns: 1fr;
-    grid-template-rows: 2fr 0.4fr 2fr 0.2fr 1fr 0.4fr 1fr;
+    grid-template-rows: 2fr 0.2fr 1fr 0.4fr 1fr;
 }
 
-.locationIcon{
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    grid-column: 1 / 2;
-    grid-row: 1 / 2;
-}
-
-.locationIcon.ceremonyIcon{
-    background-image: url(assets/svg/ceremonyIcon.svg);
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-}
-
-.locationIcon.receptionIcon{
-    background-image: url(assets/svg/receptionIcon.svg);
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-}
 
 .locationName{
     height: 100%;
     width: 100%;
 
     grid-column: 1 / 2;
-    grid-row: 3 / 4;
+    grid-row: 1 / 2;
 }
 
 .locationTime{
@@ -2202,7 +2175,7 @@ body{
     justify-content: center;
 
     grid-column: 1 / 2;
-    grid-row: 5 / 6;
+    grid-row: 3 / 4;
 }
 
 .locationTime > .normalText{
@@ -2219,7 +2192,7 @@ body{
     align-items: center;
 
     grid-column: 1 / 2;
-    grid-row: 7 / 8;
+    grid-row: 5 / 6;
 }
 
 .locationBtn{
