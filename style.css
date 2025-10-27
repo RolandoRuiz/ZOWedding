@@ -1765,8 +1765,7 @@ body{
 /*Third section and arch components*/
 
 .thirdSection{
-    width: 100svw;
-    height: 115lvh;
+    width: 100svw;    height: 130svh;
     position: absolute;
     background-color: var(--pure-white);
     top: 280svh;
@@ -1779,7 +1778,7 @@ body{
     position: absolute;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 0.6fr 1fr;
+    grid-template-rows: 0.6fr 1fr 0.25fr;
     align-items: center;
     justify-items: center;
     transform-origin: bottom;
@@ -1796,13 +1795,13 @@ body{
     background-repeat: repeat;
     background-size: 50svw;
     opacity: 0.6;
-    mask-image: linear-gradient(180deg, black 10%, rgba(0, 0, 0, 0.2) 60%);
+    mask-image: linear-gradient(180deg, black 10%, rgba(0, 0, 0, 0.3) 85%, rgba(0,0,0,0) 100%);
     
 }
 
 .sectionDivider1{
     width: 100%;
-    height: 1%;
+    height: 1.4%;
     position: absolute;
     top: 0%;
     z-index: 400;
@@ -1811,16 +1810,17 @@ body{
 
 .sectionDivShadow{
     width: 100%;
-    height: 3%;
+    height: 4%;
     position: absolute;
     top: 0%;
     z-index: 300;
-    background-image: linear-gradient(rgb(188, 188, 188) 0%, transparent 95%);
+    background-image: linear-gradient(rgb(207, 207, 207) 0%, transparent 95%);
+    filter: hue-rotate(10deg);
 }
 
 .locationArchBox{
     width: 100%;
-    height: 60%;
+    height: 65%;
     position: absolute;
     display: grid;
     align-self: flex-start;
@@ -1876,6 +1876,33 @@ body{
     border-radius: 100%;
 }
 
+.clockDecor{
+    width: 10%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    position: absolute;
+    background-color: var(--soft-gold);
+}
+
+.clockDecor.one{
+    top: -5%;
+    border-radius: 100%;
+}
+
+.clockDecor.two{
+    width: 12%;
+    bottom: -5%;
+    border-radius: 100%;
+}
+
+.clockDecor.three{
+    width: 6%;
+    height: 20%;
+    bottom: -15%;
+    clip-path: polygon(0% 0%, 100% 0%, 45% 100%, 35% 100%);
+    
+}
+
 .clockWrapperInner1{
     width: 95%;
     height: 95%;
@@ -1918,7 +1945,6 @@ body{
     opacity: 0.1;
     border-radius: 100%;
     z-index: 500;
-
 }
 
 .clockWrapperInner3{
@@ -2098,12 +2124,12 @@ body{
     align-items: flex-end;
     justify-content: center;
 
-    grid-row-start: 1; grid-row-end: 3;
+    grid-row-start: 1; grid-row-end: 4;
     overflow: hidden;
     mix-blend-mode: multiply;
     z-index: 300;
     opacity: 1;
-
+    mask-image: linear-gradient(180deg, black 90%, transparent 100%);
 
 }
 
@@ -2113,9 +2139,9 @@ body{
     position: absolute;
     object-fit: contain;
     overflow: hidden;
-    scale: 6;
+    scale: 7;
+    bottom: -5%;
     left: 46%;
-    bottom: -10%;
     transform-origin: bottom;
 }
 
@@ -2129,7 +2155,7 @@ body{
 
 .locationWrapper{
     width: 100%;
-    height: 100%;
+    height: 90%;
     position: absolute;
     display: flex;
     align-items: center;
@@ -2150,7 +2176,7 @@ body{
 
 .locationInfo{
     width: 80%;
-    height: 80%;
+    height: 62%;
     display: grid;
     align-items: center;
     justify-content: center;
@@ -2170,7 +2196,9 @@ body{
 .locationTime{
     height: 100%;
     width: 100%;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 0.8fr 1fr;
+    grid-template-rows: 1fr;
     align-items: center;
     justify-content: center;
 
@@ -2179,9 +2207,31 @@ body{
 }
 
 .locationTime > .normalText{
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     text-box-trim: trim-both;
     text-box-edge: cap alphabetic;
+    grid-column-start: 2; grid-column-end: 3;
+    border-left: solid 2px rgb(137, 137, 137);
+    border-right: solid 2px rgb(137, 137, 137);
+}
+
+.timeDecorLine{
+    width: 60%;
+    height: 10%;
+    display: flex;
+    background-color: rgb(137, 137, 137);
+}
+
+.timeDecorLine.one{
+    grid-column-start: 1; grid-column-end: 2;
+    align-items: center;
+    justify-self: flex-end;
+}
+
+.timeDecorLine.two{
+    grid-column-start: 3; grid-column-end: 4;
+    align-items: center;
+    justify-self: flex-start;
 }
 
 .locationMapLink{
@@ -2219,4 +2269,301 @@ body{
     font-size: 1.4rem;
     text-box-trim: trim-both;
     text-box-edge: cap alphabetic;
+}
+
+.locationDivider{
+    height: 18%;
+    width: 100%;
+    position: absolute;
+    bottom: 0%;
+    position: absolute;
+    z-index: 600;
+    overflow: hidden;
+    filter: drop-shadow(0px 5px 5px rgb(177, 177, 177));
+    
+}
+
+.locationDividerInner{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: var(--pure-white);
+    clip-path: shape(
+    nonzero from 0% 0%, 
+    line to 100% 0%,
+    line to 100% 100%,
+    line to 97.5% 100%,
+    line to 97.5% 55%,
+    arc to 77.5% 55% of 5% ccw small, 
+    line to 77.5% 55%,
+    line to 77.5% 100%,
+    line to 72.5% 100%,
+    line to 72.5% 55%,
+    arc to 52.5% 55% of 5% ccw small,
+    line to 52.5% 55%,
+    line to 52.5% 100%,
+    line to 47.5% 100%,
+    line to 47.5% 55%,
+    arc to 27.5% 55% of 5% ccw small,
+    line to 27.5% 55%,
+    line to 27.5% 100%,
+    line to 22.5% 100%,
+    line to 22.5% 55%,
+    arc to 2.5% 55% of 5% ccw small,
+    line to 2.5% 55%,
+    line to 2.5% 100%,
+    line to 0% 100%,
+    );
+}
+
+.locationDividerInnerBehind{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: rgb(222, 222, 222);
+    clip-path: shape(
+    nonzero from 0% 0%, 
+    line to 100% 0%,
+    line to 100% 100%,
+    line to 95% 100%,
+    line to 95% 55%,
+    arc to 77.5% 55% of 5% ccw small, 
+    line to 77.5% 55%,
+    line to 77.5% 100%,
+    line to 70% 100%,
+    line to 70% 55%,
+    arc to 52.5% 55% of 5% ccw small,
+    line to 52.5% 55%,
+    line to 52.5% 100%,
+    line to 47.5% 100%,
+    line to 47.5% 55%,
+    arc to 30% 55% of 5% ccw small,
+    line to 30% 55%,
+    line to 30% 100%,
+    line to 22.5% 100%,
+    line to 22.5% 55%,
+    arc to 5% 55% of 5% ccw small,
+    line to 5% 55%,
+    line to 5% 100%,
+    line to 0% 100%,
+    );
+}
+
+.sectionMould4{
+    width: 120%;
+    height: 20%;
+    position: absolute;
+    grid-column-start: 4; grid-column-end: 5;
+    grid-row-start: 1; grid-row-end: 2;
+    justify-self: center;
+    transform-origin: center;
+}
+
+.fourthSection{
+    width: 100svw;
+    height: 85svh;
+    top: 410svh;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--pure-white);
+}
+
+.fourthSection::before{
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-image: url(assets/svg/backgroundTexture.svg);
+    background-size: 50%;
+    opacity: 0.4;    
+}
+
+.sectionMould5{
+    width: 100%;
+    height: 15%;
+    position: absolute;
+    top: 0%;
+    grid-column-start: 4; grid-column-end: 5;
+    grid-row-start: 1; grid-row-end: 2;
+    justify-self: center;
+    justify-items: center;
+    align-items: center;
+    transform-origin: center;
+}
+
+.sectionMould5 .dMPart1{
+    height: 25%;
+}
+
+.sectionMould5 .dMPart2{
+    height: 20%;
+    width: 80%;
+}
+
+.sectionMould5 .dMPart3{
+    height: 10%;
+    width: 85%;
+    z-index: 500;
+    background-color: var(--soft-gold);
+    box-shadow: none;
+}
+
+.decorativeWall{
+    width: 75%;
+    height: 85%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--deep-red);
+    border-radius: 0px 0px 300px 300px;
+}
+
+.decorativeWallInnerShadow{
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0px 0px 10px rgb(192, 192, 192));
+}
+
+.decorativeWallInner{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--pure-white);
+
+    clip-path: shape(
+    nonzero from 15% 0%, 
+    line to 85% 0%,
+    line to 85% 90%,
+    arc to 100% 100% of 70px ccw small,
+    line to 100% 100%,
+    line to 0% 100%,
+    arc to 15% 90% of 70px ccw small,
+    line to 15% 90%,
+    line to 15% 0%
+    );
+
+}
+
+.formalAttireRequired{
+    width: 90%;
+    height: 25%;
+    position: absolute;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+    top: 15%;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 0.3fr 0.9fr 0.7fr;
+}
+
+.formalIcon{
+    width: auto;
+    height: 100%;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    grid-row-start: 1;
+    grid-row-end: 2;
+}
+
+.formalIcon img{
+    height: 100%;
+    object-fit: contain;
+    z-index: 200;
+}
+
+.attireText{
+    width: 100%;
+    height: auto;
+    position: absolute;
+    grid-row-start: 3; grid-row-end: 4;
+    text-wrap: nowrap;
+    color: var(--pure-white);
+}
+
+.requiredTextBox{
+    width: 90%;
+    height: 100%;
+    position: absolute;
+    display: grid;
+    grid-template-columns: 0.9fr 1fr 0.9fr;
+    justify-content: center;
+    align-items: center;
+    grid-row-start: 4; grid-row-end: 5;
+}
+
+.requiredTextBox p{
+    color: var(--soft-gold);
+    font-size: 1.2rem;
+}
+
+.requiredLine{
+    width: 100%;
+    height: 8%;
+    background-color:rgb(218, 218, 218);
+}
+
+.noKidsAllowed{
+    width: 90%;
+    height: 45%;
+    position: absolute;
+    display: grid;
+    top: 45%;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 2.5fr;
+}
+
+.noKidsAllowed .attireText{
+    grid-row-start: 2; grid-row-end: 3;
+}
+
+.noKidsExplanation{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    grid-row-start: 3; grid-row-end: 4;
+    padding: 5%;
+}
+
+.noKidsExplanation.normalText{
+    font-size: 1.1rem;
+    color: var(--soft-gold);
+}
+
+.fifthSection{
+    width: 100svw;
+    height: 130svh;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    top: 495svh;
+    background-color: var(--pure-white);
+    padding-top: 30%;
+}
+
+.scheduleTitleBox{
+    width: 90%;
+    height: 10%;
+}
+
+.scheduleTitle{
+    font-size: 1.6rem;
+}
+
+.scheduleSubTitle{
+    color: var(--soft-gold);
+}
+
+.scheduleTimeLineBox{
+    width: 100%;
+    height: 80%;
 }
