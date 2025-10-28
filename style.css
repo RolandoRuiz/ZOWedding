@@ -2537,14 +2537,17 @@ body{
     color: var(--soft-gold);
 }
 
+
+
 .fifthSection{
     width: 100svw;
     height: 130svh;
     position: absolute;
-    display: flex;
-    flex-direction: column;
+    display: grid;
     align-items: center;
-    justify-content: space-evenly;
+    justify-items: center;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.15fr 0.04fr 1fr;
     top: 495svh;
     background-color: var(--pure-white);
     padding-top: 25%;
@@ -2553,10 +2556,12 @@ body{
 .scheduleTitleBox{
     width: 85%;
     height: 10%;
+    position: absolute;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    grid-row-start: 1; grid-row-end: 2;
 }
 
 .scheduleTitle{
@@ -2571,34 +2576,76 @@ body{
 
 .scheduleTimeLineBox{
     width: 100%;
-    height: 80%;
+    height: 100%;
+    position: absolute;
     display: grid;
     justify-items: center;
-    border: solid 1px pink;
+    align-items: center;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    grid-row-start: 3; grid-row-end: 4;
+    padding-bottom: 10%;
 }
 
 .timeLineBox{
     width: 1%;
     height: 100%;
     display: flex;
-    align-items: flex-start;
+    position: absolute;
+    align-items: center;
     justify-content: center;
+    grid-row-start: 1; grid-row-end: 2;
 }
 
 .timeLineBoxInner{
     width: 100%;
     height: 100%;
-    background-color: red;
-    position: relative;
+    transform-origin: top center;
+    position: absolute;
     top: 0%;
+    background-color: var(--soft-gold);
 }
 
 .startCircle{
-    width: 3%;
+    width: 300%;
     height: auto;
     aspect-ratio: 1 / 1;
     position: absolute;
+    top: 0;
     background-color: var(--soft-gold);
     z-index: 200;
     border-radius: 100%;
+}
+
+.endCircle{
+    width: 350%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    position: absolute;
+    bottom: 0%;
+    background-color: var(--soft-gold);
+    z-index: 200;
+    border-radius: 100%;
+}
+
+.activityBox{
+    width: 80%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding-bottom: 10%;
+}
+
+.activityLineBox{
+    width: 100%;
+    height: 15%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient(transparent 0%, rgb(255, 255, 255) 20%, rgb(255, 255, 255) 80%, transparent 100%);
+
 }
