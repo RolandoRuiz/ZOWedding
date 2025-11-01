@@ -2697,23 +2697,24 @@ body{
 
 .sixthSection{
     width: 100svw;
-    height: 70svh;
+    height: 85vh;
     position: absolute;
     display: grid;
 
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 0.05fr 0.5fr;
+    grid-template-rows: 1fr 0.15fr 0.8fr;
     justify-items: center;
     align-items: center;
 
     background-color: var(--pure-white);
-    top: 625svh;
-    padding-top: 5%;
+    top: 624svh;
+    padding-top: 15%;
     padding-bottom: 5%;
+    overflow: hidden;
 }
 
 .presentBox{
-    width: 50%;
+    width: 85%;
     height: 100%;
     position: absolute;
     display: flex;
@@ -2726,20 +2727,57 @@ body{
 
 .presentBox::before{
     content: "";
-    width: 80%;
-    height: 85%;
+    width: 90%;
+    height: 95%;
     position: absolute;
     background: url(Assets/svg/backgroundTexture.min.svg), linear-gradient(white 0%, white 100%);
+    background-size: 50%;
+    opacity: 0.3;
+    box-shadow: inset 0px 0px 10px black;
     border-radius: 200px 200px 0px 0px;
-    opacity: 0.4;
-        box-shadow: inset 0px 0px 10px black;
+    bottom: 0%;
 }
 
 .presentText{
+    height: 90%;
     width: 80%;
-    grid-row-start: 3; grid-row-end: 4;
+    background-color: var(--deep-red);
+    grid-row-start: 2; grid-row-end: 4;
+    border-radius: 0px 0px 200px 200px;
 }
 
-.presentText .h2TextNormal{
-    font-size: 0.9rem;
+.presentText .normalText{
+    padding-left: 10%; padding-right: 10%; padding-top: 16%;
+    font-size: 1.3rem;
+    color: var(--soft-gold);
+}
+
+.sectionMould6{
+    width: 90%;
+    height: 100%;
+    position: absolute;
+    top: 0%;
+    grid-row-start: 2; grid-row-end: 3;
+    justify-self: center;
+    justify-items: center;
+    align-items: center;
+    transform-origin: center;
+}
+
+
+.sectionMould6 .dMPart1{
+    height: 30%;
+}
+
+.sectionMould6 .dMPart2{
+    height: 30%;
+    width: 90%;
+}
+
+.sectionMould6 .dMPart3{
+    height: 20%;
+    width: 95%;
+    z-index: 500;
+    background-color: var(--soft-gold);
+    box-shadow: none;
 }
