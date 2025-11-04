@@ -2730,9 +2730,9 @@ body{
     width: 93%;
     height: 97%;
     position: absolute;
-    background-image: url(Assets/svg/backgroundTexture.min.svg);
+    background-color: var(--pure-white);
     background-size: 50%;
-    opacity: 0.3;
+    opacity: 1;
     box-shadow: inset 0px 0px 10px black;
     border-radius: 200px 200px 0px 0px;
     bottom: 0%;
@@ -2743,9 +2743,9 @@ body{
     width: 93%;
     height: 97%;
     position: absolute;
-    background-color: red;
+    background-image: url(Assets/svg/backgroundTexture.min.svg);
     background-size: 50%;
-    opacity: 1;
+    opacity: 0.3;
     box-shadow: inset 0px 0px 10px black;
     border-radius: 200px 200px 0px 0px;
     bottom: 0%;
