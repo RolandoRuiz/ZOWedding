@@ -2697,7 +2697,7 @@ body{
 
 .sixthSection{
     width: 100svw;
-    height: 100svh;
+    height: 110svh;
     position: absolute;
     display: grid;
 
@@ -2714,7 +2714,7 @@ body{
 }
 
 .presentBox{
-    width: 100%;
+    width: 115%;
     height: 100%;
     position: absolute;
     display: flex;
@@ -2727,12 +2727,25 @@ body{
 
 .presentBox::before{
     content: "";
-    width: 90%;
-    height: 95%;
+    width: 93%;
+    height: 97%;
     position: absolute;
-    background: url(Assets/svg/backgroundTexture.min.svg), linear-gradient(white 0%, white 100%);
+    background-image: url(Assets/svg/backgroundTexture.min.svg);
     background-size: 50%;
     opacity: 0.3;
+    box-shadow: inset 0px 0px 10px black;
+    border-radius: 200px 200px 0px 0px;
+    bottom: 0%;
+}
+
+.presentBox::after{
+    content: "";
+    width: 93%;
+    height: 97%;
+    position: absolute;
+    background-color: red;
+    background-size: 50%;
+    opacity: 1;
     box-shadow: inset 0px 0px 10px black;
     border-radius: 200px 200px 0px 0px;
     bottom: 0%;
