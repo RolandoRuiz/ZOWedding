@@ -2733,7 +2733,6 @@ body{
     background-color: var(--pure-white);
     background-size: 50%;
     opacity: 1;
-    box-shadow: inset 0px 0px 10px black;
     border-radius: 200px 200px 0px 0px;
     bottom: 0%;
 }
@@ -2746,9 +2745,10 @@ body{
     background-image: url(Assets/svg/backgroundTexture.min.svg);
     background-size: 50%;
     opacity: 0.3;
-    box-shadow: inset 0px 0px 10px black;
+    box-shadow: inset 0px 0px 15px black;
     border-radius: 200px 200px 0px 0px;
     bottom: 0%;
+    mask-image: linear-gradient(black 0%, transparent 100%);
 }
 
 .presentText{
