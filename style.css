@@ -1592,6 +1592,18 @@ body{
     box-shadow: inset 0px 0px 15px rgb(0, 0, 0);
 }
 
+.partnerImgSection2.img::after{
+    content: "";
+    width: 110%;
+    height: 100%;
+    background-image: url(Assets/img/Imagen1.webp);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 100%;
+    background-position: 50% -1300%;
+    z-index: 400;
+}
+
 .Bgr1{
     width: 250%;
     height: 95%;
@@ -1617,6 +1629,7 @@ body{
 }
 
 .Bgr2::before{
+    content: "";
     width: 85%;
     height: 96.5%;
     border-radius: 1500px 1500px 0px 0px;
@@ -2420,6 +2433,19 @@ body{
     background-color: var(--soft-gold);
     border-radius: 0px 0px 300px 300px;
     filter: drop-shadow(0px 0px 10px rgb(192, 192, 192));
+
+    --s: 15px; /* control the size*/
+    --c1: #ddc098;
+    --c2: #D5B88F;
+  
+    --_g: #0000 83%,var(--c1) 85% 99%,#0000 101%;
+    background:
+    radial-gradient(27% 29% at right ,var(--_g)) calc(var(--s)/ 2) var(--s),
+    radial-gradient(27% 29% at left  ,var(--_g)) calc(var(--s)/-2) var(--s),
+    radial-gradient(29% 27% at top   ,var(--_g)) 0 calc(var(--s)/ 2),
+    radial-gradient(29% 27% at bottom,var(--_g)) 0 calc(var(--s)/-2)
+    var(--c2);
+    background-size: calc(2*var(--s)) calc(2*var(--s));
 }
 
 .decorativeWall::before{
@@ -2510,7 +2536,7 @@ body{
 }
 
 .requiredTextBox p{
-    color: var(--soft-gold);
+    color: var(--medium-black);
     font-size: 1.2rem;
     grid-column-start: 3; grid-column-end: 4;
 }
@@ -2552,7 +2578,7 @@ body{
 
 .noKidsExplanation.normalText{
     font-size: 1.1rem;
-    color: var(--soft-gold);
+    color: var(--medium-black);
 }
 
 
@@ -2621,6 +2647,7 @@ body{
     grid-template-rows: 1fr;
     grid-row-start: 3; grid-row-end: 4;
     padding-bottom: 10%;
+    overflow: hidden;
 }
 
 .timeLineBox{
@@ -2677,7 +2704,7 @@ body{
 
 .activityLineBox{
     width: 100%;
-    height: 15%;
+    height: 25%;
     display: grid;
     grid-template-columns: 0.3fr 1fr 0.3fr;
     grid-template-rows: 1fr 1fr 0.2fr 1fr 1fr;
@@ -2958,4 +2985,95 @@ body{
     padding-bottom: 5%;
     padding-left: 40%;
     padding-right: 40%;
+}
+
+.eighthSection{
+    width: 100svw;
+    height: 100svh;
+    position: absolute;
+    top: 804svh;
+    background-color: var(--pure-white);
+    display: grid;
+    grid-template-columns: 0.15fr 0.05fr 1fr 0.05fr 0.15fr;
+    grid-template-rows: 1fr 0.05fr 0.3fr;
+    padding-top: 5%; padding-bottom: 5%;
+}
+
+.finalImgBackground{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: grid;
+    align-items: self-end;
+    justify-items: center;
+    background-color: rgb(238, 238, 238);
+    grid-column-start: 3; grid-column-end: 4;
+    grid-row-start: 1; grid-row-end: 2;
+    border-radius: 300px 300px 0px 0px;
+}
+
+.finalImgBackground::before{
+    content: "";
+    width: 86%;
+    height: 96%;
+    position: absolute;
+    background-color: var(--pure-white);
+    border-radius: 300px 300px 0px 0px;
+}
+
+.finalImgBackground::after{
+    content: "";
+    width: 86%;
+    height: 96%;
+    position: absolute;
+    opacity: 0.3;
+    background-image: url(Assets/svg/backgroundTexture.min.svg);
+    border-radius: 300px 300px 0px 0px;
+    box-shadow: inset 0px 0px 15px black;
+}
+
+.sectionMould7{
+    width: 100%;
+    height: 100%;
+    top: 0%;
+    grid-column-start: 2; grid-column-end: 5;
+    grid-row-start: 2; grid-row-end: 3;
+    justify-self: center;
+    justify-items: center;
+    align-items: center;
+    transform-origin: center;
+}
+
+
+.sectionMould7 .dMPart1{
+    height: 30%;
+}
+
+.sectionMould7 .dMPart2{
+    height: 30%;
+    width: 90%;
+}
+
+.sectionMould7 .dMPart3{
+    height: 20%;
+    width: 95%;
+    z-index: 500;
+    background-color: var(--soft-gold);
+    box-shadow: none;
+}
+
+.finalText{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    grid-column-start: 2; grid-column-end: 5;
+    grid-row-start: 3; grid-row-end: 4;
+}
+
+.finalText .normalTextCursive{
+    font-size: 2.5rem;
 }
