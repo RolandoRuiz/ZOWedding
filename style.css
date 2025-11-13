@@ -2701,6 +2701,10 @@ body{
     margin-top: 2%;
 }
 
+.indicator{
+    color: var(--soft-gold);
+}
+
 
 .indicator.left{
     grid-row-start: 2; grid-row-end: 5;
@@ -2893,4 +2897,65 @@ body{
     position: absolute;
     grid-row-start: 4; grid-row-end: 5;
     background-image: url(Assets/svg/giftBox.svg);
+}
+
+.seventhSection{
+    width: 100svw;
+    height: 70svh;
+    position: absolute;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.5fr 1fr 0.1fr 0.4fr 0.2fr;
+    background-color: var(--pure-white);
+    top: 734svh;
+}
+
+.seventhSection::before{
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-image: url(Assets/svg/backgroundTexture.min.svg);
+    background-size: 50%;
+    mask-image: radial-gradient(50% 50% at 30% 10%, transparent 50%, black 80%),
+    radial-gradient(60% 30% at 80% -10%, transparent 50%, black 80%), 
+    radial-gradient(70% 50% at 60% 50%, transparent 50%, black 80%),
+    radial-gradient(50% 50% at 30% 80%, transparent 50%, black 80%),
+    radial-gradient(50% 30% at 70% 100%, transparent 50%, black 80%),
+    radial-gradient(20% 20% at 70% 80%, transparent 50%, black 80%),
+    radial-gradient(100% 20% at 50% 100%, transparent 50%, black 80%);
+    mask-composite: intersect;
+    opacity: 0.4;
+}
+
+.confirmText{
+    width: 80%;
+    height: 100%;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    z-index: 500;
+}
+
+.confirmText.one{
+    grid-row-start: 2; grid-row-end: 3;
+}
+
+.confirmText.two{
+    grid-row-start: 4; grid-row-end: 5;
+    text-wrap: nowrap;
+}
+
+.confirmText.one .normalText, .confirmText.two .normalText{
+    font-size: 1.2rem;
+}
+
+.confirmText.two .locationBtn{
+    height: auto;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    padding-left: 40%;
+    padding-right: 40%;
 }
