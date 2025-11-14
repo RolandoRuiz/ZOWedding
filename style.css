@@ -1468,6 +1468,19 @@ body{
     box-shadow: inset 0px 0px 20px rgb(0, 0, 0);
 }
 
+.partnerImg{
+    width: 85%;
+    height: 90%;
+    position: absolute;
+    background-image: url(Assets/img/Image2.png);
+    background-size: 115%;    
+    background-repeat: no-repeat;
+    background-position: 160% 500%;
+    z-index: 200;
+    overflow: hidden;
+    bottom: 0%;
+}
+
 .decorativeMouldBox{
     position: absolute;
 }
@@ -1517,6 +1530,10 @@ body{
     background: rgb(255, 255, 255);
 }
 
+.sectionMould1 .dMPart3{
+    background-color: var(--soft-gold);
+}
+
 .dMPart4{
     width: 95%;
     height: 12%;
@@ -1538,7 +1555,7 @@ body{
 
 #secondSection{
     width: 100svw;
-    height: 90svh;
+    height: 95svh;
     position: absolute;
     z-index: 300;
     top: 190svh;
@@ -1547,12 +1564,12 @@ body{
 
     background-color: var(--pure-white);
     grid-template-columns: 0.1fr 1fr 0.1fr;
-    grid-template-rows: 1fr 0.5fr 0.15fr;
+    grid-template-rows: 0.3fr 1fr 0.25fr 0.15fr;
 }
 
 .partnerImgSection2BgrBox{
     width: 100%;
-    height: 100%;
+    height: 95%;
     display: grid;
     align-items: center;
     justify-items: center;
@@ -1563,10 +1580,11 @@ body{
     grid-template-rows: 1fr;
 
     grid-column-start: 1; grid-column-end: 4;
-    grid-row-start: 1; grid-row-end: 4;
+    grid-row-start: 1; grid-row-end: 5;
 
     mask-image: radial-gradient(40% 40% at 80% 80%, rgba(0, 0, 0, 0.150) 0%, rgb(0, 0, 0) 100%) ;
     mask-composite: intersect;
+    bottom: 0%;
 }
 
 .partnerImgSection2{
@@ -1601,7 +1619,7 @@ body{
     background-repeat: no-repeat;
     background-position: center center;
     background-size: contain;
-    scale: 1.3;
+    scale: 1.2;
     z-index: 400;
     bottom: -20%;
 }
@@ -1675,6 +1693,10 @@ body{
     transform-origin: center;
 }
 
+.sectionMould2 .dMPart3, .sectionMould3 .dMPart3{
+    background-color: var(--soft-gold);
+}
+
 .partnerNamesBox{
     width: 100%;
     height: 100%;
@@ -1682,21 +1704,32 @@ body{
     position: absolute;
     align-items: center;
     justify-items: center;
-    grid-column-start: 1; grid-column-end: 4;
-    grid-row-start: 2; grid-row-end: 3;
     z-index: 200;
-
-    grid-template-columns: 0.06fr 1fr 0.06fr;
-    grid-template-rows: 1fr 0.35fr 0.35fr;
-
 }
 
-.partnerNamesBox::before{
+.partnerNamesBox.one{
+    grid-template-columns: 0.06fr 1fr 0.06fr;
+    grid-template-rows: 1fr 0.2fr;
+    grid-column-start: 1; grid-column-end: 4;
+    grid-row-start: 1; grid-row-end: 2;
+    bottom: 15%;
+}
+
+.partnerNamesBox.two{
+    grid-template-columns: 0.06fr 1fr 0.06fr;
+    grid-template-rows: 0.3fr 0.6fr 1fr 0.5fr;
+    grid-column-start: 1; grid-column-end: 4;
+    grid-row-start: 3; grid-row-end: 4;
+}
+
+.partnerNamesBox.two::before{
     content: "";
     width: 100%;
-    height: 130%;
+    height: 100%;
     position: absolute;
-    background-color: rgba(255, 255, 255, 0.675);
+    background-color: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(2px);
+    
 }
 
 .partnerNameTextComposite1{
@@ -1778,7 +1811,6 @@ body{
     position: relative;
     bottom: -20%;
     margin-left: 3%;
-    color: var(--soft-gold);
     font-size: 3.4rem;
 
     text-box-trim: trim-both;
@@ -1789,10 +1821,11 @@ body{
 /*Third section and arch components*/
 
 .thirdSection{
-    width: 100svw;    height: 130svh;
+    width: 100svw;    
+    height: 130svh;
     position: absolute;
     background-color: var(--pure-white);
-    top: 280svh;
+    top: 285svh;
     overflow: hidden;
 }
 
@@ -2269,6 +2302,10 @@ body{
     grid-row: 5 / 6;
 }
 
+.locationMapLink a{
+    text-decoration: none;
+}
+
 .locationBtn{
     width: 55%;
     height: 100%;
@@ -2386,7 +2423,7 @@ body{
 .fourthSection{
     width: 100svw;
     height: 85svh;
-    top: 410svh;
+    top: 415svh;
     position: absolute;
     display: flex;
     align-items: center;
@@ -2603,7 +2640,7 @@ body{
     justify-items: center;
     grid-template-columns: 1fr;
     grid-template-rows: 0.15fr 0.04fr 1fr;
-    top: 495svh;
+    top: 500svh;
     background-color: var(--pure-white);
     padding-top: 25%;
 }
@@ -2767,7 +2804,7 @@ body{
     align-items: center;
 
     background-color: var(--pure-white);
-    top: 624svh;
+    top: 630svh;
     padding-top: 15%;
     padding-bottom: 0%;
     overflow: hidden;
@@ -2947,7 +2984,7 @@ body{
     grid-template-columns: 1fr;
     grid-template-rows: 0.5fr 1fr 0.1fr 0.4fr 0.2fr;
     background-color: var(--pure-white);
-    top: 734svh;
+    top: 740svh;
 }
 
 .seventhSection::before{
@@ -3002,7 +3039,7 @@ body{
     width: 100svw;
     height: 100svh;
     position: absolute;
-    top: 804svh;
+    top: 810svh;
     background-color: var(--pure-white);
     display: grid;
     grid-template-columns: 0.15fr 0.05fr 1fr 0.05fr 0.15fr;
@@ -3087,4 +3124,17 @@ body{
 
 .finalText .normalTextCursive{
     font-size: 2.5rem;
+}
+
+.partnerImg.two{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-image: url(Assets/img/Image2.png);
+    background-size: 120%;    
+    background-repeat: no-repeat;
+    background-position: 0% 100%;
+    z-index: 200;
+    overflow: hidden;
+    overflow: hidden;
 }
