@@ -405,22 +405,6 @@ body{
   will-change: opacity, transform;
 }
 
-/*
-.bgrOverlayWrapper {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform-origin: bottom;
-  transform: scale(0.01);
-  mix-blend-mode: overlay;
-  z-index: 100;
-  pointer-events: none;
-  will-change: transform;
-}*/
-
 .bgrOverlayWrapper{
     width: 100%;
     height: 100%;
@@ -1472,7 +1456,7 @@ body{
     width: 85%;
     height: 90%;
     position: absolute;
-    background-image: url(Assets/img/Image2.png);
+    background-image: url(Assets/img/image2.png);
     background-size: 115%;    
     background-repeat: no-repeat;
     background-position: 160% 500%;
@@ -1615,7 +1599,7 @@ body{
     width: 110%;
     height: 100%;
     position: absolute;
-    background-image: url(Assets/img/Imagen1.png);
+    background-image: url(Assets/img/image1.png);
     background-repeat: no-repeat;
     background-position: center center;
     background-size: contain;
@@ -3033,6 +3017,7 @@ body{
     padding-bottom: 5%;
     padding-left: 40%;
     padding-right: 40%;
+    text-decoration: none;
 }
 
 .eighthSection{
@@ -3130,8 +3115,8 @@ body{
     width: 100%;
     height: 100%;
     position: absolute;
-    background-image: url(Assets/img/Image2.png);
-    background-size: 120%;    
+    background-image: url(Assets/img/image3.png);
+    background-size: 100%;    
     background-repeat: no-repeat;
     background-position: 0% 100%;
     z-index: 200;
