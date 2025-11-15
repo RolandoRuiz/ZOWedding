@@ -1304,6 +1304,7 @@ body{
     grid-template-rows: 1fr 6fr;
 }
 
+
 .textBlock{
     width: 100%;
     height: 100%;
@@ -1711,7 +1712,7 @@ body{
     width: 100%;
     height: 100%;
     position: absolute;
-    background-color: rgba(255, 255, 255, 0.4);
+    background-color: #d5b88fbf;
     backdrop-filter: blur(2px);
     
 }
@@ -3122,4 +3123,68 @@ body{
     z-index: 200;
     overflow: hidden;
     overflow: hidden;
+}
+
+.flowerBox{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border: solid 2px red;
+    z-index: 2000;
+}
+
+.flowerBox.one{
+    width: 50%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    right: 0%;
+}
+
+.flowerBox.two{
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 0.5;
+    left: 0%; top: 165%;
+}
+
+.flowerBox.three{
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 0.5;
+    left: 0%; top: 255%;
+}
+
+.flowerBox.four{
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 0.8;
+    left: 0%; top: 355%;
+}
+
+.flowerBox.five{
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 0.4;
+    left: 0%; top: 450%;
+}
+
+.flowerBox.six{
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 0.6;
+    left: 0%; top: 572%;
+}
+
+.flowerBox.seven{
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 0.5;
+    left: 0%; top: 667%;
+}
+
+.flowerBox.eight{
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 0.7;
+    left: 0%; top: 730%;
 }
