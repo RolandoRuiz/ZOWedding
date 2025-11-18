@@ -5,19 +5,6 @@
     font: inherit;
 }
 
-/* Pause ALL CSS animations & transitions before load */
-html:not(.loaded) * {
-  animation-play-state: paused !important;
-  transition: none !important;   /* optional, prevents weird partial transitions */
-}
-
-/* When fully loaded, re-enable everything */
-html.loaded * {
-  animation-play-state: running !important;
-  transition: all var(--transition-speed, 0.3s) ease !important; /* optional */
-}
-
-
 svg{
     contain: layout paint;
 }
@@ -320,12 +307,17 @@ body{
     align-items: center;
 }
 
-.initialParagraph.One{
+/*.initialParagraph.One{
     animation: closeParagraph 1s ease-in forwards 14s;
 }
 
 .initialParagraph.Two{
     animation: closeParagraph 1s ease-in forwards 25s;
+}*/
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 1s ease; /* adjust duration as you like */
 }
 
 @keyframes closeParagraph {
@@ -378,18 +370,6 @@ body{
 
     -webkit-mask-position: var(--mask-x) 0;
     mask-position: var(--mask-x) 0;
-}
-
-.glowMask{
-    animation: glowMaskMovement 3s linear forwards;
-}
-
-@keyframes glowMaskMovement {
-    0%{
-        mask-position: 650%;
-    }100%{
-        mask-position: -600%;
-    }
 }
 
 .initTxt1{

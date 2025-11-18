@@ -394,17 +394,23 @@ function updateLeaves(delta) {
   currentBatch = (currentBatch + 1) % leafBatchCount;
 }
 
-/**********************************************************
- * PARAGRAPH MASKS
- **********************************************************/
+// Initialize mask positions
 getParagraphLines.forEach(l => {
-  try { l.style.willChange = "mask-position,-webkit-mask-position"; l.style.setProperty('--mask-x','100%'); } catch(e){}
-});
-getParagraphGlows.forEach(l => {
-  try { l.style.willChange = "mask-position,-webkit-mask-position"; l.style.setProperty('--mask-x','650%'); } catch(e){}
+  try { 
+    l.style.willChange = "mask-position,-webkit-mask-position"; 
+    l.style.setProperty('--mask-x','100%'); 
+  } catch(e){}
 });
 
-function animateMask(line, start, end, duration){
+getParagraphGlows.forEach(l => {
+  try { 
+    l.style.willChange = "mask-position,-webkit-mask-position"; 
+    l.style.setProperty('--mask-x','650%'); 
+  } catch(e){}
+});
+
+// Animate individual line/glow masks
+function animateMask(line, start, end, duration, callback){
   let startTime = null;
   function step(ts){
     if(!startTime) startTime = ts;
@@ -412,47 +418,90 @@ function animateMask(line, start, end, duration){
     const progress = Math.min(elapsed / duration, 1);
     const posX = start + (end - start) * progress;
     line.style.setProperty('--mask-x', `${posX}%`);
-    if(progress < 1) requestAnimationFrame(step);
+    if(progress < 1) {
+      requestAnimationFrame(step);
+    } else if(callback){
+      callback();
+    }
   }
   requestAnimationFrame(step);
 }
 
-function animateParagraph(paragraph){
+// Animate a single paragraph
+function animateParagraph(paragraph, onComplete){
   const delayPerLine = 1500;
   const lineDuration = 2600;
 
-  getParagraphLines.forEach((line,i)=>{
-    if((paragraph.classList.contains("One") && line.closest(".One")) || 
-       (paragraph.classList.contains("Two") && line.closest(".Two"))){
-      setTimeout(()=>animateMask(line, 100, 0, lineDuration), i*delayPerLine);
-    }
-  });
+  const lines = Array.from(getParagraphLines).filter(line =>
+    (paragraph.classList.contains("One") && line.closest(".One")) ||
+    (paragraph.classList.contains("Two") && line.closest(".Two"))
+  );
 
-  getParagraphGlows.forEach((glow,i)=>{
-    if((paragraph.classList.contains("One") && glow.closest(".One")) || 
-       (paragraph.classList.contains("Two") && glow.closest(".Two"))){
-      setTimeout(()=>animateMask(glow, 650, -600, lineDuration), i*delayPerLine);
-    }
-  });
-}
+  const glows = Array.from(getParagraphGlows).filter(glow =>
+    (paragraph.classList.contains("One") && glow.closest(".One")) ||
+    (paragraph.classList.contains("Two") && glow.closest(".Two"))
+  );
 
-function staggerParagraphs(){
-  const delay = 4000;
-  let startTime = null;
-  function step(ts){
-    if(!startTime) startTime = ts;
-    const elapsed = ts - startTime;
-    getInitialParagraphs.forEach((paragraph,i)=>{
-      if(!paragraph.started && elapsed >= (i+1)*delay){
-        paragraph.started = true;
-        animateParagraph(paragraph);
+  let totalLines = lines.length;
+  let finishedLines = 0;
+
+  function lineDone(){
+    finishedLines++;
+    if(finishedLines === totalLines){
+      // All lines finished → wait 3s → fade out
+      let fadeStart = null;
+      function fadeStep(ts){
+        if(!fadeStart) fadeStart = ts;
+        const fadeElapsed = ts - fadeStart;
+        if(fadeElapsed < 1000){
+          requestAnimationFrame(fadeStep);
+        } else {
+          paragraph.classList.add("fade-out");
+          // Wait fade-out duration (assume 1s), then call onComplete
+          setTimeout(() => {
+            if(onComplete) onComplete();
+          }, 500);
+        }
       }
-    });
-    if([...getInitialParagraphs].some(p=>!p.started)) requestAnimationFrame(step);
+      requestAnimationFrame(fadeStep);
+    }
   }
-  requestAnimationFrame(step);
+
+  lines.forEach((line, i) => {
+    setTimeout(() => animateMask(line, 100, 0, lineDuration, lineDone), i * delayPerLine);
+  });
+
+  glows.forEach((glow, i) => {
+    setTimeout(() => animateMask(glow, 650, -600, lineDuration, null), i * delayPerLine);
+  });
 }
-staggerParagraphs();
+
+// Sequentially animate all paragraphs
+function staggerParagraphsRAF(){
+  const paragraphs = [...getInitialParagraphs];
+  let index = 0;
+
+  function nextParagraph(){
+    if(index < paragraphs.length){
+      animateParagraph(paragraphs[index], () => {
+        index++;
+        nextParagraph(); // Immediately start next paragraph after fade
+      });
+    }
+  }
+
+  // Start first paragraph after initial 4s delay
+  let startTime = null;
+  function initialDelay(ts){
+    if(!startTime) startTime = ts;
+    if(ts - startTime >= 4000){
+      nextParagraph();
+    } else {
+      requestAnimationFrame(initialDelay);
+    }
+  }
+  requestAnimationFrame(initialDelay);
+}
 
 /**********************************************************
  * SPINNING SPARKS (sparkBoxes)
@@ -1221,122 +1270,14 @@ if (openLetter) {
  * STARTUP
  **********************************************************/
 
-// Helper: wait for all <img> and SVG <image> elements to finish loading/decoding.
-// Also handles images that are already complete.
-function waitForAllImages(timeoutMs = 8000) {
-  const imgs = Array.from(document.querySelectorAll('img'));
-  // also include <image> inside inline SVGs
-  const svgImages = Array.from(document.querySelectorAll('svg image')).map(x => {
-    // the href may be in href or xlink:href, normalize to a pseudo-element with .src
-    const href = x.getAttribute('href') || x.getAttributeNS('http://www.w3.org/1999/xlink', 'href');
-    return { el: x, src: href };
-  });
-
-  const promises = imgs.map(img => {
-    if (img.complete && img.naturalWidth !== 0) return Promise.resolve();
-    return new Promise(resolve => {
-      const onFinish = () => {
-        img.removeEventListener('load', onFinish);
-        img.removeEventListener('error', onFinish);
-        resolve();
-      };
-      img.addEventListener('load', onFinish, { once: true });
-      img.addEventListener('error', onFinish, { once: true });
-      // some browsers support decoding()
-      if (img.decode) img.decode().catch(() => {}).finally(() => {});
-    });
-  });
-
-  // For SVG <image>, check that either the href is falsy (inline data) or the image is painted:
-  svgImages.forEach(({ el, src }) => {
-    // If no src (it's embedded vector content) resolve immediately.
-    if (!src) {
-      promises.push(Promise.resolve());
-      return;
-    }
-
-    // Create an off-DOM Image to load the same src and resolve when done.
-    const p = new Promise(resolve => {
-      const img = new Image();
-      const onFinish = () => {
-        img.removeEventListener('load', onFinish);
-        img.removeEventListener('error', onFinish);
-        resolve();
-      };
-      img.addEventListener('load', onFinish, { once: true });
-      img.addEventListener('error', onFinish, { once: true });
-      img.src = src;
-    });
-    promises.push(p);
-  });
-
-  const all = Promise.all(promises);
-
-  // add a timeout so we don't wait forever
-  const timeout = new Promise(resolve => setTimeout(resolve, timeoutMs));
-  return Promise.race([all, timeout]);
-}
-
-// Helper: wait for fonts if available
-function waitForFonts() {
-  if (document.fonts && document.fonts.ready) return document.fonts.ready;
-  return Promise.resolve();
-}
-
-// Helper: wait for n animation frames (useful to ensure browser has painted)
-function waitForFrames(n = 2) {
-  return new Promise(resolve => {
-    function step(i) {
-      if (i <= 0) return resolve();
-      requestAnimationFrame(() => step(i - 1));
-    }
-    step(n);
-  });
-}
-
-// MAIN: improved load flow
-window.addEventListener('load', async () => {
-  // keep no-scroll until everything's ready
-  document.documentElement.classList.add('no-scroll');
-
-  try {
-    // 1) wait for your SVG mounting logic to finish
-    await loadAndMountAllSvg(); // preserve your existing function
-
-    // 2) wait for fonts & images used in the document (including SVG images)
-    await Promise.all([
-      waitForFonts(),
-      waitForAllImages(10000) // 10s fallback timeout; tune as needed
-    ]);
-
-    // 3) give the browser a couple frames to layout & rasterize the newly inserted SVGs
-    await waitForFrames(2);
-
-    // Optional: quick check that your .flowerSvgWrapper elements actually exist
+window.addEventListener("load", () => {
+  loadAndMountAllSvg().then(() => {
     miniBranches = Array.from(document.querySelectorAll(".flowerSvgWrapper"));
-    if (!miniBranches.length) {
-      console.warn('No .flowerSvgWrapper elements found — proceeding anyway.');
-    } else {
-      // optional: ensure they're non-collapsed (have size)
-      const visibleCount = miniBranches.filter(el => {
-        const r = el.getBoundingClientRect();
-        return r.width > 0 && r.height > 0;
-      }).length;
-      if (!visibleCount) {
-        console.warn('Found .flowerSvgWrapper elements but none have size yet.');
-      }
-    }
-
-    // 4) start your animation loop
+    // optional debug:
+    // console.log("miniBranches found:", miniBranches.length);
     requestAnimationFrame(tick);
+    staggerParagraphsRAF();
+  });
 
-  } catch (err) {
-    console.error('Error during load sequence:', err);
-    // still start animations after an error so the page isn't frozen
-    requestAnimationFrame(tick);
-  } finally {
-    // Remove no-scroll and show content now that we started animations (or gave up).
-    document.documentElement.classList.remove('no-scroll');
-    document.documentElement.classList.add('loaded'); // if you use this for CSS animation-play-state
-  }
+  document.documentElement.classList.add("no-scroll");
 });
