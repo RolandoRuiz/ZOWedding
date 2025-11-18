@@ -1,3 +1,92 @@
+const TOP_BRANCH_CONTAINER    = ".topBranchContainer";
+const BOTTOM_BRANCH_CONTAINER = ".bottomBranchContainer";
+
+/**********************************************************
+ * GENERIC SVG TEMPLATES (BRANCHES + FLOWERS)
+ **********************************************************/
+const svgTemplates = [
+  // --- Big branches (use leaves) ---
+  {
+    src: "Assets/svg/topBranchGraphicNew.min.svg",
+    container: TOP_BRANCH_CONTAINER,
+    assignId: "topBranch",
+    wrapperClass: "branch",
+    initLeaves: true
+  },
+  {
+    src: "Assets/svg/bottomBranchGraphicNew.min.svg",
+    container: BOTTOM_BRANCH_CONTAINER,
+    assignId: "bottomBranch",
+    wrapperClass: "branch",
+    initLeaves: true
+  },
+
+  // --- Mini branches / flowers (no leaves) ---
+  { src: "Assets/svg/miniBranch1.svg", container: ".flowerBox.one",   assignId: "flower1", wrapperClass: "flowerSvgWrapper", initLeaves: true },
+  { src: "Assets/svg/miniBranch4.svg", container: ".flowerBox.two",   assignId: "flower2", wrapperClass: "flowerSvgWrapper", initLeaves: true },
+  { src: "Assets/svg/miniBranch3.svg", container: ".flowerBox.three", assignId: "flower3", wrapperClass: "flowerSvgWrapper", initLeaves: true },
+  { src: "Assets/svg/miniBranch5.svg", container: ".flowerBox.four",  assignId: "flower4", wrapperClass: "flowerSvgWrapper", initLeaves: true },
+  { src: "Assets/svg/miniBranch1.svg", container: ".flowerBox.five",  assignId: "flower5", wrapperClass: "flowerSvgWrapper", initLeaves: true },
+  { src: "Assets/svg/miniBranch4.svg", container: ".flowerBox.six",   assignId: "flower6", wrapperClass: "flowerSvgWrapper", initLeaves: true },
+  { src: "Assets/svg/miniBranch2.svg", container: ".flowerBox.seven", assignId: "flower7", wrapperClass: "flowerSvgWrapper", initLeaves: true },
+  { src: "Assets/svg/miniBranch4.svg", container: ".flowerBox.eight", assignId: "flower8", wrapperClass: "flowerSvgWrapper", initLeaves: true }
+];
+
+/**********************************************************
+ * GENERIC SVG CLONING (BRANCHES + FLOWERS, WITH CACHING)
+ **********************************************************/
+const svgCache = new Map(); // src -> parsed <svg> element
+
+async function loadAndMountAllSvg() {
+  let anyBranchWithLeaves = false;
+
+  for (const { src, container, assignId, wrapperClass, initLeaves } of svgTemplates) {
+    const target = document.querySelector(container);
+    if (!target) continue;
+
+    try {
+      // Reuse parsed SVG if we've already loaded this src
+      let svgEl = svgCache.get(src);
+      if (!svgEl) {
+        const svgText = await fetch(src).then(r => {
+          if (!r.ok) throw new Error(`HTTP ${r.status} for ${src}`);
+          return r.text();
+        });
+        const parser  = new DOMParser();
+        const svgDoc  = parser.parseFromString(svgText, "image/svg+xml");
+        svgEl = svgDoc.documentElement; // <svg>
+        if (!svgEl || svgEl.nodeName.toLowerCase() !== "svg") {
+          throw new Error(`No <svg> root in ${src}`);
+        }
+        svgCache.set(src, svgEl);
+      }
+
+      // Build wrapper off-DOM
+      const wrapper = document.createElement("div");
+      if (wrapperClass) wrapper.className = wrapperClass;
+      if (assignId) wrapper.id = assignId;
+
+      const clone = svgEl.cloneNode(true);
+      wrapper.appendChild(clone);
+      target.appendChild(wrapper);
+
+      // Only branches need leaf initialization
+      if (initLeaves) {
+        initLeavesForBranch(wrapper);
+        anyBranchWithLeaves = true;
+      }
+    } catch (e) {
+      console.error("Error loading SVG:", src, e);
+    }
+  }
+
+  // Rebuild active leaves list once, after all branches are mounted
+  if (anyBranchWithLeaves) {
+    updateActiveLeaves();
+  }
+}
+
+
 /**********************************************************
  * DOM REFERENCES
  **********************************************************/
@@ -45,15 +134,6 @@ const getParagraphLines    = document.querySelectorAll(".paragraphLine");
 const getParagraphGlows    = document.querySelectorAll(".paragraphGlow");
 
 const indexBranchTwo    = document.querySelector(".bottomBranchContainer");
-
-/* Containers to mount cloned SVG branches */
-const TOP_BRANCH_CONTAINER    = ".topBranchContainer";
-const BOTTOM_BRANCH_CONTAINER = ".bottomBranchContainer";
-
-const svgTemplates = [
-  { src: "Assets/svg/topBranchGraphicNew.min.svg",    container: TOP_BRANCH_CONTAINER,    assignId: "topBranch" },
-  { src: "Assets/svg/bottomBranchGraphicNew.min.svg", container: BOTTOM_BRANCH_CONTAINER, assignId: "bottomBranch" }
-];
 
 /* Leaf selectors inside your SVGs */
 const leafSelectors = [".prefix__leaf"];
@@ -211,79 +291,46 @@ const sealSparkData = [];
  **********************************************************/
 function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
 
-/**********************************************************
- * SVG CLONING (TOP & BOTTOM BRANCHES)
- **********************************************************/
-async function loadAndMountBranches() {
-  for (const { src, container, assignId } of svgTemplates) {
-    const target = document.querySelector(container);
-    if (!target) continue;
-
-    try {
-      const svgText = await fetch(src).then(r => r.text());
-      const parser  = new DOMParser();
-      const svgDoc  = parser.parseFromString(svgText, "image/svg+xml");
-      const svgEl   = svgDoc.documentElement;
-
-      const wrapper = document.createElement("div");
-      wrapper.className = "branch";
-      if (assignId) wrapper.id = assignId;
-
-      wrapper.appendChild(svgEl);
-      target.appendChild(wrapper);
-
-      // Ensure SVG is in DOM before initializing leaves
-      await new Promise(r => setTimeout(r, 0));
-      initLeavesForBranch(wrapper);
-    } catch(e) {}
-  }
-
-  updateActiveLeaves();
-}
-
-
-/* Initialize leaves in a single mounted branch wrapper */
 function initLeavesForBranch(branchWrapper) {
   const leafTargets = branchWrapper.querySelectorAll(leafSelectors.join(","));
   if (!leafTargets.length) return;
 
-  // Create per-branch leaves array for local reference
   const branchLeaves = [];
 
-  // Prepare transform style optimizations
   leafTargets.forEach(leafTarget => {
+    // Read whatever transform the SVG already had
+    const computed = getComputedStyle(leafTarget).transform;
+    const baseTransform = (computed && computed !== "none") ? computed : "";
+
     const leafObj = {
       el: leafTarget,
-      active: true, // always start active
+      active: true,
       obsDebounce: null,
       pos: Math.random() * 6 - 3,
       dir: Math.random() < 0.5 ? 1 : -1,
       speed: 2 + Math.random() * 4,
       maxAngle: 10 + Math.random() * 35,
-      prevPos: null
+      prevPos: null,
+      baseTransform // ← store the original matrix (or empty)
     };
 
     leaves.push(leafObj);
     leafMap.set(leafTarget, leafObj);
     branchLeaves.push(leafObj);
 
-    // Style optimizations
     try {
       leafTarget.style.willChange = "transform";
       leafTarget.style.transformBox = "fill-box";
-      leafTarget.style.transform = `rotate(${leafObj.pos}deg) translateZ(0)`;
+      // start at its original transform, no extra rotation yet
+      leafTarget.style.transform = baseTransform || "none";
     } catch (e) {}
   });
 
-  // Attach leaves to this branch for quick toggling
   branchWrapper.leaves = branchLeaves;
 
-  // --- One observer per branch ---
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       const isVisible = entry.isIntersecting;
-
-      // Toggle visibility for all leaves in this branch
       if (branchWrapper.leaves) {
         branchWrapper.leaves.forEach(l => {
           l.active = isVisible;
@@ -291,23 +338,17 @@ function initLeavesForBranch(branchWrapper) {
       }
     });
 
-    // Schedule async update once per frame
     Promise.resolve().then(updateActiveLeaves);
   }, {
     root: null,
-    rootMargin: "100px 0px", // looser margin to prevent flicker on scroll
+    rootMargin: "100px 0px",
     threshold: 0.1
   });
 
-  // Observe the branch container, not individual leaves
   observer.observe(branchWrapper);
-
-  let visibilityTick = 0;
-  setInterval(() => {
-    visibilityTick = (visibilityTick + 1) % 2;
-    branchWrapper.style.willChange = visibilityTick ? "transform" : "opacity";
-  }, 3000);
 }
+
+
 
 
 /* Rebuild cached visible list once (not per frame) */
@@ -342,7 +383,10 @@ function updateLeaves(delta) {
     }
 
     if (Math.abs(leaf.pos - (leaf.prevPos ?? leaf.pos)) >= 0.1) {
-      leaf.el.style.transform = `rotate(${leaf.pos}deg) translateZ(0)`;
+      const base = leaf.baseTransform && leaf.baseTransform !== "none"
+        ? leaf.baseTransform + " "
+        : "";
+      leaf.el.style.transform = `${base}rotate(${leaf.pos}deg) translateZ(0)`;
       leaf.prevPos = leaf.pos;
     }
   }
@@ -563,8 +607,8 @@ function tick(timestamp){
   const delta = Math.min((timestamp - lastTimestamp) / 16.666, 5);
   lastTimestamp = timestamp;
 
-  /* --- Branch sway --- */
-  if(!branchLastTime) branchLastTime = timestamp;
+    /* --- Branch sway --- */
+  if (!branchLastTime) branchLastTime = timestamp;
   let branchDelta = Math.min((timestamp - branchLastTime) / 16.666, 5);
   branchLastTime = timestamp;
 
@@ -572,11 +616,39 @@ function tick(timestamp){
   if (branchPosition >= branchMax) { branchPosition = branchMax; branchDirection = -1; }
   else if (branchPosition <= branchMin) { branchPosition = branchMin; branchDirection = 1; }
 
-  const branchRotation = `rotate(${branchPosition / 10}deg)`;
+  /* prepare sway rotation string */
+  const swayDeg = branchPosition / 10;
+  const swayTransform = `rotate(${swayDeg}deg) translateZ(0)`;
+
+  /* rotate main branches as before */
   const getUpperBranch = document.querySelector("#topBranch");
   const getLowerBranch = document.querySelector("#bottomBranch");
-  if (getUpperBranch) getUpperBranch.style.transform = branchRotation;
-  if (getLowerBranch) getLowerBranch.style.transform = branchRotation;
+  if (getUpperBranch) getUpperBranch.style.transform = `rotate(${swayDeg}deg)`;
+  if (getLowerBranch) getLowerBranch.style.transform = `rotate(${swayDeg}deg)`;
+
+  /* --- Mini branches: preserve each element's original transform and add sway --- */
+  const getMiniBranches = document.querySelectorAll(".flowerBox");
+
+  getMiniBranches.forEach(miniBranch => {
+    if (!miniBranch) return;
+
+    // Cache the original/base transform string once (so we don't overwrite or re-read
+    // computed transforms that will change after we start applying the composed transform).
+    if (!miniBranch.dataset.baseTransform) {
+      const inline = miniBranch.style.transform || "";
+      const comp = getComputedStyle(miniBranch).transform;
+      const base = inline || (comp && comp !== "none" ? comp : "");
+      // Store an empty string or the matrix/transform string
+      miniBranch.dataset.baseTransform = base;
+    }
+
+    const base = miniBranch.dataset.baseTransform || "";
+
+    // Compose: base (if any) + the sway rotation. We overwrite the style each frame so nothing accumulates.
+    miniBranch.style.transform = (base ? base + " " : "") + swayTransform;
+  });
+
+
 
   /* --- Leaf sway (throttled + batched) --- */
   updateLeaves(delta);
@@ -1135,6 +1207,11 @@ if (openLetter) {
     }
 
     openLetter.removeEventListener("click", handleOpenClick);
+
+    const SCROLL_ENABLE_DELAY = 10000; // milliseconds — adjust to match your animation
+    setTimeout(() => {
+      document.documentElement.classList.remove("no-scroll");
+    }, SCROLL_ENABLE_DELAY);
   };
 
   openLetter.addEventListener("click", handleOpenClick);
@@ -1143,5 +1220,14 @@ if (openLetter) {
 /**********************************************************
  * STARTUP
  **********************************************************/
-loadAndMountBranches();     // clone & mount the two SVG branches and init leaves
-requestAnimationFrame(tick); // kick off RAF loop
+
+window.addEventListener("load", () => {
+  loadAndMountAllSvg().then(() => {
+    miniBranches = Array.from(document.querySelectorAll(".flowerSvgWrapper"));
+    // optional debug:
+    // console.log("miniBranches found:", miniBranches.length);
+    requestAnimationFrame(tick);
+  });
+
+  document.documentElement.classList.add("no-scroll");
+});

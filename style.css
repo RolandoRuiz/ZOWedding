@@ -25,6 +25,18 @@ html, body {
   transform: translateZ(0);
 }
 
+/* block document scrolling while .no-scroll is present */
+.no-scroll, .no-scroll body, .no-scroll html {
+  overflow: hidden !important;
+  height: 100% !important;
+  touch-action: none !important; /* prevents touch scrolling on mobile */
+}
+
+/* additionally prevent overscroll bounce on iOS */
+.no-scroll {
+  -webkit-overflow-scrolling: auto !important;
+}
+
 :root{
     --deep-red: #510414;
     --deep-red2: #3a030e;
@@ -2961,13 +2973,13 @@ body{
 
 .seventhSection{
     width: 100svw;
-    height: 70svh;
+    height: 75svh;
     position: absolute;
     display: grid;
     align-items: center;
     justify-items: center;
     grid-template-columns: 1fr;
-    grid-template-rows: 0.5fr 1fr 0.1fr 0.4fr 0.2fr;
+    grid-template-rows: 0.3fr 1fr 0.1fr 0.5fr 0.4fr;
     background-color: var(--pure-white);
     top: 740svh;
 }
@@ -3025,7 +3037,7 @@ body{
     width: 100svw;
     height: 100svh;
     position: absolute;
-    top: 810svh;
+    top: 815svh;
     background-color: var(--pure-white);
     display: grid;
     grid-template-columns: 0.15fr 0.05fr 1fr 0.05fr 0.15fr;
@@ -3122,69 +3134,88 @@ body{
     background-position: 0% 100%;
     z-index: 200;
     overflow: hidden;
+}
+
+.flowerBoxWrapper{
+    width: 100svw;
+    height: 800svh;
+    position: absolute;
+    z-index: 6000;
+    pointer-events: none;
+    transform: translateZ(0); 
+    will-change: transform;
     overflow: hidden;
 }
 
 .flowerBox{
+    position: absolute;
+}
+
+.flowerBox svg{
     width: 100%;
     height: 100%;
-    position: absolute;
-    border: solid 2px red;
-    z-index: 2000;
 }
 
 .flowerBox.one{
-    width: 50%;
+    width: 60%;
     height: auto;
-    aspect-ratio: 1 / 1;
-    right: 0%;
+    right: -10%; top: 0.5%;
+    transform: scaleX(-1) rotate(10deg);
+    transform-box: border-box;
 }
 
 .flowerBox.two{
-    width: 100%;
+    width: 90%;
     height: auto;
     aspect-ratio: 1 / 0.5;
-    left: 0%; top: 165%;
+    right: -18%; top: 7.5%;
+    transform: scale(-1) rotate(-23deg);
 }
 
 .flowerBox.three{
-    width: 100%;
+    width: 105%;
     height: auto;
     aspect-ratio: 1 / 0.5;
-    left: 0%; top: 255%;
+    left: -6%; top: 22%;
+    transform: scale(1) rotate(0deg);
 }
 
 .flowerBox.four{
     width: 100%;
     height: auto;
     aspect-ratio: 1 / 0.8;
-    left: 0%; top: 355%;
+    right: -10%; top: 35%;
+    transform: scale(-1.1) rotate(-10deg);
 }
 
 .flowerBox.five{
-    width: 100%;
+    width: 60%;
     height: auto;
     aspect-ratio: 1 / 0.4;
-    left: 0%; top: 450%;
+    right: 0%; top: 48%;
+    transform: scale(-1.3) rotate(10deg);
 }
 
 .flowerBox.six{
     width: 100%;
     height: auto;
     aspect-ratio: 1 / 0.6;
-    left: 0%; top: 572%;
+    left: -8%; top: 65%;
+    transform: scale(1) rotate(0deg);
 }
 
 .flowerBox.seven{
-    width: 100%;
+    width: 60%;
     height: auto;
     aspect-ratio: 1 / 0.5;
-    left: 0%; top: 667%;
+    right: -10%; top: 77.5%;
+    transform: scale(1) rotate(-50deg);
 }
 
 .flowerBox.eight{
-    width: 100%;
+    width: 90%;
     height: auto;
     aspect-ratio: 1 / 0.7;
-    left: 0%; top: 730%;
+    left: -10%; top: 86.5%;
+    transform: scaleX(1) rotate(-10deg);
 }
