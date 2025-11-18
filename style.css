@@ -1469,13 +1469,21 @@ body{
     width: 85%;
     height: 90%;
     position: absolute;
-    background-image: url(Assets/img/image2.png);
-    background-size: 115%;    
-    background-repeat: no-repeat;
-    background-position: 160% 0%;
     z-index: 200;
     overflow: hidden;
-    bottom: 0%;
+}
+
+.partnerImg::before{
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-image: url(Assets/img/image2.png);
+    background-size: auto 100%;    
+    background-repeat: no-repeat;
+    background-position: -10% 100%;
+    left: -12%;
+    bottom: -14%;
 }
 
 .decorativeMouldBox{
@@ -2646,8 +2654,6 @@ body{
     color: var(--medium-black);
 }
 
-
-
 .fifthSection{
     width: 100svw;
     height: 130svh;
@@ -3028,7 +3034,9 @@ body{
 
 .confirmText{
     width: 80%;
+    max-width: 80%;
     height: 100%;
+    position: absolute;
     display: grid;
     align-items: center;
     justify-items: center;
@@ -3148,7 +3156,7 @@ body{
     font-size: 2.5rem;
 }
 
-.partnerImg.two{
+.partnerImgtwo{
     width: 100%;
     height: 100%;
     position: absolute;
@@ -3242,4 +3250,59 @@ body{
     aspect-ratio: 1 / 0.7;
     left: -10%; top: 86.5%;
     transform: scaleX(1) rotate(-10deg);
+}
+
+
+@media screen and (max-height: 670px) {
+    
+    .partnerImg::before{
+        content: "";
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        background-image: url(Assets/img/image2.png);
+        background-size: contain;    
+        background-repeat: no-repeat;
+        background-position: -10% 100%;
+        left: -10%;
+        bottom: -16%;
+    }
+
+    .partnerImgtwo{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        background-image: url(Assets/img/image3.png);
+        background-size: auto 85%;    
+        background-repeat: no-repeat;
+        background-position: center 100%;
+        z-index: 200;
+        overflow: hidden;
+    }
+
+    .flowerBox.two{
+        width: 90%;
+        height: auto;
+        aspect-ratio: 1 / 0.5;
+        right: -22%; top: 7.5%;
+        transform: scale(-0.9) rotate(-23deg);
+    }
+
+    .locationInfo{
+        width: 80%;
+        height: 70%;
+        display: grid;
+        align-items: center;
+        justify-content: center;
+        grid-template-columns: 1fr;
+        grid-template-rows: 2fr 0.2fr 1fr 0.4fr 1fr;
+    }
+
+    .flowerBox.four{
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1 / 0.8;
+        right: -10%; top: 34%;
+        transform: scale(-1.1) rotate(-10deg);
+    }
 }
