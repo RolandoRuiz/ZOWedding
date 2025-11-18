@@ -1221,13 +1221,122 @@ if (openLetter) {
  * STARTUP
  **********************************************************/
 
-window.addEventListener("load", () => {
-  loadAndMountAllSvg().then(() => {
-    miniBranches = Array.from(document.querySelectorAll(".flowerSvgWrapper"));
-    // optional debug:
-    // console.log("miniBranches found:", miniBranches.length);
-    requestAnimationFrame(tick);
+// Helper: wait for all <img> and SVG <image> elements to finish loading/decoding.
+// Also handles images that are already complete.
+function waitForAllImages(timeoutMs = 8000) {
+  const imgs = Array.from(document.querySelectorAll('img'));
+  // also include <image> inside inline SVGs
+  const svgImages = Array.from(document.querySelectorAll('svg image')).map(x => {
+    // the href may be in href or xlink:href, normalize to a pseudo-element with .src
+    const href = x.getAttribute('href') || x.getAttributeNS('http://www.w3.org/1999/xlink', 'href');
+    return { el: x, src: href };
   });
 
-  document.documentElement.classList.add("no-scroll");
+  const promises = imgs.map(img => {
+    if (img.complete && img.naturalWidth !== 0) return Promise.resolve();
+    return new Promise(resolve => {
+      const onFinish = () => {
+        img.removeEventListener('load', onFinish);
+        img.removeEventListener('error', onFinish);
+        resolve();
+      };
+      img.addEventListener('load', onFinish, { once: true });
+      img.addEventListener('error', onFinish, { once: true });
+      // some browsers support decoding()
+      if (img.decode) img.decode().catch(() => {}).finally(() => {});
+    });
+  });
+
+  // For SVG <image>, check that either the href is falsy (inline data) or the image is painted:
+  svgImages.forEach(({ el, src }) => {
+    // If no src (it's embedded vector content) resolve immediately.
+    if (!src) {
+      promises.push(Promise.resolve());
+      return;
+    }
+
+    // Create an off-DOM Image to load the same src and resolve when done.
+    const p = new Promise(resolve => {
+      const img = new Image();
+      const onFinish = () => {
+        img.removeEventListener('load', onFinish);
+        img.removeEventListener('error', onFinish);
+        resolve();
+      };
+      img.addEventListener('load', onFinish, { once: true });
+      img.addEventListener('error', onFinish, { once: true });
+      img.src = src;
+    });
+    promises.push(p);
+  });
+
+  const all = Promise.all(promises);
+
+  // add a timeout so we don't wait forever
+  const timeout = new Promise(resolve => setTimeout(resolve, timeoutMs));
+  return Promise.race([all, timeout]);
+}
+
+// Helper: wait for fonts if available
+function waitForFonts() {
+  if (document.fonts && document.fonts.ready) return document.fonts.ready;
+  return Promise.resolve();
+}
+
+// Helper: wait for n animation frames (useful to ensure browser has painted)
+function waitForFrames(n = 2) {
+  return new Promise(resolve => {
+    function step(i) {
+      if (i <= 0) return resolve();
+      requestAnimationFrame(() => step(i - 1));
+    }
+    step(n);
+  });
+}
+
+// MAIN: improved load flow
+window.addEventListener('load', async () => {
+  // keep no-scroll until everything's ready
+  document.documentElement.classList.add('no-scroll');
+
+  try {
+    // 1) wait for your SVG mounting logic to finish
+    await loadAndMountAllSvg(); // preserve your existing function
+
+    // 2) wait for fonts & images used in the document (including SVG images)
+    await Promise.all([
+      waitForFonts(),
+      waitForAllImages(10000) // 10s fallback timeout; tune as needed
+    ]);
+
+    // 3) give the browser a couple frames to layout & rasterize the newly inserted SVGs
+    await waitForFrames(2);
+
+    // Optional: quick check that your .flowerSvgWrapper elements actually exist
+    miniBranches = Array.from(document.querySelectorAll(".flowerSvgWrapper"));
+    if (!miniBranches.length) {
+      console.warn('No .flowerSvgWrapper elements found — proceeding anyway.');
+    } else {
+      // optional: ensure they're non-collapsed (have size)
+      const visibleCount = miniBranches.filter(el => {
+        const r = el.getBoundingClientRect();
+        return r.width > 0 && r.height > 0;
+      }).length;
+      if (!visibleCount) {
+        console.warn('Found .flowerSvgWrapper elements but none have size yet.');
+      }
+    }
+
+    // 4) start your animation loop
+    requestAnimationFrame(tick);
+
+  } catch (err) {
+    console.error('Error during load sequence:', err);
+    // still start animations after an error so the page isn't frozen
+    requestAnimationFrame(tick);
+  } finally {
+    // Remove no-scroll and show content now that we started animations (or gave up).
+    document.documentElement.classList.remove('no-scroll');
+    document.documentElement.classList.add('loaded'); // if you use this for CSS animation-play-state
+  }
 });
