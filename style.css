@@ -5,6 +5,19 @@
     font: inherit;
 }
 
+/* Pause ALL CSS animations & transitions before load */
+html:not(.loaded) * {
+  animation-play-state: paused !important;
+  transition: none !important;   /* optional, prevents weird partial transitions */
+}
+
+/* When fully loaded, re-enable everything */
+html.loaded * {
+  animation-play-state: running !important;
+  transition: all var(--transition-speed, 0.3s) ease !important; /* optional */
+}
+
+
 svg{
     contain: layout paint;
 }
