@@ -2472,7 +2472,7 @@ body{
     width: 75%;
     height: 85%;
     position: absolute;
-    display: flex;
+    display: grid;
     justify-content: center;
     align-items: center;
     background-color: var(--soft-gold);
@@ -2491,21 +2491,31 @@ body{
     radial-gradient(29% 27% at bottom,var(--_g)) 0 calc(var(--s)/-2)
     var(--c2);
     background-size: calc(2*var(--s)) calc(2*var(--s));
+
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.3fr 0.5fr 0.15fr 0.9fr 0.3fr;
+    justify-items: center;
 }
 
 .decorativeWall::before{
     content: "";
-    width: 100%;
-    height: 100%;
+    width: 95%;
+    height: 98%;
+    position: absolute;
     border-radius: 0px 0px 300px 300px;
     border: double 5px var(--pure-white);
-    margin: -3% 3% 3% 3%;
+    border-top: none;
+    top: 0%;
+    grid-column-start: 1; grid-column-end: 2;
+    grid-row-start: 1; grid-row-end: 6;
 }
 
 .decorativeWallInnerShadow{
     width: 100%;
     height: 100%;
     filter: drop-shadow(0px 0px 10px rgb(192, 192, 192));
+    grid-column-start: 1; grid-column-end: 2;
+    grid-row-start: 1; grid-row-end: 6;
 }
 
 .decorativeWallInner{
@@ -2533,31 +2543,39 @@ body{
 
 .formalAttireRequired{
     width: 90%;
-    height: 25%;
+    height: 100%;
     position: absolute;
     display: grid;
     justify-content: center;
     align-items: center;
     justify-items: center;
-    top: 15%;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 0.3fr 0.9fr 0.7fr;
+
+    grid-column-start: 1; grid-column-end: 2;
+    grid-row-start: 2; grid-row-end: 3;
 }
 
 .formalIcon{
-    width: auto;
+    width: 100%;
     height: 100%;
     display: grid;
     justify-content: center;
     align-items: center;
-    grid-row-start: 1;
-    grid-row-end: 2;
+    grid-column-start: 1; grid-column-end: 2;
+    grid-row-start: 1; grid-row-end: 2;
 }
 
-.formalIcon img{
-    height: 100%;
-    object-fit: contain;
-    z-index: 200;
+.formalIcon.one{
+    background-image: url(Assets/svg/FormalIcon.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.formalIcon.two{
+    background-image: url(Assets/svg/kidsIcon.svg);
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .attireText{
@@ -2601,12 +2619,14 @@ body{
 
 .noKidsAllowed{
     width: 90%;
-    height: 45%;
+    height: 100%;
     position: absolute;
     display: grid;
-    top: 45%;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr 2.5fr;
+
+    grid-column-start: 1; grid-column-end: 2;
+    grid-row-start: 4; grid-row-end: 5;
 }
 
 .noKidsAllowed .attireText{
@@ -2973,15 +2993,19 @@ body{
 
 .seventhSection{
     width: 100svw;
+    max-width: 100svw;
     height: 75svh;
     position: absolute;
     display: grid;
     align-items: center;
     justify-items: center;
+    justify-content: center;
     grid-template-columns: 1fr;
-    grid-template-rows: 0.3fr 1fr 0.1fr 0.5fr 0.4fr;
+    grid-template-rows: 0.3fr 1fr 0.1fr 0.3fr 0.7fr;
     background-color: var(--pure-white);
     top: 740svh;
+    overflow: hidden;
+
 }
 
 .seventhSection::before{
